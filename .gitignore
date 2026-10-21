@@ -1,0 +1,33 @@
+# Material de referência local (nunca versionar)
+doc/
+
+# Dependências e build
+node_modules/
+.next/
+out/
+build/
+coverage/
+*.tsbuildinfo
+next-env.d.ts
+
+# Ambiente e segredos
+.env
+.env.*
+!.env.example
+
+# Testes E2E
+playwright-report/
+test-results/
+blob-report/
+
+# Backups do banco
+backups/
+*.sql.gz
+
+# Sistema / editor
+.DS_Store
+Thumbs.db
+*.log
+.vscode/*
+!.vscode/extensions.json
+.claude/settings.local.json
