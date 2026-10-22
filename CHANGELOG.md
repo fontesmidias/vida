@@ -2,7 +2,7 @@
 
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/); versões seguem [SemVer](https://semver.org/lang/pt-BR/).
 
-## [Não lançado]
+## [0.2.0] - 2026-10-22
 ### Adicionado
 - Telas reais (Entrada, Hoje, Check-in, Prática guiada, Planos, Dia do plano, Jornada) com a identidade do protótipo: tema claro/escuro (preferência em cookie, sem script inline), ícones próprios de estado (D15), sigla VIDA (D18), botão Apoio com CVV por extenso (D16), práticas guiadas (D17), celebração ao concluir plano, "Voltar" sempre visível (U9), área segura e barra que não cobre conteúdo (U12).
 - Tratamento único de erros no cliente (U5): sem conexão, 401 volta para a Entrada, 400 no check-in recarrega o catálogo; esqueleto de carregamento em toda navegação.
