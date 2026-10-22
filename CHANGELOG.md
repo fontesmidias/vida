@@ -13,6 +13,8 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/); 
 - Sessão de visitante (D3, S4): `POST /api/session/demo` cria ou reutiliza a sessão; `DELETE /api/session` encerra. Cookie `vida_session` criptografado, `httpOnly`, `sameSite=lax`, `secure` em produção, válido por 30 dias.
 - Configuração validada na inicialização (`SESSION_SECRET` ≥ 32 caracteres), sem expor valores no erro.
 - Verificação de `Origin` em escrita contra CSRF; erros internos com mensagem amigável e detalhe só no log (S5).
+- `GET /api/moods`: catálogo de estados ativos (D6), exige sessão.
+- `POST /api/checkins` (R1): instante do servidor; data local pelo fuso IANA informado (inválido → `America/Sao_Paulo`). Corpo validado com `strictObject`: recusa `userId` (S2) e texto livre (D4).
 - `GET /api/health` público e mínimo (S7); layout `pt-BR` com aviso de cuidado (C3) e rodapé CVV (C1).
 
 ## [0.1.0] - 2026-10-21

@@ -41,6 +41,19 @@ O progresso (R6) é calculado, não armazenado: evita dado duplicado e inconsist
 | GET | `/api/plans/[slug]` | Detalhe com dias e status |
 | POST | `/api/plans/[slug]/days/[day]/complete` | Conclui dia (R4/R5) |
 
+## Erros da API
+Todas as rotas (exceto health) exigem sessão. Respostas de erro têm o formato `{"error": "<mensagem amigável>"}`:
+
+| Status | Quando |
+|---|---|
+| 400 | Corpo fora do esquema, JSON inválido ou estado inexistente |
+| 401 | Sem sessão, ou a pessoa da sessão não existe mais |
+| 403 | `Origin` de outro site em escrita (CSRF) |
+| 500 | Erro interno; detalhe só no log (S5) |
+
+## Tempo (R1)
+O servidor grava `created_at` (UTC) e calcula `local_date` com `Intl.DateTimeFormat` no fuso informado. Exemplo real: às 01:05 UTC de 22/10, um check-in com `America/Sao_Paulo` fica em 21/10 e um com `Asia/Tokyo` em 22/10. Só nomes IANA são aceitos; offsets como `+03:00` caem no padrão. Implementação: `src/services/checkins.ts`.
+
 ## Migrations e preservação de dados
 - Cada mudança de esquema gera uma migration SQL versionada em `prisma/migrations/` (`prisma migrate dev`).
 - Em produção, o container roda `prisma migrate deploy` ao subir: aplica só as pendentes, em ordem, registradas em `_prisma_migrations`.
