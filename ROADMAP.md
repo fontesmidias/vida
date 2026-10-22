@@ -16,4 +16,5 @@ Ideias fora do escopo desta entrega. Nenhuma ideia é descartada: ela entra aqui
 | Painel administrativo de conteúdos e planos | Produto | Fora do escopo obrigatório; hoje o conteúdo vem do seed |
 | Música ambiente (lofi/calma) com ícone discreto | Teste do protótipo | Fora do escopo do desafio. Requisitos: **desligada por padrão e nunca uma surpresa**; só toca quando a pessoa escolher tocar no ícone; começa em volume baixo; controle de volume, pausa e escolha de faixa sempre visíveis; lembrar a preferência; só faixas com licença livre (CC0 ou royalty-free) com atribuição exibida |
 | Usuário do banco só com as permissões do app, separado do dono que roda as migrations | SECURITY.md (camada de dados) | O banco já fica isolado na rede interna da stack; separar papéis exige script de inicialização do Postgres e testes de permissão |
+| Cópia externa dos backups (outro provedor ou bucket S3) | docs/OPERACAO.md | Hoje o backup diário fica na própria VPS; protege contra erro e corrupção, não contra perda da máquina |
 | Observabilidade (Sentry, métricas, alertas de uptime) | Pergunta 4 do desafio | Entrega usa logs + healthcheck; ferramentas dedicadas depois |

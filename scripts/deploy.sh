@@ -29,7 +29,7 @@ print(s[0]['Id'] if s else '')")
 
 # 2. Backup antes de qualquer mudança no banco de produção (guardrail do loop)
 if [ -n "$STACK_ID" ]; then
-  "${SSH[@]}" "mkdir -p /var/backups/vida && docker exec vida-db-1 pg_dump -U vida vida | gzip > /var/backups/vida/pre-deploy-$TAG.sql.gz && gunzip -t /var/backups/vida/pre-deploy-$TAG.sql.gz"
+  "${SSH[@]}" "umask 077 && mkdir -p /var/backups/vida && docker exec vida-db-1 pg_dump -U vida vida | gzip > /var/backups/vida/pre-deploy-$TAG.sql.gz && gunzip -t /var/backups/vida/pre-deploy-$TAG.sql.gz"
   echo "backup pré-deploy: /var/backups/vida/pre-deploy-$TAG.sql.gz"
 fi
 
