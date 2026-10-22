@@ -39,7 +39,7 @@ Escopo das aprovações: valem só para os recursos do VIDA (registro `vida.font
 |---|---|---|---|---|
 
 ## Bloqueios abertos
-- **Modo SSL/TLS do Cloudflare (D22):** o token não lê esse ajuste. O responsável confere em SSL/TLS > Overview que está em Full ou Full (strict). Se estiver em Flexible, o proxy laranja daria loop de redirecionamento.
+- **SSL do Cloudflare (D22, D23):** a zona está em **Flexible**. O responsável cria a Configuration Rule `vida - SSL full strict` (Hostname equals `vida.fontesmidias.com.br` → SSL Full (strict)). O loop não cria o DNS proxied antes de o responsável confirmar a regra; depois, o item 3 do check prova o HTTPS de ponta a ponta.
 
 ## Vereditos do revisor
 Nenhum ainda.

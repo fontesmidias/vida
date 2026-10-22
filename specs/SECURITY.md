@@ -7,7 +7,7 @@ Camadas independentes (S1). Cada linha cita a ameaça que cobre (OWASP Top 10 qu
 |---|---|
 | Rede anycast absorve tráfego antes da VPS | DDoS volumétrico |
 | Firewall da VPS aceita 80/443 **apenas** dos IPs do Cloudflare | Ataque direto ao IP de origem |
-| SSL "Full (strict)": HTTPS também entre Cloudflare e Nginx | Interceptação no trecho de origem |
+| SSL "Full (strict)" só para o host `vida` (Configuration Rule, D23; a zona segue em Flexible por causa de outros serviços): HTTPS também entre Cloudflare e Nginx | Interceptação no trecho de origem |
 
 ## 1. Borda — Nginx
 | Controle | Ameaça |
