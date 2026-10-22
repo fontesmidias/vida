@@ -1,33 +1,42 @@
-# Veredito: docs/apresentacao.html
+# Veredito: docs/apresentacao.html (rubrica B)
 
-Data: 2026-10-22
-Rubrica: `loops/rubrica-entrega.md`, seção B. Revisor independente, sem leitura de vereditos anteriores.
+Data: 2026-10-22. Revisor independente, contexto limpo; avaliado só contra a seção B de `loops/rubrica-entrega.md`, o PDF do desafio e o repositório.
 
-## B1. Para o avaliador — APROVADO
-- Abre com o botão "Abrir a demo" → `https://vida.fontesmidias.com.br` e "sem cadastro".
-- Seção "O fluxo principal em 6 passos" corresponde aos 6 passos do PDF (entrar como demo → check-in "ansioso" → Hoje com reflexão/prática → plano e Dia 1 → Jornada → recarregar). Os rótulos citados existem no código: "Entrar como demonstração" (`src/ui/EnterButton.tsx:32`), "Fazer check-in" (`app/(app)/hoje/page.tsx:56`), "Com ansiedade" (`prisma/seed-data.ts:13`), "Começar" (`hoje/page.tsx:80`), "Respiração 4-6" (`seed-data.ts:37`), "Planos"/"Jornada" (`src/ui/navigation.ts`), "Respirar com calma" com 5 dias, "Concluir dia", "1 de 5". O E2E `tests/e2e/fluxo-principal.spec.ts` segue exatamente essa sequência, em Pixel 7 e iPhone 13 (`playwright.config.ts`).
+## B1. Para o avaliador: APROVADO
+- Abre com o botão "Abrir a demo" → `https://vida.fontesmidias.com.br` e "sem cadastro, no celular ou em modo celular".
+- Seção "O fluxo principal em 6 passos" segue os 6 passos do PDF (03 Fluxo): entrar como demonstração → check-in "Com ansiedade" → Hoje com reflexão/prática → plano, Dia 1, "Concluir dia" → Jornada com check-in e "1 de 5" → recarregar e os dados continuam.
 
-## B2. Cobre o essencial — APROVADO
-Proposta e sigla VIDA (Ver · Inspirar · Desacelerar · Avançar, D18); arquitetura com diagrama SVG e tabela de stack; modelo de dados (7 tabelas); segurança e operação em camadas; as 7 perguntas resumidas em `<details>` com link para `../DECISOES.md`.
+## B2. Cobre o essencial: APROVADO
+- Sigla VIDA (Ver, Inspirar, Desacelerar, Avançar) explicada como o fluxo; arquitetura com diagrama SVG (Navegador → Cloudflare → Nginx → App em camadas → Postgres) e tabela de stack; modelo de dados (7 tabelas); segurança e operação (tabela por camada + pendências); as 7 respostas em `<details>` com link para `../DECISOES.md`.
 
-## B3. Consistente com o repositório — REPROVADO
-Conferido e consistente: 7 tabelas e `onDelete: Restrict` em todas as relações (`prisma/schema.prisma`); únicos `(planId, dayNumber)` e `(userId, planDayId)`; limites 20/min sessão e 30/min escrita com 429 (`src/lib/rate-limit.ts`); `127.0.0.1:8097`, Postgres sem `ports` e `pgvector/pgvector:pg16` (`deploy/stack.yml`); `deny all` + allow do Cloudflare, CSP, HSTS, X-Frame-Options (`deploy/nginx/vida.conf`); Next.js 15, Prisma 6, iron-session, Zod, Tailwind (`package.json`); `USER node` e HEALTHCHECK em `/api/health/ready` com `SELECT 1` (`Dockerfile`, `app/api/health/ready/route.ts`); backup pré-deploy (`scripts/deploy.sh:32`); Origin em escrita (`src/lib/http.ts`); D1–D24, R1–R7, S2/S4/S5/S6; pendências (rate limit no Nginx, papel do banco, backup externo) presentes no `ROADMAP.md`; 8 estados em 4 famílias (D11); exemplo de fuso (02:30 UTC de 22/10 = 21 em São Paulo, 22 em Tóquio) correto.
+## B3. Consistente com o repositório: REPROVADO
+Conferido e consistente:
+- 7 tabelas `users, moods, checkins, daily_contents, plans, plan_days, plan_day_completions` (`@@map` em `prisma/schema.prisma`); todas as relações `onDelete: Restrict` ("nenhuma exclusão em cascata"); `@@unique([planId, dayNumber])` e `@@unique([userId, planDayId])` (R4).
+- Limites `session 20/min`, `write 30/min`, 429 (`src/lib/rate-limit.ts`).
+- `127.0.0.1:8097:3000`, rede `interna`, banco sem `ports`, `restart: unless-stopped`, `pgvector/pgvector:pg16` (`deploy/stack.yml`); `USER node` e HEALTHCHECK em `/api/health/ready`, que faz `SELECT 1` (Dockerfile, `app/api/health/ready/route.ts`).
+- Nginx: `allow` só faixas do Cloudflare + `deny all`, CSP, HSTS, X-Frame-Options (`deploy/nginx/vida.conf`); TLS Full strict (D23).
+- Versões Next 15, Prisma 6, Zod, iron-session, Tailwind, Vitest, Playwright (`package.json`); gitleaks e E2E Chromium+WebKit no CI; projetos Pixel 7 / iPhone 13 e `E2E_BASE_URL` para a demo (`playwright.config.ts`, `scripts/check-pronto.sh`).
+- Deploy com portão de CI e backup pré-deploy (`scripts/deploy.sh`); backup diário e prova de restauração (`docs/OPERACAO.md`); unhealthy sem reinício automático, reinício automático no ROADMAP (consistente com DECISOES §4).
+- Pendências do ROADMAP: rate limit no Nginx, usuário do banco sem privilégio de dono, cópia externa dos backups: todas presentes.
+- Decisões D1, D4, D6, D17, D19, faixa D1–D24; regras R1–R7, S2, S4, S5, S6 conferem com `specs/`.
+- Rótulos: "Entrar como demonstração" (`src/ui/EnterButton.tsx`), "Fazer check-in" e "Começar" (`app/(app)/hoje/page.tsx`), "Com ansiedade", "Sem ânimo", "Respirar com calma" (5 dias) e "Respiração 4-6" (`prisma/seed-data.ts`), "Concluir dia", abas Hoje/Planos/Jornada, "Apoio", "Voltar", "Apagar meus dados", botões `min-height: 58px` (`app/globals.css`), "X de Y" na Jornada.
 
-Divergência:
-- Resumo da pergunta 4 (linha 242): "healthcheck que **reinicia sozinho**". O `DECISOES.md` atual diz o contrário: "o healthcheck marca `unhealthy` ... mas no Docker standalone não reinicia sozinho ... (reinício automático por healthcheck está no ROADMAP)". A stack é Compose (container `vida-app-1`, `restart: unless-stopped`), que não reinicia container `unhealthy`. A página afirma um comportamento que o projeto não tem.
+Divergência encontrada:
+- Resposta 7 do resumo: "Fora: conta real, texto livre, chat, Kiwify, streaks, música (com o motivo no ROADMAP)". O `ROADMAP.md` não tem item sobre streaks/sequências (só "Modo guiado (dias sequenciais bloqueados)", que é outra coisa); o motivo de não haver streaks está em D8/R6 (`specs/DECISIONS_LOG.md`, `specs/RULES.md`), como o próprio `DECISOES.md` §7 diz. A página aponta para a fonte errada.
 
-## B4. Legível em celular e tela grande; claro e escuro — REPROVADO
-- CSS correto em temas: tokens no `:root`, bloco `prefers-color-scheme: dark` com `:root:not([data-theme="light"])` e `:root[data-theme="dark"]`, `body` com fundo explícito. Contraste (WCAG) ok nos dois esquemas: texto/fundo 13,6 e 15,3; muted/fundo 5,7 e 8,2; botão 5,3 e 9,0; on-soft/soft 6,7 e 8,7; accent/soft 4,6 e 6,5.
-- 1280px, claro e escuro: `scrollWidth` 1280 = `clientWidth` 1280, sem rolagem horizontal.
-- **Pixel 7 (412px), claro e escuro: rolagem horizontal da página.** `scrollWidth` 432 vs. 412; `innerWidth` 432, `visualViewport.width` 412, e um gesto horizontal desloca a vista em 20px (`visualViewport.pageLeft` = 20). Causa: `.hero::before { right: -40px; width: 220px }` ultrapassa o padding de 20px da `.wrap`; ocultando o pseudo-elemento, `scrollWidth` volta a 412. Tabelas e diagrama rolam só dentro dos próprios contêineres (`overflow-x: auto`), o que é aceitável.
-- Capturas: `test-results/apresentacao-{pixel7,1280}-{light,dark}.png`.
+## B4. Legível em celular e tela grande; claro e escuro: APROVADO
+- CSS: tokens em `:root`, bloco `@media (prefers-color-scheme: dark)` com `:root:not([data-theme="light"])` e `:root[data-theme="dark"]`; `body` com fundo explícito; `.wrap` com `max-width: 46rem`, gutter de 20px e `overflow-x: clip`; diagrama e tabelas com rolagem interna (`overflow-x: auto`).
+- Playwright (Pixel 7/Chromium, iPhone 13/WebKit, 1280px/Chromium; claro e escuro): após `window.scrollTo(500,0)`, `scrollX = 0` e `scrollWidth = clientWidth` (412, 390, 1280) em todos os 6 casos; nenhum elemento fora do diagrama/tabelas ultrapassa a viewport. Cores: claro `#1f2a27` sobre `#f6f5f1`, escuro `#e7eeea` sobre `#121816`; botão com contraste adequado nos dois.
+- Capturas em `test-results/apresentacao-*.png`.
+- Observação (não bloqueia): no celular a tabela de modelo de dados passa 42px da caixa (390 vs 348) por causa do `nowrap` em `plan_day_completions`, então a coluna "Regra" aparece cortada até deslizar a tabela; o diagrama exige deslizar (min-width 620px). Os dois rolam dentro da própria caixa, sem rolagem lateral da página.
 
-## B5. Honesto e no tema — APROVADO
-Selo "conteúdo de demonstração" na abertura e no rodapé (C2); aviso "Não substitui acompanhamento profissional" e CVV 188 (C1). O botão Apoio está em todas as telas (o `Header` com `SupportButton` é usado também na entrada). IA, Kiwify e RAG aparecem só como plano futuro (pergunta 6, "pgvector disponível para RAG futuro"); as pendências estão declaradas. Ressalva: o "reinicia sozinho" do B3 também é uma afirmação de algo que o projeto não faz. Fica reprovado em B3, não aqui.
+## B5. Honesto e no tema: APROVADO
+- Selo "conteúdo de demonstração" no topo e no rodapé (C2); "Não substitui acompanhamento profissional"; sem promessa de diagnóstico, terapia ou cura (C1).
+- As pendências estão declaradas ("Pendências registradas, sem esconder").
+- Recomendação (não bloqueia): o resumo da resposta 6 ("IA no servidor…; Kiwify: webhook com assinatura validada…") está no presente, sem marcar que é plano; a resposta 7 diz que Chat e Kiwify ficaram de fora, mas um "faria"/"plano:" evita a leitura de que já existe.
 
 ## Correções necessárias
-1. Linha 242 (resumo da pergunta 4): trocar "healthcheck que reinicia sozinho" por algo fiel ao `DECISOES.md`, por exemplo "`restart: unless-stopped` reinicia se o processo cair; healthcheck consulta o banco e marca `unhealthy`".
-2. Eliminar a rolagem horizontal no celular: conter o `.hero::before` (ex.: `overflow-x: clip` no `body` ou na `.wrap`, ou `right: 0`/largura menor) e confirmar `scrollWidth == clientWidth` no Pixel 7.
-3. Observação fora deste documento: `docs/OPERACAO.md` (linhas 10 e 24) repete "o Docker reinicia o app se falhar" / "o healthcheck já reinicia sozinho", o que contradiz o `DECISOES.md` corrigido.
+1. Resposta 7: tirar streaks de "(com o motivo no ROADMAP)" ou citar a fonte certa (ex.: "streaks (D8)").
+2. (Recomendado) Resposta 6: marcar como plano futuro (ex.: "Como faria: …").
 
 VEREDITO: REPROVADO
