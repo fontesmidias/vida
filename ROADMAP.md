@@ -19,4 +19,5 @@ Ideias fora do escopo desta entrega. Nenhuma ideia é descartada: ela entra aqui
 | Cópia externa dos backups (outro provedor ou bucket S3) | docs/OPERACAO.md | Hoje o backup diário fica na própria VPS; protege contra erro e corrupção, não contra perda da máquina |
 | App nativo (iOS/Android) | Fora do escopo do desafio | A API REST já pode ser consumida por um app; o web app mobile-first atende a demonstração |
 | Rate limit também no Nginx (`limit_req`/`limit_conn`) | specs/SECURITY.md | Exige declarar zonas em arquivo de escopo global do Nginx da VPS compartilhada; hoje: Cloudflare na borda + limite na aplicação |
+| Reinício automático quando o healthcheck falha (autoheal ou orquestrador) | docs/OPERACAO.md | No Docker standalone o healthcheck só marca `unhealthy`; hoje o restart cobre a queda do processo e o resto é manual |
 | Observabilidade (Sentry, métricas, alertas de uptime) | Pergunta 4 do desafio | Entrega usa logs + healthcheck; ferramentas dedicadas depois |

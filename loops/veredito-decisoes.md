@@ -1,72 +1,45 @@
-# Veredito: `DECISOES.md`
+# Veredito do revisor: DECISOES.md
 
-- **Data:** 2026-10-22
-- **Rubrica:** `loops/rubrica-entrega.md`, seção A (congelada)
-- **Fonte das perguntas:** `doc/escopo-desafio/CLAVIS VIA Desafio Candidatos.pdf`, seção "Perguntas técnicas obrigatórias" e quadro "Transparência sobre IA e recursos externos"
+Data: 2026-10-22
+Rubrica: `loops/rubrica-entrega.md`, seção A (congelada). Avaliado do zero, sem consultar vereditos anteriores.
+Fonte das perguntas: `doc/escopo-desafio/CLAVIS VIA Desafio Candidatos.pdf` ("Perguntas técnicas obrigatórias" e "Transparência sobre IA e recursos externos").
 
-## Critérios
+## A1. Completo: APROVADO
+Os títulos `## 1.` a `## 7.` existem e reproduzem literalmente o texto do PDF (ex.: "## 4. Operação: como faria deploy, observaria erros e recuperaria um serviço que parou?"; "## 6. Integrações: como adicionaria IA com segurança e, futuramente, acesso por assinatura/Kiwify (webhooks e controle de acesso)?").
 
-### A1. Completo: APROVADO
-Os 7 títulos `## 1.` a `## 7.` reproduzem o texto do PDF, por exemplo "## 4. Operação: como faria deploy, observaria erros e recuperaria um serviço que parou?" e "## 7. Decisões: o que você deliberadamente deixou de fora e por quê? Onde usou IA no desenvolvimento?". Conferi os 7 com o PDF e o texto é o mesmo.
+## A2. Responde o que foi perguntado: APROVADO
+- 1: por que a stack (D1, D2, "uma linguagem e um deploy"; "dados são relacionais") e como as camadas se comunicam (telas → API → services → repositories → Postgres; caminho em produção).
+- 2: tabelas (tabela de 7), usuários diferentes, check-ins e evolução nos planos, cada um com um item próprio.
+- 3: o que já existe e "Com pessoas reais usando o app, mudaria:" (5 itens).
+- 4: "Deploy", "Observar erros" e "Recuperar", cada um com um item.
+- 5: exatamente 3 prioridades numeradas.
+- 6: IA (service no servidor, minimização, guardrails, transparência), Kiwify/webhooks (validação, idempotência, fila) e controle de acesso (`entitlements` no servidor, conciliação).
+- 7: "Deixado de fora" com motivo por item e "Uso de IA".
 
-### A2. Responde o que foi perguntado: APROVADO
-- 1: o porquê da stack ("Uma linguagem e um deploy...", D1/D2) e a comunicação em 4 camadas.
-- 2: as tabelas e os itens "Usuários diferentes", "Check-ins" e "Evolução nos planos".
-- 3: o que já está aplicado e uma lista numerada do que mudaria para usuários reais.
-- 4: os itens **Deploy**, **Observar erros** e **Recuperar**.
-- 5: três prioridades numeradas.
-- 6: **IA**, **Assinatura via Kiwify** (webhook com validação e idempotência) e **Controle de acesso no servidor** (`entitlements`).
-- 7: **Deixado de fora** e **Uso de IA**.
+## A3. Ancorado no projeto: APROVADO
+Todas as respostas citam artefatos verificáveis, conferidos no repositório: `src/ui/api.ts` (trata offline e 401), `app/api/**/route.ts` com `isSameOrigin`, `src/services/` sem `next/*` (grep vazio), `prisma/schema.prisma` (7 modelos, índices `(userId, createdAt desc)`, `(userId, localDate)`, únicos `(planId, dayNumber)` e `(userId, planDayId)`, `onDelete: Restrict`), `createMany(... skipDuplicates: true)` em `src/repositories/plans.ts`, `tests/unit/today.test.ts` (São Paulo 21/10 x Tóquio 22/10), E2E "S2: uma pessoa não vê os dados de outra" em `tests/e2e/fluxo-principal.spec.ts`, `deploy/stack.yml`, `deploy/nginx/vida.conf`, `scripts/deploy.sh`, `scripts/check-pronto.sh` (item 8), `docs/OPERACAO.md`, `.github/workflows/ci.yml`, D1–D24 e R/S/C/U existentes.
 
-### A3. Ancorado no projeto: APROVADO
-Cada resposta cita algo que dá para verificar. Conferi:
-- `src/ui/api.ts` existe e trata 401, falta de conexão e carregamento.
-- Rotas `app/api/**` usam `isSameOrigin`, `safeParse` (Zod) e o rate limit.
-- `src/services` não importa `next/*`.
-- `prisma/schema.prisma` tem as 7 tabelas, os índices `(userId, createdAt desc)` e `(userId, localDate)`, os únicos `(planId, dayNumber)` e `(userId, planDayId)`, e `onDelete: Restrict`.
-- `tests/unit/today.test.ts` tem o caso São Paulo 21/10 / Tóquio 22/10.
-- O E2E "S2: uma pessoa não vê os dados de outra" está em `tests/e2e/fluxo-principal.spec.ts`.
-- `createMany({ skipDuplicates: true })` está em `src/repositories/plans.ts`, e a `$transaction` em `src/repositories/delete-data.ts`.
-- `deploy/stack.yml` tem banco sem `ports`, `127.0.0.1:8097`, `unless-stopped`, logs 10m×3, `service_healthy` e `vida_pgdata`.
-- `deploy/nginx/vida.conf` tem allow dos IPs do Cloudflare + `deny all`, CSP, HSTS, X-Frame-Options e `/api/health/ready` com `deny all`.
-- O Dockerfile tem `USER node`, e o `docker-entrypoint.sh` roda `migrate deploy` + seed idempotente (`prisma/seed.ts` com upsert).
-- `scripts/deploy.sh` tem o portão de CI, backup pré-deploy, `git archive` e `IMAGE_TAG`.
-- `deploy/backup/vida-backup.sh` tem `gunzip -t` e retenção de 14 dias.
-- `scripts/check-pronto.sh`, item 8, faz o `restore_check`.
-- `.github/workflows/ci.yml` roda lint, tipos, unit, E2E chromium/webkit com Postgres e gitleaks com `fetch-depth: 0`.
+## A4. Objetivo: APROVADO
+Respostas em listas curtas e diretas, sem marketing. Única frase próxima de enchimento ("Saber se as práticas guiadas ajudam é o que orienta o produto") é justificativa da prioridade 3, aceitável.
 
-### A4. Objetivo: APROVADO
-As respostas são curtas, em tópicos e tabela, sem enchimento. A frase de fecho do item 7 ("O que garante a qualidade não depende da IA") é a mais opinativa, mas vem com evidência concreta (testes, CI, placar, revisor).
+## A5. Honesto: REPROVADO
+Quase tudo confere (backup diário 03:15 UTC com `gunzip -t` e retenção de 14 dias em `deploy/backup/`; restauração em banco temporário `restore_check` no item 8; deploy recusa sem CI verde, faz backup, `git archive`, `IMAGE_TAG`; migrations + seed idempotente no `docker-entrypoint.sh`; `USER node`; logs `json-file` 10m x 3; `vida_pgdata`; `127.0.0.1:8097`; banco sem `ports`; `/api/health/ready` com `deny all` no Nginx; CSP/HSTS/X-Frame-Options; pgvector na imagem e ausente das migrations; cookie `httpOnly`/`sameSite=lax`/`secure`; exclusão em `$transaction`; itens futuros todos presentes no `ROADMAP.md`; pendências marcadas em `specs/SECURITY.md`).
 
-### A5. Honesto: REPROVADO
-1. **Afirmação sem respaldo sobre o ROADMAP (pergunta 7).** O texto diz: "**Deixado de fora** (registrado com o motivo em `ROADMAP.md`, regra P1...)". Três dos itens listados **não estão** no `ROADMAP.md`:
-   - "app nativo": não há entrada no ROADMAP.
-   - "Sequências de dias (streaks)": o ROADMAP só tem "Modo guiado (dias sequenciais bloqueados)". Streaks estão apenas em D8/R6.
-   - "Rate limit também no Nginx": está só como **pendente** em `specs/SECURITY.md` (camada 1), sem linha no ROADMAP.
-2. **Afirmação imprecisa sobre pgvector (pergunta 6).** O texto diz: "A pgvector já está no Postgres para RAG". A imagem `pgvector/pgvector:pg16` (`deploy/stack.yml`, CI) traz a extensão, mas nenhuma migration em `prisma/migrations/` roda `CREATE EXTENSION vector`, e o schema não a usa. A extensão está disponível, mas não está habilitada.
+Afirmação sem respaldo, na pergunta 4 ("Recuperar"):
+> "`restart: unless-stopped` + healthcheck reiniciam sozinhos"
 
-Os demais pontos conferidos batem com o repositório: deploy, backup, restauração, CI, Nginx, sessão, exclusão (D19) e os itens marcados como ROADMAP (conta real, consentimento, exportação, backup externo, usuário do banco, observabilidade).
+A stack é criada como Compose standalone (`scripts/deploy.sh`: `POST /api/stacks/create/standalone/string`), não Swarm. Em Docker standalone o `HEALTHCHECK` (Dockerfile) só marca o container como `unhealthy`; ele **não** reinicia o container. O `restart: unless-stopped` reinicia apenas quando o processo termina. Não há autoheal nem outro mecanismo no repositório. Logo, um app travado mas vivo (ex.: banco inacessível, `/api/health/ready` falhando) fica `unhealthy` e não volta sozinho. A frase atribui ao projeto um comportamento que ele não tem. (A mesma frase aparece em `docs/OPERACAO.md`, item "App fora do ar"; fora do escopo desta avaliação, mas deve ser corrigida junto.)
 
-### A6. Tom (C1, C4): REPROVADO
-- C1 passa: não há promessa de diagnóstico, terapia ou cura. A pergunta 6 reforça a regra ("sem diagnóstico, terapia ou cura", "não é aconselhamento profissional").
-- C4 falha onde a forma neutra era possível e simples:
-  - "**O responsável** definiu escopo e regras de produto..." e "a partir das decisões **do responsável**" (pergunta 7). C4 pede "a pessoa" em vez de flexões.
-  - "Para **usuários reais**, mudaria:" (pergunta 3, corpo do texto). No título da pergunta 3, o termo é citação do PDF e pode ficar como está.
+Observação menor (não decisiva): "E2E em Chrome e Safari" (pergunta 4) é, na verdade, Playwright com Chromium emulando Pixel 7 e WebKit emulando iPhone 13 (`playwright.config.ts`, `ci.yml`). Mais preciso: "E2E em Chromium e WebKit (perfis de Android e iPhone)".
 
-### A7. Transparência sobre IA: APROVADO
-O texto informa:
-- **Ferramenta:** "Claude Code (modelo Claude Opus), no VS Code".
-- **Etapas:** specs, código e testes, protótipo visual, infraestrutura (Docker, Nginx, DNS, SSL via API do Cloudflare) e documentação.
-- **O que foi decidido e validado pessoalmente:** escopo e regras de produto (C4, D18, D16, D15, D17), teste do protótipo e pedidos de mudança de experiência, e aprovação de cada decisão e de cada ação na infraestrutura.
+## A6. Tom (C1, C4): APROVADO
+Não promete diagnóstico, terapia ou cura; a pergunta 6 reforça "sem diagnóstico, terapia ou cura" e "não é aconselhamento profissional". Linguagem neutra: "pessoa visitante", "pessoa responsável pelo projeto", "a pessoa vê só mensagem amigável". Os títulos usam o texto literal do PDF ("você", "usuários"), aceito pela regra.
 
-O conteúdo é coerente com `README.md` (linhas 135–136) e com o CHANGELOG ("Revisão de UX após teste do protótipo").
+## A7. Transparência sobre IA: APROVADO
+Ferramenta: "Claude Code (modelo Claude Opus), no VS Code". Etapas: specs, código e testes, protótipo visual, infraestrutura (Docker, Nginx, DNS, SSL via API do Cloudflare), documentação. Revisado/validado pessoalmente: definiu escopo e regras (C4, D18, D16, D15, D17), testou o protótipo, pediu mudanças, aprovou cada decisão e ação na infraestrutura; garantias independentes (testes, CI com gitleaks, `check-pronto.sh`, revisor em `loops/`).
 
 ## Correções necessárias
-1. **Pergunta 7:** fazer a frase "registrado com o motivo em `ROADMAP.md`" ser verdadeira para todos os itens listados. Há dois caminhos:
-   - incluir no `ROADMAP.md` linhas para "app nativo" e "rate limit no Nginx", e remeter streaks a D8/R6;
-   - ou reescrever a introdução para citar a fonte de cada item: ROADMAP, D7/D8, `specs/SECURITY.md` (pendente) ou "fora do escopo do PDF".
-2. **Pergunta 6:** trocar "A pgvector já está no Postgres" por algo exato, por exemplo: "a imagem do Postgres (`pgvector/pgvector:pg16`) já traz a extensão pgvector; habilitá-la é uma migration (`CREATE EXTENSION vector`)".
-3. **Pergunta 7 (C4):** trocar "O responsável" e "do responsável" por formas neutras, como "A pessoa responsável pelo projeto" ou "quem desenvolveu".
-4. **Pergunta 3 (C4):** trocar "Para usuários reais, mudaria:" por uma forma neutra, como "Com pessoas reais usando o app, mudaria:".
+1. Pergunta 4, "Recuperar": trocar "`restart: unless-stopped` + healthcheck reiniciam sozinhos" por algo fiel, ex.: "`restart: unless-stopped` reinicia o container se o processo cair; o healthcheck (Dockerfile, consulta `/api/health/ready`) marca o app como `unhealthy` em `docker ps`, mas no Docker standalone não reinicia sozinho: nesse caso, `docker restart vida-app-1` (`docs/OPERACAO.md`)". Opcionalmente, registrar reinício automático por healthcheck (autoheal) no `ROADMAP.md`. Corrigir a mesma frase em `docs/OPERACAO.md`.
+2. (Recomendado) Pergunta 4, CI: "E2E em Chromium e WebKit (perfis Pixel 7 e iPhone 13)" em vez de "Chrome e Safari".
 
 VEREDITO: REPROVADO

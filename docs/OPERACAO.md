@@ -7,7 +7,7 @@ Demo: https://vida.fontesmidias.com.br · VPS com Docker, stack `vida` no Portai
 |---|---|---|
 | App (Next.js) | container `vida-app-1`, `127.0.0.1:8097` | `curl -s https://vida.fontesmidias.com.br/api/health` → `{"status":"ok"}` |
 | Banco (Postgres 16) | container `vida-db-1`, só na rede interna da stack; dados no volume `vida_pgdata` | `docker exec vida-db-1 pg_isready -U vida` |
-| Healthcheck interno | `/api/health/ready` (consulta o banco); o Docker reinicia o app se falhar; bloqueado por fora | `docker inspect -f '{{.State.Health.Status}}' vida-app-1` |
+| Healthcheck interno | `/api/health/ready` (consulta o banco); marca o container como `unhealthy` se falhar (no Docker standalone isso não reinicia sozinho); bloqueado por fora | `docker inspect -f '{{.State.Health.Status}}' vida-app-1` |
 | Proxy | `/etc/nginx/sites-available/vida` (fonte: `deploy/nginx/vida.conf`) | `nginx -t` |
 | Backup | `/usr/local/bin/vida-backup`, diário 03:15 UTC (`/etc/cron.d/vida-backup`) | `tail /var/log/vida-backup.log` |
 
@@ -21,7 +21,7 @@ Demo: https://vida.fontesmidias.com.br · VPS com Docker, stack `vida` no Portai
 - **De fora:** `check-pronto.sh` (itens 3 e 4) prova a demo pública de ponta a ponta. Alertas automáticos (Sentry, uptime) estão no ROADMAP.
 
 ## Recuperar um serviço que parou
-1. **App fora do ar:** `docker ps -a --filter name=vida-` e `docker logs --tail 50 vida-app-1`. O `restart: unless-stopped` e o healthcheck já reiniciam sozinhos. Para forçar: `docker restart vida-app-1`.
+1. **App fora do ar:** `docker ps -a --filter name=vida-` e `docker logs --tail 50 vida-app-1`. Se o processo cair, `restart: unless-stopped` reinicia o container. Se ele estiver de pé mas `unhealthy` (o healthcheck só marca, não reinicia no Docker standalone): `docker restart vida-app-1`.
 2. **Banco fora do ar:** o app espera o banco ficar saudável (`depends_on: service_healthy`). `docker restart vida-db-1` e confira com `pg_isready`.
 3. **Nginx:** `nginx -t && systemctl reload nginx`. Nunca recarregar sem o `nginx -t` passar: um erro derrubaria os outros sites da VPS.
 4. **VPS reiniciou:** Docker sobe os containers com `unless-stopped`; o volume `vida_pgdata` preserva os dados.
