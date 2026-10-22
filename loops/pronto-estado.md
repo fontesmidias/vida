@@ -1,7 +1,7 @@
 # Estado do loop "pronto"
 
-- **Volta atual:** 5 concluída
-- **Placar:** `PRONTO: 7/12` (check completo, 2026-10-22 02:33, commit 275ad96)
+- **Volta atual:** 6 concluída
+- **Placar:** `PRONTO: 8/12` (check completo, 2026-10-22 02:49, commit 2d2bbc7)
 - **Teto:** 40 voltas ou 2026-10-24 18h
 
 ## Linha de base (volta 0)
@@ -40,6 +40,7 @@ Itens 8 (backup) e 9 (exclusão LGPD) antes do 7 (DECISOES): as respostas 3 e 4 
 ## Histórico
 | Volta | Item | Mudança | Commit | Placar depois |
 |---|---|---|---|---|
+| 6 | 9 exclusão LGPD (D19) | `DELETE /api/me` em transação, só userId da sessão; confirmação em painel; E2E nos 2 navegadores (também contra a demo pública). Achados corrigidos: camadas fixed presas à tela animada (portal + `backwards`; E2E mede cobertura da janela) e cliente tratando 204 como erro. Atenção: E2E público já cria 8 de 10 sessões/min permitidas | 2d2bbc7 | 8/12 |
 | 5 | 8 backup + restauração | `vida-backup` diário (03:15 UTC, cron próprio em /etc/cron.d, retenção 14 d, gunzip -t), backups só do root, pré-deploy com umask 077; restauração provada em banco temporário (8 estados); `docs/OPERACAO.md` | 275ad96 | 7/12 |
 | 4 | 6 README | README de entrega: demo + roteiro, o que é demonstração, stack, estrutura, variáveis, banco, testes, deploy, uso de IA (rascunho a confirmar pelo responsável). Também: removida referência externa do documento do loop; gancho local de pre-push | 1deab58 | 6/12 |
 | 3 | 5 rate limit (S6) | Limitador em memória por IP (X-Real-IP do Nginx): sessão demo 10/min, escritas 30/min, 429 com Retry-After. Deploy 5efc847 com backup pré-deploy. 40 POST públicos → 6×201, 34×429 | 5efc847 | 5/12 |
