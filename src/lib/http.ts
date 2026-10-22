@@ -23,3 +23,15 @@ export function internalError(context: string, error: unknown) {
   console.error(`[${context}]`, error);
   return jsonError(500, "Algo não saiu como esperado. Tente de novo em instantes.");
 }
+
+export const badRequest = (message = "Não entendemos o que foi enviado. Confira e tente de novo.") =>
+  jsonError(400, message);
+
+// Corpo JSON ou null se não for JSON válido
+export async function readJson(request: Request): Promise<unknown> {
+  try {
+    return await request.json();
+  } catch {
+    return null;
+  }
+}
