@@ -4,6 +4,7 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/); 
 
 ## [Não lançado]
 ### Adicionado
+- `specs/UI_UX_SPEC.md`: princípios (zero digitação, um toque por check-in, acessibilidade), telas com estados, exibição de horário em viagens e algoritmo único de tratamento de erros no cliente.
 - Scaffold Next.js 15 + TypeScript + Tailwind, com Vitest e Playwright (viewport mobile).
 - `docker-compose.yml` com Postgres 16 + pgvector local e `.env.example`.
 - README com setup, verificações e problemas comuns (porta do Postgres configurável via `POSTGRES_PORT`).
