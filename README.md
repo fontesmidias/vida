@@ -126,6 +126,7 @@ Caminho de uma requisição: Cloudflare (proxy, SSL full strict só neste host, 
 | `specs/UI_UX_SPEC.md` | Princípios de interface (U1–U13), telas, estados e tratamento de erros |
 | `specs/TECH_STACK.md` | Tecnologias e por que foram escolhidas |
 | `specs/DECISIONS_LOG.md` | Decisões consolidadas (D1–D24) |
+| `docs/OPERACAO.md` | Operação: logs, recuperação, backup e restauração |
 | `CHANGELOG.md` / `ROADMAP.md` | O que mudou em cada versão / ideias para depois, com o motivo |
 | `loops/` | Como a entrega foi conduzida: meta, check, estado e rubrica do revisor |
 

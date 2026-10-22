@@ -1,0 +1,4 @@
+# Backup diário do banco do VIDA às 03:15 UTC (00:15 em Brasília; a VPS usa UTC). Fonte: deploy/backup/vida-backup.cron
+SHELL=/bin/sh
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+15 3 * * * root /usr/local/bin/vida-backup >> /var/log/vida-backup.log 2>&1
