@@ -16,3 +16,4 @@ Decisão consolidada só muda com nova entrada aqui. Formato: data · decisão �
 | D10 | 2026-10-21 | Tag SemVer + CHANGELOG a cada versão (P2) | Rastreabilidade de entregas | Ativa |
 | D11 | 2026-10-21 | Catálogo inicial: 8 estados em 4 famílias (agitado: ansioso, irritado · baixa energia: cansado, desanimado · pesado: triste, sobrecarregado · sereno: em paz, grato) | Cobre o exemplo do desafio e dá variedade sem multiplicar conteúdo | Ativa |
 | D12 | 2026-10-21 | Cloudflare (proxy) na frente da VPS; origem aceita só IPs do Cloudflare | Proteção real contra DDoS volumétrico, sem custo | Ativa |
+| D13 | 2026-10-21 | Prisma fixado na versão 6 (não 7) | A 7 é uma versão major recente com mudanças de configuração; a 6 é estável e suficiente. Atualizar exige nova entrada | Ativa |

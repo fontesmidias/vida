@@ -1,0 +1,105 @@
+// Modelo de dados: ver specs/ARCHITECTURE.md
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String   @id @default(uuid()) @db.Uuid
+  displayName String   @map("display_name")
+  isDemo      Boolean  @default(true) @map("is_demo")
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  checkins    Checkin[]
+  completions PlanDayCompletion[]
+
+  @@map("users")
+}
+
+// D6: estados em tabela, agrupados em famílias de conteúdo (R3)
+model Mood {
+  id        Int     @id @default(autoincrement())
+  slug      String  @unique
+  label     String
+  emoji     String
+  family    String
+  sortOrder Int     @map("sort_order")
+  active    Boolean @default(true)
+
+  checkins Checkin[]
+
+  @@map("moods")
+}
+
+// R1/R7: append-only; instante do servidor (UTC) + dia local calculado pelo fuso IANA
+model Checkin {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  moodId    Int      @map("mood_id")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  timezone  String
+  localDate DateTime @map("local_date") @db.Date
+
+  user User @relation(fields: [userId], references: [id], onDelete: Restrict)
+  mood Mood @relation(fields: [moodId], references: [id], onDelete: Restrict)
+
+  @@index([userId, createdAt(sort: Desc)])
+  @@index([userId, localDate])
+  @@map("checkins")
+}
+
+// R3: uma linha por família + NEUTRO
+model DailyContent {
+  id              Int    @id @default(autoincrement())
+  family          String @unique
+  reflectionTitle String @map("reflection_title")
+  reflectionBody  String @map("reflection_body")
+  practiceTitle   String @map("practice_title")
+  practiceBody    String @map("practice_body")
+  practiceMinutes Int    @map("practice_minutes")
+
+  @@map("daily_contents")
+}
+
+model Plan {
+  id          Int    @id @default(autoincrement())
+  slug        String @unique
+  title       String
+  description String
+
+  days PlanDay[]
+
+  @@map("plans")
+}
+
+model PlanDay {
+  id        Int    @id @default(autoincrement())
+  planId    Int    @map("plan_id")
+  dayNumber Int    @map("day_number")
+  title     String
+  body      String
+
+  plan        Plan                @relation(fields: [planId], references: [id], onDelete: Restrict)
+  completions PlanDayCompletion[]
+
+  @@unique([planId, dayNumber])
+  @@map("plan_days")
+}
+
+// R4: único (user, dia) garante conclusão idempotente; R7: append-only
+model PlanDayCompletion {
+  id          String   @id @default(uuid()) @db.Uuid
+  userId      String   @map("user_id") @db.Uuid
+  planDayId   Int      @map("plan_day_id")
+  completedAt DateTime @default(now()) @map("completed_at") @db.Timestamptz(3)
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Restrict)
+  planDay PlanDay @relation(fields: [planDayId], references: [id], onDelete: Restrict)
+
+  @@unique([userId, planDayId])
+  @@map("plan_day_completions")
+}
