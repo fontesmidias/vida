@@ -30,7 +30,7 @@
 }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--text); font: 400 17px/1.6 var(--body); }
-.wrap { max-width: 46rem; margin: 0 auto; padding-block: 48px 64px;
+.wrap { max-width: 46rem; margin: 0 auto; padding-block: 48px 64px; overflow-x: clip;
   padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px));
   display: flex; flex-direction: column; gap: 56px; }
 h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; }
@@ -128,7 +128,7 @@ footer { font-size: 14px; color: var(--muted); border-top: 1px solid var(--line)
     <li><span><strong>Jornada</strong> mostra o check-in e o progresso "1 de 5".</span></li>
     <li><span>Recarregue a página: os dados continuam lá, no Postgres.</span></li>
   </ol>
-  <p class="muted">Os 6 passos são um teste E2E que roda no CI e contra a demo pública, em Chrome (Pixel 7) e Safari (iPhone 13).</p>
+  <p class="muted">Os 6 passos são um teste E2E que roda no CI e contra a demo pública, em Chromium (perfil Pixel 7) e WebKit, o motor do Safari (perfil iPhone 13).</p>
 </section>
 
 <section aria-labelledby="t-produto">
@@ -188,7 +188,7 @@ footer { font-size: 14px; color: var(--muted); border-top: 1px solid var(--line)
         <tr><td>Telas e API</td><td>Next.js 15, TypeScript, Tailwind</td><td>Uma linguagem e um deploy; API consumível por app nativo no futuro</td></tr>
         <tr><td>Entrada</td><td>Zod, iron-session</td><td>Formato exato na fronteira (S5); sessão em cookie criptografado, sem tabela (S4)</td></tr>
         <tr><td>Dados</td><td>Prisma 6, Postgres 16 + pgvector</td><td>Migrations versionadas; consultas parametrizadas; extensão pgvector disponível para RAG futuro</td></tr>
-        <tr><td>Qualidade</td><td>Vitest, Playwright, GitHub Actions</td><td>Testes citam a regra; E2E em Chrome e Safari; gitleaks no histórico</td></tr>
+        <tr><td>Qualidade</td><td>Vitest, Playwright, GitHub Actions</td><td>Testes citam a regra; E2E em Chromium e WebKit; gitleaks no histórico</td></tr>
         <tr><td>Infra</td><td>Docker, Portainer, Nginx, Cloudflare</td><td>Mesmo padrão dos sites da VPS; origem protegida</td></tr>
       </tbody>
     </table>
@@ -239,7 +239,7 @@ footer { font-size: 14px; color: var(--muted); border-top: 1px solid var(--line)
     <details><summary>1. Arquitetura</summary><p>Next.js monolítico em camadas e Postgres via Prisma. Telas chamam a API REST; rotas tratam HTTP (sessão, Zod, limite); services têm as regras sem depender do Next; repositories acessam o banco com userId explícito.</p></details>
     <details><summary>2. Modelagem</summary><p>Sete tabelas. Cada sessão aponta para um usuário; check-ins append-only com fuso e data local; progresso calculado a partir das conclusões, com conclusão idempotente por índice único.</p></details>
     <details><summary>3. Segurança e LGPD</summary><p>Já aplicado: minimização, isolamento, defesa em camadas e exclusão a pedido. Para dados reais: conta com autenticação forte, consentimento específico para dado de saúde, criptografia em repouso, exportação, retenção e papéis separados no banco.</p></details>
-    <details><summary>4. Operação</summary><p>Deploy com um comando e portão de CI; logs com contexto e rotação; healthcheck que reinicia sozinho; backup diário com restauração testada a cada verificação de entrega.</p></details>
+    <details><summary>4. Operação</summary><p>Deploy com um comando e portão de CI; logs com contexto e rotação; restart automático se o processo cair e healthcheck que consulta o banco e marca o app como <code>unhealthy</code> (reiniciar nesse caso é manual; automático está no ROADMAP); backup diário com restauração testada a cada verificação de entrega.</p></details>
     <details><summary>5. Evolução</summary><p>1) conta e consentimento; 2) painel de conteúdo com revisão de tom; 3) observabilidade, backup externo e lembretes opcionais.</p></details>
     <details><summary>6. Integrações</summary><p>IA no servidor com dados mínimos, regras de tom, detecção de crise que mostra o Apoio e marcação clara do que é gerado. Kiwify: webhook com assinatura validada e idempotente, tabela de assinaturas e controle de acesso aplicado na API.</p></details>
     <details><summary>7. O que ficou de fora e uso de IA</summary><p>Fora: conta real, texto livre, chat, Kiwify, streaks, música (com o motivo no ROADMAP). IA: Claude Code em specs, código, testes, protótipo, infraestrutura e documentação; as decisões de produto e as aprovações foram da pessoa responsável pelo projeto.</p></details>
