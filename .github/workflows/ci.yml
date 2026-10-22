@@ -1,0 +1,69 @@
+name: Verificar
+# P1/S3: nada chega à main sem lint, tipos, testes, E2E e varredura de segredos.
+# A publicação da imagem (deploy) depende deste workflow passar.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  segredos:
+    name: Segredos (gitleaks, histórico inteiro)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      # Binário oficial em container: varre todos os commits, não só o último
+      - name: gitleaks
+        run: docker run --rm -v "$PWD:/repo" ghcr.io/gitleaks/gitleaks:v8.24.0 git /repo --redact --verbose
+
+  verificar:
+    name: Lint, tipos, testes e E2E
+    runs-on: ubuntu-latest
+    services:
+      db:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_USER: vida
+          POSTGRES_PASSWORD: senha-apenas-do-ci
+          POSTGRES_DB: vida
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U vida -d vida"
+          --health-interval 5s --health-timeout 3s --health-retries 10
+    env:
+      DATABASE_URL: postgresql://vida:senha-apenas-do-ci@localhost:5432/vida?schema=public
+      # Valor fictício, só para o CI (S3): o segredo real vive na stack do Portainer
+      SESSION_SECRET: segredo-apenas-para-o-ci-com-mais-de-32-caracteres
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - name: Lint
+        run: npm run lint
+      - name: Tipos
+        run: npm run typecheck
+      - name: Testes de unidade
+        run: npm test
+      - name: Migrations e seed
+        run: npx prisma migrate deploy && npm run db:seed
+      - name: Navegadores do E2E
+        run: npx playwright install --with-deps chromium webkit
+      - name: E2E (Chrome Android e Safari iPhone)
+        run: npm run test:e2e
+      - name: Capturas e traces em caso de falha
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-resultados
+          path: test-results/
+          retention-days: 7
