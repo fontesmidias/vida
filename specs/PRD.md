@@ -3,6 +3,8 @@
 > Protótipo de avaliação técnica. Todo conteúdo é fictício e identificado como demonstração.
 
 ## Visão
+**VIDA = Ver · Inspirar · Desacelerar · Avançar** (D18). Cada letra é uma etapa do app: **V**er como você está (check-in), **I**nspirar (reflexão), **D**esacelerar (prática guiada), **A**vançar (planos e jornada).
+
 App mobile-first de acompanhamento diário: a pessoa registra como está se sentindo, recebe uma reflexão e uma prática curta coerentes com esse estado, segue planos temáticos e enxerga a própria jornada.
 
 ## Persona
