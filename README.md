@@ -11,6 +11,7 @@ Protótipo mobile-first de check-in emocional: a pessoa registra como está, rec
 | `specs/RULES.md` | Regras com IDs (R1–R7, S1–S7, C1–C3, P1–P3), citadas em testes e commits |
 | `specs/ARCHITECTURE.md` | Camadas, modelo de dados e API |
 | `specs/SECURITY.md` | Segurança em camadas |
+| `specs/UI_UX_SPEC.md` | Telas, estados, transições e tratamento de erros na interface (U1–U7) |
 | `specs/TECH_STACK.md` | Tecnologias e por que foram escolhidas |
 | `specs/DECISIONS_LOG.md` | Decisões consolidadas (D1, D2…) |
 | `CHANGELOG.md` / `ROADMAP.md` | O que mudou em cada versão / ideias para depois |

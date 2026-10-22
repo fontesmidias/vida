@@ -1,6 +1,6 @@
 # VIDA — instruções para agentes de código
 
-Protótipo mobile-first de check-in emocional (avaliação técnica). Specs em `specs/`: leia PRD, RULES e ARCHITECTURE antes de mudar comportamento.
+Protótipo mobile-first de check-in emocional (avaliação técnica). Specs em `specs/`: leia PRD, RULES e ARCHITECTURE antes de mudar comportamento; UI_UX_SPEC antes de mexer em telas.
 
 ## Escopo e decisões
 - Nunca sair do tema do desafio. Ordem: obrigatório → opcional do desafio → todo o resto vai para `ROADMAP.md` (P1).
