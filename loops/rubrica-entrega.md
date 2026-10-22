@@ -17,7 +17,7 @@
 6. **Tom (C1, C4):** não promete diagnóstico, terapia ou cura; linguagem neutra em gênero quando possível.
 7. **Transparência sobre IA (exigência do PDF):** diz quais ferramentas de IA foram usadas, em quais etapas, e o que foi revisado, modificado ou validado pessoalmente.
 
-## B. Documento de apresentação (`docs/apresentacao.html`, publicado como página)
+## B. Documento de apresentação (`docs/apresentacao.html`, no repositório; abre sozinho no navegador, sem dependências externas além de fontes)
 1. **Para o avaliador:** abre com o link da demo pública e um roteiro curto do fluxo principal (os 6 passos do PDF).
 2. **Cobre o essencial:** proposta do produto (sigla VIDA), arquitetura com diagrama, modelo de dados, segurança, operação, e as 7 respostas (resumidas, com link para o `DECISOES.md`).
 3. **Consistente com o repositório:** nenhum número, rota, tabela ou decisão diverge do código e das specs.

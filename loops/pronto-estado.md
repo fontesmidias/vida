@@ -29,6 +29,9 @@ PRONTO: 1/12
 | Stack `vida` no Portainer | **aprovado** pelo responsável em 2026-10-22 |
 | Exceção à R7 para exclusão de dados (LGPD) | **aprovado** pelo responsável em 2026-10-22 (D19) |
 
+| Repositório público na entrega (D20) | **aprovado** em 2026-10-22: último passo, após varredura de segredos no histórico |
+| Ajuste do item 11 do check (D21) | **aprovado** em 2026-10-22 |
+
 Escopo das aprovações: valem só para os recursos do VIDA (registro `vida.fontesmidias.com.br`, site `vida` no Nginx, stack `vida`). Os guardrails do "Nunca" continuam valendo: nada de outro site, stack, DNS ou container; nada de firewall ou Nginx global; `nginx -t` antes de todo reload.
 
 ## Histórico
@@ -36,7 +39,7 @@ Escopo das aprovações: valem só para os recursos do VIDA (registro `vida.font
 |---|---|---|---|---|
 
 ## Bloqueios abertos
-Nenhum.
+- **Modo SSL/TLS do Cloudflare (D22):** o token não lê esse ajuste. O responsável confere em SSL/TLS > Overview que está em Full ou Full (strict). Se estiver em Flexible, o proxy laranja daria loop de redirecionamento.
 
 ## Vereditos do revisor
 Nenhum ainda.

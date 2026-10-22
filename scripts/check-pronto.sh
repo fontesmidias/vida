@@ -127,7 +127,8 @@ c_exclusao() {
 c_roteiro() { veredito_aprovado docs/ROTEIRO_VIDEO.md loops/veredito-roteiro.md; }
 
 c_apresentacao() {
-  grep -qE 'https://claude\.ai/(code/)?artifact/' README.md || { echo "README sem link do documento de apresentação"; return 1; }
+  # D21 (aprovado pelo responsável): o documento vive só no repositório
+  grep -qF 'docs/apresentacao.html' README.md || { echo "README sem link do documento de apresentação"; return 1; }
   veredito_aprovado docs/apresentacao.html loops/veredito-apresentacao.md
 }
 
