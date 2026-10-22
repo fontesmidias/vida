@@ -1,7 +1,7 @@
 # Estado do loop "pronto"
 
-- **Volta atual:** 1 concluída
-- **Placar:** `PRONTO: 2/12` (check completo, 2026-10-22 01:46, commit 52eb1bd)
+- **Volta atual:** 2 concluída
+- **Placar:** `PRONTO: 4/12` (check completo, 2026-10-22 02:10, commit 2c3d3ab)
 - **Teto:** 40 voltas ou 2026-10-24 18h
 
 ## Linha de base (volta 0)
@@ -37,6 +37,7 @@ Escopo das aprovações: valem só para os recursos do VIDA (registro `vida.font
 ## Histórico
 | Volta | Item | Mudança | Commit | Placar depois |
 |---|---|---|---|---|
+| 2 | 3 health público (+4 E2E público) | Dockerfile, `/api/health/ready`, stack no Portainer, `scripts/deploy.sh` (portão de CI, build na VPS, D24), DNS CNAME com proxy depois do certificado, site Nginx só para IPs do Cloudflare (D22/D23). Acesso direto ao IP → 403. Achados: `mockReset` do Vitest 5 quebra mock assíncrono; máquina local com pouca RAM derruba o Docker (usar `--workers=1`) | 2c3d3ab | 4/12 |
 | 1 | 2 CI + gitleaks | Workflow `Verificar`: lint, tipos, unit, E2E (Chrome e Safari) com Postgres de serviço, gitleaks no histórico inteiro (binário oficial, sem licença). Verde na 1ª execução | 52eb1bd | 2/12 |
 
 ## Bloqueios abertos
