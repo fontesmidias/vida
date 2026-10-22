@@ -24,9 +24,9 @@ export function createRateLimiter({ limit, windowMs }: { limit: number; windowMs
   };
 }
 
-// Sessão demo é o mais restrito (criação massiva de usuários); um E2E completo cria 4 sessões
+// Sessão demo é o mais restrito (criação massiva de usuários); o E2E completo cria 12 sessões por execução
 export const LIMITS = {
-  session: { limit: 10, windowMs: 60_000 },
+  session: { limit: 20, windowMs: 60_000 },
   write: { limit: 30, windowMs: 60_000 },
 } as const;
 

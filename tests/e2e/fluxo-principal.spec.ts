@@ -136,3 +136,28 @@ test("celebração cobre a tela inteira ao concluir o último dia do plano", asy
   await page.waitForTimeout(1200);
   await page.screenshot({ path: `test-results/telas/${test.info().project.name}-9-celebracao.png` });
 });
+
+test("S2: uma pessoa não vê os dados de outra", async ({ browser }) => {
+  const a = await browser.newContext();
+  const b = await browser.newContext();
+  try {
+    // Pessoa A entra e faz um check-in
+    const pa = await a.newPage();
+    await pa.goto("/");
+    await pa.getByRole("button", { name: "Entrar como demonstração" }).click();
+    await expect(pa).toHaveURL(/\/hoje$/);
+    const novo = await pa.request.post("/api/checkins", { data: { moodSlug: "triste", timezone: "America/Sao_Paulo" } });
+    expect(novo.status()).toBe(201);
+
+    // Pessoa B, outra sessão, não enxerga nada de A
+    const pb = await b.newPage();
+    await pb.goto("/");
+    await pb.getByRole("button", { name: "Entrar como demonstração" }).click();
+    await expect(pb).toHaveURL(/\/hoje$/);
+    const lista = await pb.request.get("/api/checkins");
+    expect(await lista.json()).toEqual({ items: [], nextCursor: null });
+  } finally {
+    await a.close();
+    await b.close();
+  }
+});

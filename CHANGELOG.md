@@ -13,7 +13,7 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/); 
 - `GET /api/health/ready` (S7), bloqueado fora da VPS.
 - Backup diário do banco na VPS (`deploy/backup/`, 03:15 UTC, retenção de 14 dias, integridade conferida) e restauração provada em banco temporário pelo `check-pronto.sh`; manual de operação em `docs/OPERACAO.md`.
 - "Apagar meus dados" na Jornada (D19, LGPD): confirmação explícita, exclusão em transação só do userId da sessão, sessão encerrada; `DELETE /api/me`; E2E nos dois navegadores.
-- Limite de requisições na aplicação (S6): sessão demo 10/min por IP, escritas 30/min; 429 com `Retry-After` e mensagem acolhedora.
+- Limite de requisições na aplicação (S6): sessão demo 20/min por IP, escritas 30/min; 429 com `Retry-After` e mensagem acolhedora.
 
 ## [0.2.0] - 2026-10-22
 ### Adicionado
