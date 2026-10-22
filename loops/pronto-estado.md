@@ -1,7 +1,7 @@
 # Estado do loop "pronto"
 
-- **Volta atual:** 0 (linha de base; loop ainda não disparado)
-- **Placar:** `PRONTO: 1/12` (check `--rapido`, 2026-10-22, commit 9eb0005)
+- **Volta atual:** 1 concluída
+- **Placar:** `PRONTO: 2/12` (check completo, 2026-10-22 01:46, commit 52eb1bd)
 - **Teto:** 40 voltas ou 2026-10-24 18h
 
 ## Linha de base (volta 0)
@@ -37,6 +37,7 @@ Escopo das aprovações: valem só para os recursos do VIDA (registro `vida.font
 ## Histórico
 | Volta | Item | Mudança | Commit | Placar depois |
 |---|---|---|---|---|
+| 1 | 2 CI + gitleaks | Workflow `Verificar`: lint, tipos, unit, E2E (Chrome e Safari) com Postgres de serviço, gitleaks no histórico inteiro (binário oficial, sem licença). Verde na 1ª execução | 52eb1bd | 2/12 |
 
 ## Bloqueios abertos
 Nenhum.
