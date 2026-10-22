@@ -2,7 +2,8 @@
 
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/); versões seguem [SemVer](https://semver.org/lang/pt-BR/).
 
-## [Não lançado]
+## [1.0.0] - 2026-10-22
+Entrega do desafio: demo pública, CI, segurança em camadas, backup, exclusão de dados e documentação revisada.
 ### Corrigido
 - Painéis (Apoio, apagar dados) e celebração de fim de plano apareciam presos à área da tela, por baixo do conteúdo: a animação de entrada deixava um `transform` ativo. Agora as camadas são renderizadas no `body` e há E2E que mede a cobertura da janela.
 - Respostas 204 (sem corpo) eram tratadas como erro pelo cliente da API.
