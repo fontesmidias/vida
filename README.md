@@ -30,6 +30,9 @@ npm run dev                   # http://localhost:3000
 
 Gerar um `SESSION_SECRET`: `node -e "console.log(require('crypto').randomBytes(48).toString('base64'))"`.
 
+## Deploy
+As credenciais de deploy (VPS, Portainer, Cloudflare) ficam em `.env.deploy`, separado do `.env` do app: o app nunca as carrega. O modelo com o passo a passo de cada chave está em `.env.deploy.example`. Os segredos de produção do app ficam só nas variáveis da stack no Portainer.
+
 ## Banco de dados
 - O esquema fica em `prisma/schema.prisma`; cada mudança gera uma migration em `prisma/migrations/` (`npx prisma migrate dev --name <nome>`). Migrations já aplicadas nunca são editadas.
 - O conteúdo de demonstração fica em `prisma/seed-data.ts`, coberto por testes (D11, R3, C1, C2). O seed é idempotente: pode rodar de novo sem duplicar e nunca toca em dados de usuário.
