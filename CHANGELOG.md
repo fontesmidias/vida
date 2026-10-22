@@ -3,6 +3,10 @@
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/); versões seguem [SemVer](https://semver.org/lang/pt-BR/).
 
 ## [Não lançado]
+### Alterado
+- Migration `conteudo_guiado_sem_emoji`: remove `moods.emoji` (D15) e adiciona `daily_contents.practice_kind` (D17). API de estados e check-in passam a devolver `family` no lugar de `emoji`.
+- Seed com reflexões curtas (U8) e tipo de prática guiada por família; testes cobrem D15, D17 e U8.
+
 ### Adicionado
 - Sigla VIDA definida (D18: Ver · Inspirar · Desacelerar · Avançar) e onde aparece na interface; CVV por extenso; princípios U12 (respiro e área segura em navegadores móveis) e U13 (verbo em toda ação).
 - Revisão de UX após teste do protótipo: princípios U8–U11 (menos texto, voltar sempre visível, práticas guiadas, sem emoji); decisões D15–D17; C1 passa a usar botão "Apoio" discreto no lugar do rodapé fixo; música ambiente no ROADMAP.

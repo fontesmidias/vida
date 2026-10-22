@@ -22,7 +22,7 @@ export function localDateFor(instant: Date, timezone: string): string {
   );
 }
 
-export type Mood = { id: number; slug: string; label: string; emoji: string; family: string };
+export type Mood = { id: number; slug: string; label: string; family: string };
 
 export type NewCheckin = { userId: string; moodId: number; createdAt: Date; timezone: string; localDate: string };
 
@@ -52,5 +52,5 @@ export async function createCheckin(
     timezone,
     localDate: localDateFor(input.now, timezone),
   });
-  return { ...checkin, mood: { slug: mood.slug, label: mood.label, emoji: mood.emoji } };
+  return { ...checkin, mood: { slug: mood.slug, label: mood.label, family: mood.family } };
 }
