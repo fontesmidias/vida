@@ -37,7 +37,7 @@ Dado emocional é **dado pessoal sensível** (saúde, art. 11 da LGPD). O protó
 - **Defesa em camadas (S1):** Cloudflare na frente; o Nginx só aceita IPs do Cloudflare (acesso direto ao IP da VPS → 403); HTTPS também entre Cloudflare e origem (D23); cabeçalhos CSP, HSTS e X-Frame-Options; validação Zod e Origin em escrita; rate limit (S6); banco sem porta exposta; container sem root; gitleaks no CI.
 - **Direito de exclusão:** "Apagar meus dados" (D19) remove tudo da pessoa numa transação.
 
-Para usuários reais, mudaria:
+Com pessoas reais usando o app, mudaria:
 1. **Conta real** (e-mail com link mágico ou senha forte + 2FA), vinculando a sessão anônima; hoje, apagar o cookie perde o acesso (ROADMAP).
 2. **Consentimento específico e destacado** para dado de saúde, com finalidade clara, registrado com data e versão do texto, revogável.
 3. **Criptografia em repouso** (disco/volume e backups cifrados) e cópia de backup fora da VPS (ROADMAP).
@@ -58,7 +58,7 @@ Detalhes em `docs/OPERACAO.md`.
 
 ## 6. Integrações: como adicionaria IA com segurança e, futuramente, acesso por assinatura/Kiwify (webhooks e controle de acesso)?
 **IA** (ex.: reflexão personalizada ou conversa de apoio):
-- Atrás de um service próprio no servidor; a chave da API nunca vai ao navegador (S3). A pgvector já está no Postgres para RAG sobre o conteúdo curado.
+- Atrás de um service próprio no servidor; a chave da API nunca vai ao navegador (S3). A imagem do Postgres já traz a extensão pgvector (disponível, ainda não habilitada por migration) para RAG sobre o conteúdo curado.
 - **Minimização:** enviar só o necessário (estado e família, nunca nome ou histórico completo), sem dados para treino do provedor, com opt-in explícito.
 - **Guardrails:** prompt de sistema com as regras C1 (sem diagnóstico, terapia ou cura) e C4; filtros de entrada e saída; detecção de sinais de crise que mostram o Apoio/CVV em vez de responder; limite de uso por pessoa (S6).
 - **Transparência:** marcar na tela o que é gerado por IA e que não é aconselhamento profissional; registrar e avaliar respostas com rubrica fixa antes de liberar.
@@ -69,12 +69,12 @@ Detalhes em `docs/OPERACAO.md`.
 - **Controle de acesso no servidor:** um service `entitlements` decide o que a pessoa pode acessar (ex.: planos premium), aplicado nas rotas da API; a interface só esconde, nunca é a barreira. Conciliação diária com a API da Kiwify para não depender só de webhooks.
 
 ## 7. Decisões: o que você deliberadamente deixou de fora e por quê? Onde usou IA no desenvolvimento?
-**Deixado de fora** (registrado com o motivo em `ROADMAP.md`, regra P1: obrigatório primeiro):
-- Conta com e-mail/senha: o desafio aceita usuário demo (D3); a proteção para dados reais está na pergunta 3.
+**Deixado de fora** (regra P1: obrigatório primeiro; cada item tem o motivo registrado na fonte indicada):
+- Conta com e-mail/senha: o desafio aceita usuário demo (D3; `ROADMAP.md`); a proteção para dados reais está na pergunta 3.
 - Texto livre no check-in (D4): dado sensível sem necessidade.
-- Chat com IA, Kiwify, notificações, painel admin, app nativo: fora do escopo obrigatório do desafio.
-- Sequências de dias (streaks) e dias bloqueados em ordem (D7, D8): geram sensação de perda e atrito.
-- Música ambiente nas práticas: ficou para depois, sempre desligada por padrão.
-- Rate limit também no Nginx: depende de mudar configuração global da VPS compartilhada; hoje a borda é o Cloudflare e o limite está na aplicação.
+- Chat com IA, Kiwify, notificações, painel admin, app nativo: fora do escopo obrigatório do desafio (`ROADMAP.md`).
+- Sequências de dias (streaks) e dias bloqueados em ordem: geram sensação de perda e atrito (decisões D7 e D8, regras R5 e R6; o modo em ordem fica no `ROADMAP.md` como opção futura por plano).
+- Música ambiente nas práticas: ficou para depois, sempre desligada por padrão (`ROADMAP.md`).
+- Rate limit também no Nginx: depende de mudar configuração global da VPS compartilhada; hoje a borda é o Cloudflare e o limite está na aplicação (`specs/SECURITY.md`, `ROADMAP.md`).
 
-**Uso de IA:** Claude Code (modelo Claude Opus), no VS Code. Ajudou a redigir as specs a partir das decisões do responsável, a escrever código e testes (teste antes, citando a regra), a montar um protótipo visual navegável para validar a experiência antes do código, a configurar a infraestrutura (Docker, Nginx, DNS e regra de SSL pela API do Cloudflare) e a escrever a documentação. O responsável definiu escopo e regras de produto (linguagem neutra C4, sigla VIDA D18, apoio discreto ao CVV D16, ícones próprios D15, práticas guiadas D17), testou o protótipo e pediu as mudanças de experiência, e aprovou cada decisão e cada ação na infraestrutura. O que garante a qualidade não depende da IA: testes de unidade e E2E em dois navegadores, CI com gitleaks, o placar `check-pronto.sh` e um revisor independente com rubrica fixa para estes documentos (`loops/`).
+**Uso de IA:** Claude Code (modelo Claude Opus), no VS Code. Ajudou a redigir as specs a partir das decisões da pessoa responsável pelo projeto, a escrever código e testes (teste antes, citando a regra), a montar um protótipo visual navegável para validar a experiência antes do código, a configurar a infraestrutura (Docker, Nginx, DNS e regra de SSL pela API do Cloudflare) e a escrever a documentação. A pessoa responsável definiu escopo e regras de produto (linguagem neutra C4, sigla VIDA D18, apoio discreto ao CVV D16, ícones próprios D15, práticas guiadas D17), testou o protótipo e pediu as mudanças de experiência, e aprovou cada decisão e cada ação na infraestrutura. O que garante a qualidade não depende da IA: testes de unidade e E2E em dois navegadores, CI com gitleaks, o placar `check-pronto.sh` e um revisor independente com rubrica fixa para estes documentos (`loops/`).

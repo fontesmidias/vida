@@ -15,7 +15,7 @@ Roteiro do fluxo principal (o mesmo do desafio, coberto por teste E2E):
 5. Na aba **Jornada**, veja o check-in e o progresso do plano.
 6. Recarregue a página: os dados continuam lá (Postgres).
 
-Respostas às perguntas técnicas do desafio: [`DECISOES.md`](DECISOES.md).
+Respostas às perguntas técnicas do desafio: [`DECISOES.md`](DECISOES.md). Visão geral para a conversa técnica (abre no navegador, claro e escuro): [`docs/apresentacao.html`](docs/apresentacao.html). Roteiro do vídeo: [`docs/ROTEIRO_VIDEO.md`](docs/ROTEIRO_VIDEO.md).
 
 ## O que é demonstração
 | Real | Demonstração / fictício |
@@ -119,6 +119,8 @@ Caminho de uma requisição: Cloudflare (proxy, SSL full strict só neste host, 
 | Arquivo | Conteúdo |
 |---|---|
 | [`DECISOES.md`](DECISOES.md) | As 7 perguntas técnicas do desafio |
+| [`docs/apresentacao.html`](docs/apresentacao.html) | Apresentação do projeto: roteiro, arquitetura, dados, segurança e as 7 respostas em resumo |
+| [`docs/ROTEIRO_VIDEO.md`](docs/ROTEIRO_VIDEO.md) | Roteiro do vídeo de até 5 minutos |
 | `specs/PRD.md` | O que o produto faz e para quem |
 | `specs/RULES.md` | Regras com IDs (R1–R7, S1–S7, C1–C4, P1–P3), citadas em testes e commits |
 | `specs/ARCHITECTURE.md` | Camadas, modelo de dados, API e erros |
@@ -131,9 +133,9 @@ Caminho de uma requisição: Cloudflare (proxy, SSL full strict só neste host, 
 | `loops/` | Como a entrega foi conduzida: meta, check, estado e rubrica do revisor |
 
 ## Uso de IA
-- **Ferramenta:** Claude Code (modelo Claude Opus), no VS Code, conduzido pelo responsável do projeto. Boilerplate inicial: `create-next-app`.
-- **Onde ajudou:** redação das specs a partir das decisões do responsável; código da API, telas e testes (sempre teste antes, citando a regra); protótipo visual navegável usado para validar a experiência antes do código; infraestrutura (Dockerfile, stack, site do Nginx, DNS e regra de SSL pela API do Cloudflare); documentação.
-- **O que o responsável decidiu, revisou ou validou pessoalmente:** escopo e prioridades; as regras de produto (linguagem neutra em gênero C4, significado da sigla D18, apoio discreto ao CVV D16, ícones próprios no lugar de emojis D15, práticas guiadas D17); testou o protótipo e pediu as mudanças de UX (menos texto, "Voltar" sempre visível, verbos nas ações, área segura no celular, celebração ao concluir um plano); aprovou cada decisão registrada e cada ação na infraestrutura (DNS, Nginx, stack, permissões dos tokens com menor privilégio).
+- **Ferramenta:** Claude Code (modelo Claude Opus), no VS Code, conduzido pela pessoa responsável pelo projeto. Boilerplate inicial: `create-next-app`.
+- **Onde ajudou:** redação das specs a partir das decisões da pessoa responsável; código da API, telas e testes (sempre teste antes, citando a regra); protótipo visual navegável usado para validar a experiência antes do código; infraestrutura (Dockerfile, stack, site do Nginx, DNS e regra de SSL pela API do Cloudflare); documentação.
+- **O que a pessoa responsável decidiu, revisou ou validou pessoalmente:** escopo e prioridades; as regras de produto (linguagem neutra em gênero C4, significado da sigla D18, apoio discreto ao CVV D16, ícones próprios no lugar de emojis D15, práticas guiadas D17); testou o protótipo e pediu as mudanças de UX (menos texto, "Voltar" sempre visível, verbos nas ações, área segura no celular, celebração ao concluir um plano); aprovou cada decisão registrada e cada ação na infraestrutura (DNS, Nginx, stack, permissões dos tokens com menor privilégio).
 - **Garantias que não dependem da IA:** testes de unidade e E2E em dois navegadores, CI com gitleaks, o placar `check-pronto.sh` e um revisor independente (com rubrica fixa) para os documentos de entrega.
 
 ## Problemas comuns
