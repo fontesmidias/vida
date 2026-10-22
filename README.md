@@ -22,10 +22,17 @@ Pré-requisitos: Node 24+, Docker Desktop.
 cp .env.example .env          # preencha POSTGRES_PASSWORD, DATABASE_URL e SESSION_SECRET
 npm install
 docker compose up -d db       # Postgres 16 + pgvector em container
+npx prisma migrate dev        # cria as tabelas (aplica as migrations)
+npm run db:seed               # estados, conteúdos e planos de demonstração
 npm run dev                   # http://localhost:3000
 ```
 
 Gerar um `SESSION_SECRET`: `node -e "console.log(require('crypto').randomBytes(48).toString('base64'))"`.
+
+## Banco de dados
+- O esquema fica em `prisma/schema.prisma`; cada mudança gera uma migration em `prisma/migrations/` (`npx prisma migrate dev --name <nome>`). Migrations já aplicadas nunca são editadas.
+- O conteúdo de demonstração fica em `prisma/seed-data.ts`, coberto por testes (D11, R3, C1, C2). O seed é idempotente: pode rodar de novo sem duplicar e nunca toca em dados de usuário.
+- Inspecionar o banco: `npx prisma studio` ou `docker compose exec db psql -U vida -d vida`.
 
 ## Verificações (obrigatórias antes de cada commit)
 | Comando | O que faz |
