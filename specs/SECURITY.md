@@ -46,6 +46,9 @@ Ataques volumétricos são absorvidos pela camada 0; o Nginx cuida do abuso que 
 | Firewall da VPS: apenas 22, 80, 443 | Superfície exposta |
 | Dependabot + `npm audit` no CI; gitleaks contra segredos | Dependências vulneráveis (A06), vazamento de chave |
 
+## Credenciais de deploy (S3)
+Tokens de Portainer e Cloudflare e a chave SSH ficam em `.env.deploy` (fora do Git e fora do processo do app), com menor privilégio: token Cloudflare só com `DNS:Edit` na zona do domínio; chave SSH dedicada (`vida_deploy`), referenciada por caminho, nunca colada.
+
 ## Cookie `secure` (S4)
 Em produção o cookie de sessão é sempre `secure` (só trafega em HTTPS). A variável opcional `SESSION_COOKIE_SECURE=false` existe apenas para rodar o build de produção em `http://localhost` nos testes E2E (o Safari recusa cookie `secure` sem HTTPS). Nunca defini-la na VPS.
 
