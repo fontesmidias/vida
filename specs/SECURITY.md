@@ -25,7 +25,7 @@ Ataques volumétricos são absorvidos pela camada 0; o Nginx cuida do abuso que 
 | Controle | Ameaça |
 |---|---|
 | Sessão obrigatória em `/api/*` exceto health; `userId` só da sessão (S2) | Broken Access Control (A01) |
-| Rate limit por IP em memória (`src/lib/rate-limit.ts`, janela fixa de 1 min): `POST /api/session/demo` 10/min (o mais restrito), escritas (check-in, concluir dia) 30/min; excedente → 429 com `Retry-After`. IP vem do `X-Real-IP` posto pelo Nginx a partir do Cloudflare (confiável: o app só aceita conexões de 127.0.0.1). Em memória basta porque há um único processo do app | Criação massiva de usuários, abuso |
+| Rate limit por IP em memória (`src/lib/rate-limit.ts`, janela fixa de 1 min): `POST /api/session/demo` 20/min (o mais restrito; o E2E completo cria 12 sessões por execução), escritas (check-in, concluir dia) 30/min; excedente → 429 com `Retry-After`. IP vem do `X-Real-IP` posto pelo Nginx a partir do Cloudflare (confiável: o app só aceita conexões de 127.0.0.1). Em memória basta porque há um único processo do app | Criação massiva de usuários, abuso |
 | Validação Zod em toda entrada (S5) | Injeção, dados malformados (A03) |
 | Verificação do cabeçalho `Origin` em métodos de escrita + `sameSite=lax` | CSRF |
 | Erros genéricos ao cliente, detalhe só em log | Vazamento de informação |

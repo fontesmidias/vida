@@ -34,8 +34,8 @@ describe("limite por IP na aplicação (S6)", () => {
 
   it("criação de sessão demo é o limite mais restrito (S6)", () => {
     expect(LIMITS.session.limit).toBeLessThan(LIMITS.write.limit);
-    // um E2E completo cria 4 sessões: o limite não pode atrapalhar uso real nem testes
-    expect(LIMITS.session.limit).toBeGreaterThanOrEqual(10);
+    // o E2E completo cria 12 sessões por execução: o limite não pode atrapalhar uso real nem testes
+    expect(LIMITS.session.limit).toBeGreaterThanOrEqual(15);
   });
 });
 
