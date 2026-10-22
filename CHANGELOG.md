@@ -4,6 +4,10 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/); 
 
 ## [Não lançado]
 ### Adicionado
+- Telas reais (Entrada, Hoje, Check-in, Prática guiada, Planos, Dia do plano, Jornada) com a identidade do protótipo: tema claro/escuro (preferência em cookie, sem script inline), ícones próprios de estado (D15), sigla VIDA (D18), botão Apoio com CVV por extenso (D16), práticas guiadas (D17), celebração ao concluir plano, "Voltar" sempre visível (U9), área segura e barra que não cobre conteúdo (U12).
+- Tratamento único de erros no cliente (U5): sem conexão, 401 volta para a Entrada, 400 no check-in recarrega o catálogo; esqueleto de carregamento em toda navegação.
+- E2E do fluxo principal do PRD em Chrome (Pixel 7) e Safari (iPhone 13), incluindo persistência após recarregar, apoio, prática guiada, isolamento sem sessão e verificação de que a barra inferior não cobre conteúdo.
+- `SESSION_COOKIE_SECURE` opcional para testar o build de produção em http://localhost.
 - `GET /api/today?tz=` (R2, R3): check-in mais recente do dia no fuso atual; sem check-in → conteúdo neutro.
 - `GET /api/checkins?cursor=` (R7): 10 por página, cursor opaco por (created_at, id); cursor inválido → 400.
 - `GET /api/plans`, `GET /api/plans/[slug]` (R5, R6): progresso, dias com status e próximo sugerido.

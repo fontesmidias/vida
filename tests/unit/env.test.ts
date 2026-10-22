@@ -14,6 +14,11 @@ describe("configuração (S4)", () => {
     expect(fn).not.toThrow(/segredo-curto/);
   });
 
+  it("SESSION_COOKIE_SECURE só aceita true ou false", () => {
+    expect(parseEnv({ ...valido, SESSION_COOKIE_SECURE: "false" }).SESSION_COOKIE_SECURE).toBe("false");
+    expect(() => parseEnv({ ...valido, SESSION_COOKIE_SECURE: "talvez" })).toThrow(/SESSION_COOKIE_SECURE/);
+  });
+
   it("recusa DATABASE_URL ausente", () => {
     expect(() => parseEnv({ SESSION_SECRET: "a".repeat(32) })).toThrow(/DATABASE_URL/);
   });

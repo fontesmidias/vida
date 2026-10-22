@@ -7,6 +7,8 @@ const schema = z.object({
     .string({ error: "SESSION_SECRET não definida" })
     .min(32, "SESSION_SECRET precisa ter pelo menos 32 caracteres"),
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
+  // Padrão: secure em produção. "false" só para rodar o build de produção em http://localhost (E2E)
+  SESSION_COOKIE_SECURE: z.enum(["true", "false"], { error: "SESSION_COOKIE_SECURE deve ser true ou false" }).optional(),
 });
 
 export type Env = z.infer<typeof schema>;
