@@ -1,0 +1,15 @@
+# Nada de segredos, dependências locais, testes ou referências na imagem
+.env
+.env.*
+!.env.example
+doc/
+node_modules/
+.next/
+test-results/
+playwright-report/
+coverage/
+.git/
+.github/
+.claude/
+loops/
+tests/

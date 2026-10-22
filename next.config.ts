@@ -1,7 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Gera um servidor enxuto (server.js + só as dependências usadas) para a imagem Docker
+  output: "standalone",
+  poweredByHeader: false,
 };
 
 export default nextConfig;
