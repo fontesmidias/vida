@@ -1,7 +1,7 @@
 # Estado do loop "pronto"
 
-- **Volta atual:** 2 concluída
-- **Placar:** `PRONTO: 4/12` (check completo, 2026-10-22 02:10, commit 2c3d3ab)
+- **Volta atual:** 3 concluída
+- **Placar:** `PRONTO: 5/12` (check completo, 2026-10-22 02:19, commit 5efc847)
 - **Teto:** 40 voltas ou 2026-10-24 18h
 
 ## Linha de base (volta 0)
@@ -37,11 +37,15 @@ Escopo das aprovações: valem só para os recursos do VIDA (registro `vida.font
 ## Histórico
 | Volta | Item | Mudança | Commit | Placar depois |
 |---|---|---|---|---|
+| 3 | 5 rate limit (S6) | Limitador em memória por IP (X-Real-IP do Nginx): sessão demo 10/min, escritas 30/min, 429 com Retry-After. Deploy 5efc847 com backup pré-deploy. 40 POST públicos → 6×201, 34×429 | 5efc847 | 5/12 |
 | 2 | 3 health público (+4 E2E público) | Dockerfile, `/api/health/ready`, stack no Portainer, `scripts/deploy.sh` (portão de CI, build na VPS, D24), DNS CNAME com proxy depois do certificado, site Nginx só para IPs do Cloudflare (D22/D23). Acesso direto ao IP → 403. Achados: `mockReset` do Vitest 5 quebra mock assíncrono; máquina local com pouca RAM derruba o Docker (usar `--workers=1`) | 2c3d3ab | 4/12 |
 | 1 | 2 CI + gitleaks | Workflow `Verificar`: lint, tipos, unit, E2E (Chrome e Safari) com Postgres de serviço, gitleaks no histórico inteiro (binário oficial, sem licença). Verde na 1ª execução | 52eb1bd | 2/12 |
 
 ## Bloqueios abertos
-Nenhum.
+Nenhum que trave o loop.
+
+## Pendências para o responsável (não bloqueiam)
+- **Rate limit na borda (Nginx):** exige declarar zonas `limit_req_zone` num arquivo em `/etc/nginx/conf.d/` (escopo global do Nginx da VPS). Não afeta os outros sites (zonas com prefixo `vida_` usadas só no site `vida`), mas o guardrail pede aprovação. Hoje: proxy do Cloudflare + limite na aplicação.
 
 ## Resolvidos
 - **SSL do Cloudflare (D23), 2026-10-22:** regra `vida - SSL full strict (D23)` criada pela API (token com Config Rules: Edit e Zone Settings: Read), no mesmo ruleset da regra existente "Stape", que não foi alterada. A zona continua em Flexible. O item 3 do check prova o HTTPS de ponta a ponta quando o DNS existir.
