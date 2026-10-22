@@ -1,36 +1,42 @@
 import type { Metadata, Viewport } from "next";
-import { Geist } from "next/font/google";
+import { Nunito } from "next/font/google";
+import { cookies } from "next/headers";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+// Fonte variável: um único arquivo cobre todos os pesos usados (400 a 800)
+const nunito = Nunito({
+  variable: "--font-nunito",
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "VIDA",
-  description: "Um espaço de autocuidado e reflexão para o seu dia.",
+  title: "VIDA · Ver, Inspirar, Desacelerar, Avançar",
+  description: "Um momento para você: conte como está e receba uma pausa curta para o seu dia.",
 };
 
+// U12: ocupa a tela toda e respeita as áreas seguras (recorte da câmera, barra de gestos)
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
+  viewportFit: "cover",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f6f5f1" },
+    { media: "(prefers-color-scheme: dark)", color: "#121816" },
+  ],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Tema escolhido manualmente fica em cookie e é aplicado no servidor: sem script inline e sem piscar
+  const theme = (await cookies()).get("vida-theme")?.value;
+  const dataTheme = theme === "light" || theme === "dark" ? theme : undefined;
+
   return (
-    <html lang="pt-BR">
-      <body className={`${geistSans.variable} antialiased min-h-dvh flex flex-col`}>
-        <div className="flex-1">{children}</div>
-        {/* C1: rodapé fixo com o CVV */}
-        <footer className="px-4 py-3 text-center text-xs text-neutral-600 border-t">
-          Em sofrimento intenso? Ligue 188 (CVV), 24 horas, gratuito.
-        </footer>
-      </body>
+    <html lang="pt-BR" data-theme={dataTheme}>
+      <body className={`${nunito.variable} antialiased`}>{children}</body>
     </html>
   );
 }
