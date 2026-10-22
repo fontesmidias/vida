@@ -25,7 +25,7 @@ Adulto que quer um momento breve de autocuidado no celular, sem compromisso de t
 ## Telas
 | Tela | Mínimo |
 |---|---|
-| Entrada | Proposta do produto + botão "Entrar como demonstração" |
+| Entrada | Proposta do produto + aviso de cuidado (C3) + botão "Entrar como demonstração" |
 | Check-in | Escolha de estado emocional; salva estado e data no backend |
 | Hoje | Reflexão + prática do dia; varia conforme o último check-in do dia |
 | Planos | ≥ 2 planos seedados; detalhe do plano; concluir Dia 1 |

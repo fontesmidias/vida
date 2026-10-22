@@ -2,6 +2,11 @@
 
 Protótipo mobile-first de check-in emocional (avaliação técnica). Specs em `specs/`: leia PRD, RULES e ARCHITECTURE antes de mudar comportamento.
 
+## Escopo e decisões
+- Nunca sair do tema do desafio. Ordem: obrigatório → opcional do desafio → todo o resto vai para `ROADMAP.md` (P1).
+- Decisões consolidadas estão em `specs/DECISIONS_LOG.md` e são respeitadas; mudar exige nova entrada explícita.
+- Cada versão: atualizar `CHANGELOG.md` e criar tag anotada SemVer (`git tag -a vX.Y.Z`) enviada ao GitHub (P2).
+
 ## Restrições obrigatórias
 - Nunca commitar sem `npm run lint && npm run typecheck && npm test` verdes.
 - Nunca alterar `specs/RULES.md` nem afrouxar testes existentes sem aprovação explícita do usuário.

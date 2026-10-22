@@ -1,21 +1,32 @@
 # Regras (IDs estáveis — citar em testes e commits)
 
-## Domínio
-- **R1** — Check-in aceita apenas estados de uma lista fechada: `ANSIOSO`, `CANSADO`, `TRISTE`, `EM_PAZ`. A data/hora é definida pelo servidor, nunca pelo cliente.
-- **R2** — Vários check-ins por dia são permitidos. A tela Hoje considera o **mais recente do dia corrente** no fuso `America/Sao_Paulo`.
-- **R3** — Hoje varia conforme o estado de R2: cada estado tem reflexão e prática próprias. Sem check-in no dia, mostra conteúdo neutro e convida ao check-in.
-- **R4** — Concluir um dia de plano é idempotente: concluir de novo não duplica registro nem gera erro.
-- **R5** — Os dias de um plano são sequenciais: o Dia N só pode ser concluído se o Dia N-1 estiver concluído.
-- **R6** — Progresso do plano = dias concluídos ÷ total de dias, exibido em porcentagem inteira.
-- **R7** — Minha Jornada lista os 10 check-ins mais recentes (do mais novo para o mais antigo) e o progresso de cada plano iniciado.
+> Uma regra consolidada só muda com decisão explícita registrada em `specs/DECISIONS_LOG.md`.
 
-## Segurança
-- **S1** — Toda rota `/api/*`, exceto `/api/health`, exige sessão válida (401 sem sessão).
-- **S2** — O `userId` vem **somente** da sessão no servidor, nunca do corpo, da query ou da URL. Toda consulta a dados de usuário filtra por esse `userId`.
-- **S3** — Nenhum segredo no repositório. Variáveis documentadas em `.env.example`; o CI bloqueia segredos com gitleaks.
-- **S4** — Cookie de sessão criptografado, `httpOnly`, `sameSite=lax` e `secure` em produção. `SESSION_SECRET` com ≥ 32 caracteres, validado na inicialização.
-- **S5** — Toda entrada da API é validada com Zod. Erros retornam mensagem genérica, sem stack trace nem detalhes do banco.
+## Domínio
+- **R1 — Check-in e tempo.** O usuário escolhe um estado do catálogo ativo (tabela `moods`). O servidor registra o instante (`created_at`, UTC) e o cliente informa seu **fuso IANA** (ex.: `America/Sao_Paulo`, obtido via `Intl.DateTimeFormat().resolvedOptions().timeZone`, sem pedir localização). O servidor valida o fuso e calcula `local_date` (data do check-in no fuso do usuário). Fuso inválido ou ausente → `America/Sao_Paulo`.
+  - Por quê: o relógio do cliente pode estar errado ou ser manipulado (não confiável para o instante), mas só o cliente sabe qual é o "dia" dele. Fuso não exige permissão de geolocalização (minimização de dados).
+- **R2 — Check-in do dia.** Vários check-ins por dia são permitidos. "Hoje" considera o check-in mais recente cujo `local_date` é a data atual **no fuso informado pelo usuário na requisição**.
+- **R3 — Conteúdo do dia.** Cada estado pertence a uma família de conteúdo; Hoje mostra a reflexão e a prática da família do estado de R2. Sem check-in no dia → conteúdo neutro + convite ao check-in.
+- **R4 — Conclusão idempotente.** Concluir um dia de plano já concluído não duplica registro nem gera erro.
+- **R5 — Ordem livre, próximo sugerido.** Qualquer dia de um plano pode ser concluído em qualquer ordem. A interface destaca o primeiro dia não concluído como "próximo sugerido".
+- **R6 — Progresso cumulativo e positivo.** O progresso é apresentado como conquista ("3 de 7 dias concluídos" + indicadores preenchidos), nunca como falta. Progresso nunca regride; não existem sequências (streaks) que zeram por ausência.
+- **R7 — Histórico preservado.** Check-ins e conclusões são registros *append-only*: a aplicação nunca os altera nem apaga. Minha Jornada exibe os 10 mais recentes e permite carregar mais (paginação). Exclusão só por solicitação do titular (LGPD; ver ROADMAP).
+
+## Segurança (detalhes em `specs/SECURITY.md`)
+- **S1 — Defesa em camadas.** Proteções independentes em borda (Nginx), aplicação, dados e infraestrutura; a falha de uma não abre as outras. Princípio de bloqueio por padrão: só passa o que é explicitamente permitido.
+- **S2 — Isolamento.** O `userId` vem somente da sessão no servidor, nunca do corpo, da query ou da URL. Toda consulta a dados de usuário filtra por esse `userId`.
+- **S3 — Segredos.** Nenhum segredo no repositório. Variáveis documentadas em `.env.example`; o CI bloqueia segredos com gitleaks.
+- **S4 — Sessão.** Cookie criptografado e assinado (iron-session), `httpOnly`, `sameSite=lax`, `secure` em produção, contendo apenas o `userId`. `SESSION_SECRET` com ≥ 32 caracteres, validado na inicialização.
+- **S5 — Entrada e erros.** Toda entrada é validada por esquema (Zod) antes de chegar às regras; o que não bate com o esquema é rejeitado (400). Erros internos retornam mensagem genérica e amigável; detalhes vão só para o log do servidor.
+- **S6 — Limites de uso.** Rate limit por IP na borda e na aplicação (mais restrito em escrita e na criação de sessão demo); limite de tamanho de corpo da requisição.
+- **S7 — Health mínimo.** `/api/health` é público, sem dados internos (`{"status":"ok"}`), com rate limit. A verificação com banco (`/api/health/ready`) só responde à rede interna.
 
 ## Conteúdo e conformidade
-- **C1** — Linguagem adulta e acolhedora. O app nunca promete diagnóstico, terapia ou cura. Rodapé fixo indica o CVV (188) para sofrimento intenso.
-- **C2** — Apenas dados fictícios. Conteúdos e planos são identificados como demonstração.
+- **C1 — Tom.** Linguagem adulta e acolhedora. O app nunca promete diagnóstico, terapia ou cura. Rodapé fixo indica o CVV (188) para sofrimento intenso.
+- **C2 — Dados fictícios.** Conteúdos e planos são identificados como demonstração.
+- **C3 — Aviso de cuidado.** Na Entrada: o app é um espaço de autocuidado e reflexão e não substitui o acompanhamento de um profissional, que pode olhar para a história de cada pessoa com a atenção que ela merece.
+
+## Processo
+- **P1 — Escopo.** Obrigatório primeiro; opcional do desafio depois; qualquer outra ideia vai para `ROADMAP.md` (nenhuma ideia é descartada).
+- **P2 — Versões.** Cada versão entregue recebe tag anotada SemVer (`vX.Y.Z`) no GitHub e entrada no `CHANGELOG.md`.
+- **P3 — Commits.** Conventional Commits, pequenos, em branches `feat/*`, `fix/*`, `chore/*`, `docs/*`; citam IDs de regra quando aplicável.

@@ -1,15 +1,7 @@
 # Arquitetura
 
 ## Stack
-| Camada | Escolha |
-|---|---|
-| Front-end + API | Next.js (App Router) + TypeScript + Tailwind CSS |
-| Validação | Zod |
-| Sessão | iron-session (cookie criptografado) |
-| Dados | Postgres 16 (imagem `pgvector/pgvector:pg16`, pronta para busca vetorial futura) + Prisma ORM |
-| Testes | Vitest (unidade/integração) + Playwright (E2E) |
-| Infra | Docker Compose na VPS, atrás do Nginx existente (HTTPS via Certbot) |
-| CI | GitHub Actions: lint, typecheck, testes, gitleaks |
+Next.js + TypeScript + Tailwind · Zod · iron-session · Prisma + Postgres 16 (pgvector) · Vitest + Playwright · Docker Compose atrás do Nginx · GitHub Actions. Justificativas em `TECH_STACK.md`.
 
 ## Camadas
 ```
@@ -25,8 +17,9 @@ Regra de dependência: `app → services → repositories → Prisma`. Os servic
 | Tabela | Campos principais | Observações |
 |---|---|---|
 | `users` | id (uuid), display_name, is_demo, created_at | Um registro por visitante anônimo |
-| `checkins` | id, user_id → users, mood (enum), created_at | Índice (user_id, created_at desc) |
-| `mood_contents` | id, mood (único), reflection_title, reflection_body, practice_title, practice_body, practice_minutes | Seed; inclui conteúdo `NEUTRO` para dias sem check-in |
+| `moods` | id, slug (único), label, emoji, family, sort_order, active | Catálogo de estados (seed). Novo estado = novo registro, sem mudar código nem esquema |
+| `checkins` | id, user_id → users, mood_id → moods, created_at (UTC), timezone (IANA), local_date | Append-only (R7). Índices (user_id, created_at desc) e (user_id, local_date) |
+| `daily_contents` | id, family (único), reflection_title, reflection_body, practice_title, practice_body, practice_minutes | Seed; uma família por grupo de estados + `NEUTRO` (R3) |
 | `plans` | id, slug (único), title, description | Seed (≥ 2) |
 | `plan_days` | id, plan_id → plans, day_number, title, body | Único (plan_id, day_number) |
 | `plan_day_completions` | id, user_id → users, plan_day_id → plan_days, completed_at | Único (user_id, plan_day_id) garante R4 |
@@ -36,12 +29,14 @@ O progresso (R6) é calculado, não armazenado: evita dado duplicado e inconsist
 ## API
 | Método | Rota | Descrição |
 |---|---|---|
-| GET | `/api/health` | Público. `{status:"ok", db:"ok"}` |
+| GET | `/api/health` | Público, mínimo: `{status:"ok"}` (S7) |
+| GET | `/api/health/ready` | Só rede interna: verifica o banco (healthcheck do Docker) |
 | POST | `/api/session/demo` | Cria usuário demo e sessão (ou reutiliza a existente) |
 | DELETE | `/api/session` | Encerra a sessão |
-| POST | `/api/checkins` | Cria check-in `{mood}` |
-| GET | `/api/checkins` | Últimos 10 (R7) |
-| GET | `/api/today` | Conteúdo do dia conforme R2/R3 |
+| GET | `/api/moods` | Catálogo de estados ativos |
+| POST | `/api/checkins` | Cria check-in `{moodSlug, timezone}` (R1) |
+| GET | `/api/checkins?cursor=` | 10 por página, mais recentes primeiro (R7) |
+| GET | `/api/today?tz=` | Conteúdo do dia conforme R2/R3 |
 | GET | `/api/plans` | Lista planos com progresso do usuário |
 | GET | `/api/plans/[slug]` | Detalhe com dias e status |
 | POST | `/api/plans/[slug]/days/[day]/complete` | Conclui dia (R4/R5) |
