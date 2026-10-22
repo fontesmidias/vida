@@ -49,6 +49,7 @@ Todas as rotas (exceto health) exigem sessão. Respostas de erro têm o formato 
 | 400 | Corpo fora do esquema, JSON inválido ou estado inexistente |
 | 401 | Sem sessão, ou a pessoa da sessão não existe mais |
 | 403 | `Origin` de outro site em escrita (CSRF) |
+| 404 | Plano ou dia inexistente |
 | 500 | Erro interno; detalhe só no log (S5) |
 
 ## Tempo (R1)

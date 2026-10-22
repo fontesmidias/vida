@@ -35,3 +35,5 @@ export async function readJson(request: Request): Promise<unknown> {
     return null;
   }
 }
+
+export const notFound = () => jsonError(404, "Não encontramos esse conteúdo.");
