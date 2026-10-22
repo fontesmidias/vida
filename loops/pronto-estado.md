@@ -45,6 +45,7 @@ Escopo das aprovações: valem só para os recursos do VIDA (registro `vida.font
 Nenhum que trave o loop.
 
 ## Pendências para o responsável (não bloqueiam)
+- **Antes do repositório público (D20): limpar o histórico.** O commit bae15d0 (já enviado, repo privado) continha referência ao autor das referências de método, que não deve ser pública. Arquivos já corrigidos e gancho local de pre-push instalado. Falta reescrever o histórico (`git filter-repo --replace-text`) e fazer force push, o que só acontece com autorização explícita do responsável, como parte do passo D20.
 - **Rate limit na borda (Nginx):** exige declarar zonas `limit_req_zone` num arquivo em `/etc/nginx/conf.d/` (escopo global do Nginx da VPS). Não afeta os outros sites (zonas com prefixo `vida_` usadas só no site `vida`), mas o guardrail pede aprovação. Hoje: proxy do Cloudflare + limite na aplicação.
 
 ## Resolvidos

@@ -2,7 +2,7 @@
 nome: pronto
 categoria: Entrega (deploy + qualidade + documentação)
 gatilho: manual
-base-teorica: Loop Library (gatilho + meta + verificação + parada); autocorreção sem feedback externo estagna (2310.01798); juiz-LLM separado do gerador e com rubrica fixa reduz reward hacking (2306.05685); livro "Engenharia de Software com Agentes Inteligentes" (Sandeco), cap. 6 (SDD/TDD, check determinístico)
+base-teorica: Loop Library (gatilho + meta + verificação + parada); autocorreção sem feedback externo estagna (2310.01798); juiz-LLM separado do gerador e com rubrica fixa reduz reward hacking (2306.05685); spec-driven development + TDD com check determinístico
 ---
 
 # Loop "pronto": levar o VIDA da v0.2.0 à entrega
@@ -32,7 +32,7 @@ A cada volta, RODE o check e COLE a saída inteira na conversa: é a evidência 
    - Antes do merge de deploy, rate limit ou exclusão de dados: skill `security-review`. Antes de qualquer merge: skill `code-review`.
    - Documento de apresentação: skills `artifact-design` + `artifact-diagramming`.
    - Itens 7, 10, 11: escreva o documento, depois dispare o revisor (subagente, contexto limpo) e commite o veredito.
-   - Decisões de processo: consulte os livros do Sandeco (`doc/sandeco/`, busca direcionada) e cite o capítulo.
+   - Decisões de processo: consulte as referências de método do responsável (fora do repositório).
 4. Rode `npm run lint && npm run typecheck && npm test` e, se a mudança toca telas ou fluxo, `npm run test:e2e`.
 5. Só faça merge na `main` se nada regrediu; senão reverta a branch.
 6. Rode o check completo e cole a saída.
