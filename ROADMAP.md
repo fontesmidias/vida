@@ -14,4 +14,5 @@ Ideias fora do escopo desta entrega. Nenhuma ideia é descartada: ela entra aqui
 | Assinatura via Kiwify (webhooks + controle de acesso) | Pergunta 6 do desafio | Fora do escopo obrigatório |
 | Notificações/lembretes de check-in | Produto | Fora do escopo obrigatório |
 | Painel administrativo de conteúdos e planos | Produto | Fora do escopo obrigatório; hoje o conteúdo vem do seed |
+| Música ambiente (lofi/calma) com ícone discreto, início em volume baixo e controle de volume | Teste do protótipo | Fora do escopo do desafio. Usar só faixas com licença livre (CC0 ou royalty-free) com atribuição registrada; respeitar "reduzir movimento"/modo silencioso e nunca tocar automaticamente |
 | Observabilidade (Sentry, métricas, alertas de uptime) | Pergunta 4 do desafio | Entrega usa logs + healthcheck; ferramentas dedicadas depois |

@@ -22,9 +22,9 @@
 - **S7 — Health mínimo.** `/api/health` é público, sem dados internos (`{"status":"ok"}`), com rate limit. A verificação com banco (`/api/health/ready`) só responde à rede interna.
 
 ## Conteúdo e conformidade
-- **C1 — Tom.** Linguagem adulta e acolhedora. O app nunca promete diagnóstico, terapia ou cura. Rodapé fixo indica o CVV (188) para sofrimento intenso.
+- **C1 — Tom.** Linguagem adulta e acolhedora. O app nunca promete diagnóstico, terapia ou cura. Um botão **Apoio**, discreto e sempre visível, abre o contato do CVV (188, gratuito, 24 h) com convite acolhedor ("Quer conversar com alguém?"), sem linguagem alarmista em tela fixa (D16).
 - **C2 — Dados fictícios.** Conteúdos e planos são identificados como demonstração.
-- **C3 — Aviso de cuidado.** Na Entrada: o app é um espaço de autocuidado e reflexão e não substitui o acompanhamento profissional, de quem pode olhar para a história de cada pessoa com a atenção que ela merece.
+- **C3 — Aviso de cuidado.** Na Entrada, em uma frase curta: o app é um espaço de autocuidado e não substitui o acompanhamento profissional.
 - **C4 — Gênero neutro.** Sempre que possível, todo texto do projeto (telas, conteúdo, mensagens, documentação) usa linguagem de gênero neutro: construções como "com ansiedade", "a pessoa", "alguém querido", em vez de flexões como "ansioso", "sozinho", "amigo". Identificadores internos (slugs, nomes de tabela como `users`) não são texto para pessoas e ficam como estão.
 
 ## Processo
