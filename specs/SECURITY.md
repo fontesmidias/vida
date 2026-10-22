@@ -14,7 +14,7 @@ Camadas independentes (S1). Cada linha cita a ameaça que cobre (OWASP Top 10 qu
 |---|---|
 | `set_real_ip_from` (faixas do Cloudflare) + `real_ip_header CF-Connecting-IP` | Sem isso, o rate limit veria todos como o mesmo IP |
 | Apenas HTTPS (TLS via Certbot) + HSTS | Interceptação |
-| `limit_req` por IP (geral e mais restrito em `POST`), `limit_conn` | Força bruta, abuso, DDoS de baixa escala |
+| `limit_req` por IP (geral e mais restrito em `POST`), `limit_conn` (**pendente**: exige declarar zonas em `conf.d`, arquivo de escopo global do Nginx da VPS, que só muda com aprovação do responsável; hoje a borda conta com o proxy do Cloudflare e o limite na aplicação) | Força bruta, abuso, DDoS de baixa escala |
 | `client_max_body_size` pequeno, timeouts curtos | Payloads gigantes, slowloris |
 | `/api/health/ready` bloqueado externamente (`deny all`) | Reconhecimento de infraestrutura |
 | Cabeçalhos: CSP, X-Content-Type-Options, X-Frame-Options/frame-ancestors, Referrer-Policy, Permissions-Policy | XSS, clickjacking |
@@ -25,7 +25,7 @@ Ataques volumétricos são absorvidos pela camada 0; o Nginx cuida do abuso que 
 | Controle | Ameaça |
 |---|---|
 | Sessão obrigatória em `/api/*` exceto health; `userId` só da sessão (S2) | Broken Access Control (A01) |
-| Rate limit por IP/sessão em memória (`rate-limiter-flexible`), especialmente `POST /api/session/demo` | Criação massiva de usuários, abuso |
+| Rate limit por IP em memória (`src/lib/rate-limit.ts`, janela fixa de 1 min): `POST /api/session/demo` 10/min (o mais restrito), escritas (check-in, concluir dia) 30/min; excedente → 429 com `Retry-After`. IP vem do `X-Real-IP` posto pelo Nginx a partir do Cloudflare (confiável: o app só aceita conexões de 127.0.0.1). Em memória basta porque há um único processo do app | Criação massiva de usuários, abuso |
 | Validação Zod em toda entrada (S5) | Injeção, dados malformados (A03) |
 | Verificação do cabeçalho `Origin` em métodos de escrita + `sameSite=lax` | CSRF |
 | Erros genéricos ao cliente, detalhe só em log | Vazamento de informação |

@@ -1,6 +1,7 @@
 import { currentUserId, unauthorized } from "@/src/lib/auth";
 import { badRequest, forbidden, internalError, isSameOrigin, readJson } from "@/src/lib/http";
 import { prisma } from "@/src/lib/prisma";
+import { tooManyRequests } from "@/src/lib/rate-limit";
 import { checkinsRepository } from "@/src/repositories/checkins";
 import { historyRepository } from "@/src/repositories/history";
 import { createCheckin, UnknownMoodError } from "@/src/services/checkins";
@@ -11,6 +12,8 @@ import { cursorQuerySchema } from "@/src/validation/query";
 // R1: cria check-in com instante do servidor e dia no fuso de quem usa
 export async function POST(request: Request) {
   if (!isSameOrigin(request)) return forbidden();
+  const limited = tooManyRequests(request, "write"); // S6
+  if (limited) return limited;
   try {
     const userId = await currentUserId();
     if (!userId) return unauthorized();
