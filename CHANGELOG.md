@@ -7,6 +7,7 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/); 
 - CI no GitHub (`Verificar`): lint, tipos, testes de unidade, E2E com Postgres em Chrome e Safari, gitleaks no histórico inteiro.
 - Deploy na VPS: Dockerfile em 3 estágios (usuário sem root, healthcheck no banco), `deploy/stack.yml`, `scripts/deploy.sh` com portão de CI e backup pré-deploy (D24), site no Nginx atrás do Cloudflare (D22/D23). Demo pública em https://vida.fontesmidias.com.br.
 - `GET /api/health/ready` (S7), bloqueado fora da VPS.
+- Limite de requisições na aplicação (S6): sessão demo 10/min por IP, escritas 30/min; 429 com `Retry-After` e mensagem acolhedora.
 
 ## [0.2.0] - 2026-10-22
 ### Adicionado
