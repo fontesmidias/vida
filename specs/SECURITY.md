@@ -46,6 +46,9 @@ Ataques volumétricos são absorvidos pela camada 0; o Nginx cuida do abuso que 
 | Firewall da VPS: apenas 22, 80, 443 | Superfície exposta |
 | Dependabot + `npm audit` no CI; gitleaks contra segredos | Dependências vulneráveis (A06), vazamento de chave |
 
+## Verificação de Origin (CSRF)
+Em `POST`/`DELETE`, se o cabeçalho `Origin` vier, o host dele precisa ser o do próprio site (ou o `X-Forwarded-Host` repassado pelo Nginx); senão → 403. Requisição **sem** `Origin` é aceita: navegadores sempre o enviam em métodos de escrita, então a ausência indica cliente não-navegador (curl, healthcheck), que não carrega o cookie da vítima e não oferece risco de CSRF. Implementação: `src/lib/http.ts` (`isSameOrigin`).
+
 ## Sessão: onde fica o cookie (S4)
 O cookie fica **no navegador do usuário** e é enviado automaticamente a cada requisição ao nosso domínio. Ele é criptografado e assinado com `SESSION_SECRET` (que só o servidor conhece): o navegador não consegue ler nem forjar o conteúdo, e `httpOnly` impede que JavaScript o acesse. Ele guarda **apenas o `userId`** — os dados emocionais ficam no Postgres. Se o cookie for apagado, o usuário anônimo perde o acesso ao histórico (por isso, vincular a uma conta real está no ROADMAP).
 
