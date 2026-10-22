@@ -51,6 +51,14 @@ Gerar um `SESSION_SECRET`: `node -e "console.log(require('crypto').randomBytes(4
 | `npm test` | Testes automáticos de unidade/integração (Vitest) |
 | `npm run test:e2e` | Fluxo real no navegador, em tela de celular (Playwright) |
 
+## Testes ponta a ponta (E2E)
+- Primeira vez: `npx playwright install chromium webkit`.
+- `npm run test:e2e` gera o build de produção, sobe o app e roda o fluxo do desafio em dois celulares: **Pixel 7 (Chrome)** e **iPhone 13 (Safari/WebKit)**. Capturas de cada tela ficam em `test-results/telas/`.
+- No VS Code, a extensão **Playwright Test for VS Code** mostra os testes na aba *Testing* (ícone de frasco): dá para rodar um teste só, ver o navegador abrindo e depurar passo a passo.
+- O E2E usa o build de produção, não o `npm run dev`: o modo dev compila cada tela na primeira visita e estoura o tempo dos testes.
+- O E2E define `SESSION_COOKIE_SECURE=false` porque o Safari não guarda cookie `secure` em `http://localhost`. Em produção (HTTPS) o padrão continua `secure`.
+- No Windows, o WebKit de teste desenha as fontes mais finas que um iPhone real; o peso é aplicado (medido), é só a renderização.
+
 ## Problemas comuns
 **Porta 5432 ocupada** (`ports are not available ... 5432`): já existe outro Postgres na máquina, por exemplo um instalado direto no Windows. O banco do VIDA continua rodando no Docker; só a porta exposta no computador muda. No `.env`, defina `POSTGRES_PORT=5433` e use `localhost:5433` na `DATABASE_URL`.
 
