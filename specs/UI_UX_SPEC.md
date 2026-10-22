@@ -12,11 +12,17 @@
 | U5 | **Todo pedido ao servidor tem 3 estados visíveis:** carregando, sucesso e erro, com saída clara | Nunca deixar a pessoa sem saber o que aconteceu |
 | U6 | **Acessível:** contraste AA, foco visível, rótulos para leitores de tela (o emoji é decorativo e o texto descreve), sem depender só de cor | Inclusão |
 | U7 | **Tom acolhedor e neutro em gênero** (C1, C4). Erros nunca culpam a pessoa | Coerência com o propósito do app |
+| U8 | **Menos texto, mais forma.** Reflexão em 1 frase + 1 linha; instruções um passo por vez, em letra grande (corpo 17 px, falas 30 px); ícones sempre acompanhados de rótulo | Intuitivo para todas as gerações, inclusive pessoas mais velhas |
+| U9 | **Voltar sempre visível.** Em toda tela abaixo do primeiro nível, botão "Voltar" com texto no topo; cada tela é uma rota, então o voltar do Android e o gesto do iOS também funcionam | Ninguém fica preso; não depender de gesto escondido |
+| U10 | **Guiar para fora do app.** Práticas são experiências guiadas (D17) que levam a pessoa ao corpo e ao ambiente, e terminam com um fechamento gentil | O valor está no que a pessoa faz, não no tempo de tela |
+| U11 | **Sem emoji** (D15): ícones próprios em SVG | Controle total do que é exibido |
 
 ## Navegação
 - **Entrada** (`/`): sem sessão. Após entrar, vai para **Hoje**.
 - Com sessão, uma **barra inferior fixa** com 4 destinos: **Hoje** (`/hoje`) · **Check-in** (`/check-in`) · **Planos** (`/planos`) · **Jornada** (`/jornada`). O destino atual fica destacado e marcado com `aria-current`.
-- Rodapé do CVV (C1) em todas as telas, acima da barra inferior.
+- Botão **Apoio** no topo de todas as telas (C1, D16): abre uma folha inferior com "Quer conversar com alguém?", **Ligar 188** e **Fechar**.
+- Fim de plano: tela de celebração ("Plano concluído") com **Ver minha jornada** e **Outros planos**. Plano concluído ganha selo na Jornada.
+- Protótipo visual de referência: canvas "VIDA — protótipo visual" (claro e escuro, ícones e identidade).
 - Sem sessão em qualquer tela interna → volta para a Entrada (ver "Erros").
 
 ## Telas
