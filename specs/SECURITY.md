@@ -36,7 +36,7 @@ Ataques volumétricos são absorvidos pela camada 0; o Nginx cuida do abuso que 
 |---|---|
 | Prisma usa consultas parametrizadas | SQL injection (A03) |
 | Banco sem porta pública (apenas rede interna do Docker) | Acesso direto ao banco |
-| Usuário da aplicação sem superusuário | Escalada de privilégio |
+| Usuário da aplicação sem superusuário (**pendente**: hoje o app usa o usuário dono do banco criado pela imagem do Postgres; ver ROADMAP) | Escalada de privilégio |
 | Backup diário + `pg_dump` antes de migrar | Perda de dados |
 
 ## 4. Infraestrutura e cadeia de suprimentos

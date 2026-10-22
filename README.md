@@ -31,6 +31,16 @@ npm run dev                   # http://localhost:3000
 Gerar um `SESSION_SECRET`: `node -e "console.log(require('crypto').randomBytes(48).toString('base64'))"`.
 
 ## Deploy
+Demo: **https://vida.fontesmidias.com.br**. Um comando publica o commit atual da `main`:
+
+```bash
+bash scripts/deploy.sh
+```
+
+O que ele faz, em ordem: recusa se a árvore tiver mudanças, se o HEAD não for a `origin/main` ou se o CI desse commit não estiver verde → faz backup do banco de produção → constrói a imagem na VPS a partir do `git archive` do commit (D24) → cria ou atualiza a stack `vida` no Portainer → espera o healthcheck (que consulta o banco) ficar saudável. Na subida, o container aplica as migrations pendentes e o seed idempotente.
+
+Caminho de uma requisição: Cloudflare (proxy, SSL full strict só neste host, D22/D23) → Nginx da VPS (`deploy/nginx/vida.conf`: só aceita IPs do Cloudflare, cabeçalhos de segurança, bloqueia `/api/health/ready`) → app em `127.0.0.1:8097` → Postgres só na rede interna da stack (`deploy/stack.yml`).
+
 As credenciais de deploy (VPS, Portainer, Cloudflare) ficam em `.env.deploy`, separado do `.env` do app: o app nunca as carrega. O modelo com o passo a passo de cada chave está em `.env.deploy.example`. Os segredos de produção do app ficam só nas variáveis da stack no Portainer.
 
 ## Banco de dados
