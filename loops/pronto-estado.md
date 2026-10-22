@@ -1,7 +1,7 @@
 # Estado do loop "pronto"
 
-- **Volta atual:** 6 concluída
-- **Placar:** `PRONTO: 8/12` (check completo, 2026-10-22 02:49, commit 2d2bbc7)
+- **Volta atual:** 7 em andamento (itens 7, 10 e 11 com revisor)
+- **Placar:** `PRONTO: 8/12` (último check completo, 2026-10-22 02:49, commit 2d2bbc7)
 - **Teto:** 40 voltas ou 2026-10-24 18h
 
 ## Linha de base (volta 0)
@@ -40,6 +40,7 @@ Itens 8 (backup) e 9 (exclusão LGPD) antes do 7 (DECISOES): as respostas 3 e 4 
 ## Histórico
 | Volta | Item | Mudança | Commit | Placar depois |
 |---|---|---|---|---|
+| 7 | 7, 10, 11 (documentos) | DECISOES.md, roteiro do vídeo, apresentação; E2E novo de isolamento entre pessoas (S2), limite de sessão 20/min para o E2E completo caber | 3a15779 | em revisão |
 | 6 | 9 exclusão LGPD (D19) | `DELETE /api/me` em transação, só userId da sessão; confirmação em painel; E2E nos 2 navegadores (também contra a demo pública). Achados corrigidos: camadas fixed presas à tela animada (portal + `backwards`; E2E mede cobertura da janela) e cliente tratando 204 como erro. Atenção: E2E público já cria 8 de 10 sessões/min permitidas | 2d2bbc7 | 8/12 |
 | 5 | 8 backup + restauração | `vida-backup` diário (03:15 UTC, cron próprio em /etc/cron.d, retenção 14 d, gunzip -t), backups só do root, pré-deploy com umask 077; restauração provada em banco temporário (8 estados); `docs/OPERACAO.md` | 275ad96 | 7/12 |
 | 4 | 6 README | README de entrega: demo + roteiro, o que é demonstração, stack, estrutura, variáveis, banco, testes, deploy, uso de IA (rascunho a confirmar pelo responsável). Também: removida referência externa do documento do loop; gancho local de pre-push | 1deab58 | 6/12 |
@@ -58,4 +59,9 @@ Nenhum que trave o loop.
 - **SSL do Cloudflare (D23), 2026-10-22:** regra `vida - SSL full strict (D23)` criada pela API (token com Config Rules: Edit e Zone Settings: Read), no mesmo ruleset da regra existente "Stape", que não foi alterada. A zona continua em Flexible. O item 3 do check prova o HTTPS de ponta a ponta quando o DNS existir.
 
 ## Vereditos do revisor
-Nenhum ainda.
+| Documento | Rodada | Veredito | Observação |
+|---|---|---|---|
+| `docs/ROTEIRO_VIDEO.md` | 1 | APROVADO | 8 blocos somam 5:00; tudo citado existe no repo |
+| `DECISOES.md` | 1 | REPROVADO | A5: itens "fora" atribuídos ao ROADMAP sem estar lá; pgvector descrito como habilitado. A6: "o responsável", "usuários reais". Corrigido em 3a15779 (também README e apresentação) |
+| `DECISOES.md` | 2 | em andamento | revisor novo, contexto limpo |
+| `docs/apresentacao.html` | 1 | em andamento | revisor novo, contexto limpo |
