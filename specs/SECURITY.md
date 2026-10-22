@@ -2,16 +2,24 @@
 
 Camadas independentes (S1). Cada linha cita a ameaça que cobre (OWASP Top 10 quando aplicável).
 
+## 0. Borda externa — Cloudflare (proxy ativo no subdomínio)
+| Controle | Ameaça |
+|---|---|
+| Rede anycast absorve tráfego antes da VPS | DDoS volumétrico |
+| Firewall da VPS aceita 80/443 **apenas** dos IPs do Cloudflare | Ataque direto ao IP de origem |
+| SSL "Full (strict)": HTTPS também entre Cloudflare e Nginx | Interceptação no trecho de origem |
+
 ## 1. Borda — Nginx
 | Controle | Ameaça |
 |---|---|
+| `set_real_ip_from` (faixas do Cloudflare) + `real_ip_header CF-Connecting-IP` | Sem isso, o rate limit veria todos como o mesmo IP |
 | Apenas HTTPS (TLS via Certbot) + HSTS | Interceptação |
 | `limit_req` por IP (geral e mais restrito em `POST`), `limit_conn` | Força bruta, abuso, DDoS de baixa escala |
 | `client_max_body_size` pequeno, timeouts curtos | Payloads gigantes, slowloris |
 | `/api/health/ready` bloqueado externamente (`deny all`) | Reconhecimento de infraestrutura |
 | Cabeçalhos: CSP, X-Content-Type-Options, X-Frame-Options/frame-ancestors, Referrer-Policy, Permissions-Policy | XSS, clickjacking |
 
-**Limite honesto:** um ataque volumétrico (DDoS de grande escala) satura a banda da VPS antes de chegar ao Nginx. A mitigação real é um proxy com rede anycast na frente (ex.: Cloudflare) — ver ROADMAP.
+Ataques volumétricos são absorvidos pela camada 0; o Nginx cuida do abuso que passa por ela.
 
 ## 2. Aplicação — Next.js
 | Controle | Ameaça |

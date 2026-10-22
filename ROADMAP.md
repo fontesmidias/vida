@@ -6,7 +6,7 @@ Ideias fora do escopo desta entrega. Nenhuma ideia é descartada: ela entra aqui
 |---|---|---|
 | Estado emocional personalizado (texto livre) | Discussão de R1 | Texto livre é dado sensível sem estrutura (LGPD) e não tem conteúdo associado; exige moderação |
 | Modo guiado (dias sequenciais bloqueados) como opção do plano | Discussão de R5 | Gera atrito; só faz sentido para planos cuja didática dependa de ordem |
-| Proxy anycast/WAF na frente da VPS (ex.: Cloudflare) | SECURITY.md | Necessário contra DDoS volumétrico; depende do DNS do domínio |
+| Regras de WAF personalizadas e bot management no Cloudflare | SECURITY.md | Proxy básico já ativo; regras finas exigem tráfego real para calibrar |
 | Conta real (e-mail/magic link) e vínculo do usuário anônimo | S4 | Sem isso, apagar o cookie perde o acesso ao histórico |
 | Exportação e exclusão de dados pelo titular | R7 / LGPD | Direitos do titular em produção |
 | Consentimento LGPD específico para dado sensível | SECURITY.md | Obrigatório com usuários reais |

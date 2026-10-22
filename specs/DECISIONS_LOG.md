@@ -14,3 +14,5 @@ Decisão consolidada só muda com nova entrada aqui. Formato: data · decisão �
 | D8 | 2026-10-21 | Progresso cumulativo, sem streaks (R6) | Evitar sensação de perda e evasão | Ativa |
 | D9 | 2026-10-21 | Check-ins e conclusões append-only (R7) | Preservar histórico | Ativa |
 | D10 | 2026-10-21 | Tag SemVer + CHANGELOG a cada versão (P2) | Rastreabilidade de entregas | Ativa |
+| D11 | 2026-10-21 | Catálogo inicial: 8 estados em 4 famílias (agitado: ansioso, irritado · baixa energia: cansado, desanimado · pesado: triste, sobrecarregado · sereno: em paz, grato) | Cobre o exemplo do desafio e dá variedade sem multiplicar conteúdo | Ativa |
+| D12 | 2026-10-21 | Cloudflare (proxy) na frente da VPS; origem aceita só IPs do Cloudflare | Proteção real contra DDoS volumétrico, sem custo | Ativa |
