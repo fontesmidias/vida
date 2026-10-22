@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>VIDA · Apresentação</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap">
+<style>
+/* Layout: uma coluna de leitura (~68ch) com faixas que mostram o fluxo V·I·D·A; mesma identidade do app */
+:root {
+  --bg: #f6f5f1; --surface: #ffffff; --surface2: #eef2ee; --text: #1f2a27; --muted: #56645f;
+  --line: #e1e5df; --accent: #3f6f5e; --accent-soft: #dce8e1; --on-soft: #2c5546;
+  --f-agitado: #e8b48a; --f-baixa: #b9b3da; --f-pesado: #9db5cf; --f-sereno: #a8cbb5;
+  --display: "Nunito", system-ui, sans-serif; --body: "Nunito", system-ui, sans-serif;
+  --mono: ui-monospace, "Cascadia Code", Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #121816; --surface: #1a2220; --surface2: #212c29; --text: #e7eeea; --muted: #a3b2ac;
+    --line: #2a3632; --accent: #8cc3ae; --accent-soft: #24352f; --on-soft: #b9dccd;
+    --f-agitado: #d9a27a; --f-baixa: #a79fd0; --f-pesado: #8ea8c4; --f-sereno: #94bba2; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #121816; --surface: #1a2220; --surface2: #212c29; --text: #e7eeea; --muted: #a3b2ac;
+  --line: #2a3632; --accent: #8cc3ae; --accent-soft: #24352f; --on-soft: #b9dccd;
+  --f-agitado: #d9a27a; --f-baixa: #a79fd0; --f-pesado: #8ea8c4; --f-sereno: #94bba2; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 400 17px/1.6 var(--body); }
+.wrap { max-width: 46rem; margin: 0 auto; padding-block: 48px 64px;
+  padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px));
+  display: flex; flex-direction: column; gap: 56px; }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(34px, 7vw, 52px); line-height: 1.08; font-weight: 800; letter-spacing: -0.02em; }
+h2 { font-size: 26px; line-height: 1.2; font-weight: 800; }
+h3 { font-size: 18px; font-weight: 800; }
+p { margin: 0; max-width: 68ch; }
+a { color: var(--accent); font-weight: 700; text-underline-offset: 3px; }
+a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+code { font-family: var(--mono); font-size: 0.88em; background: var(--surface2); padding: 1px 6px; border-radius: 6px; }
+.muted { color: var(--muted); }
+.eyebrow { font-size: 13px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+section { display: flex; flex-direction: column; gap: 18px; }
+.badge { align-self: flex-start; padding: 4px 12px; border-radius: 999px; background: var(--accent-soft); color: var(--on-soft); font-size: 13px; font-weight: 800; }
+
+/* Abertura */
+.hero { gap: 22px; position: relative; }
+.hero::before { content: ""; position: absolute; z-index: -1; right: -40px; top: -30px; width: 220px; height: 200px;
+  background: var(--accent-soft); border-radius: 58% 42% 55% 45% / 48% 56% 44% 52%; }
+.acro { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; list-style: none; margin: 0; padding: 0; }
+.acro li { background: var(--surface); border-radius: 20px; padding: 14px 6px; display: flex; flex-direction: column; align-items: center; gap: 4px; border: 1px solid var(--line); }
+.acro b { font-size: 28px; line-height: 1; color: var(--accent); }
+.acro span { font-size: 13px; font-weight: 800; color: var(--muted); }
+.cta { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.btn { display: inline-flex; align-items: center; min-height: 52px; padding: 0 24px; border-radius: 999px; background: var(--accent); color: var(--bg); text-decoration: none; font-weight: 800; }
+
+/* Roteiro do fluxo: sequência real, por isso numerada */
+.steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; counter-reset: s; }
+.steps li { counter-increment: s; display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 14px; align-items: start; }
+.steps li::before { content: counter(s); width: 40px; height: 40px; border-radius: 50%; background: var(--accent-soft); color: var(--on-soft);
+  display: flex; align-items: center; justify-content: center; font-weight: 800; }
+.steps li > span { padding-top: 7px; }
+
+/* Diagrama */
+figure { margin: 0; display: flex; flex-direction: column; gap: 10px; }
+.diagram { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 16px; }
+.diagram svg { display: block; min-width: 620px; width: 100%; height: auto; }
+.diagram .box { fill: var(--surface2); stroke: var(--line); }
+.diagram .hot { fill: var(--accent-soft); stroke: var(--accent); }
+.diagram text { fill: var(--text); font: 700 13px var(--body); }
+.diagram .sub { fill: var(--muted); font-weight: 400; font-size: 11.5px; }
+.diagram .arrow { stroke: var(--muted); stroke-width: 1.6; fill: none; }
+.diagram .head { fill: var(--muted); }
+figcaption { font-size: 14px; color: var(--muted); }
+
+/* Tabelas */
+.table { overflow-x: auto; border: 1px solid var(--line); border-radius: 18px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 15px; }
+th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+tr:last-child td { border-bottom: 0; }
+td code { white-space: nowrap; }
+
+/* Respostas */
+.qa { display: flex; flex-direction: column; gap: 10px; }
+details { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 14px 18px; }
+summary { cursor: pointer; font-weight: 800; list-style-position: outside; }
+summary:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; border-radius: 6px; }
+details p { margin-top: 10px; color: var(--text); }
+.families { display: flex; flex-wrap: wrap; gap: 10px; }
+.families span { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; }
+.families i { width: 18px; height: 18px; border-radius: 52% 48% 56% 44% / 46% 54% 46% 54%; display: inline-block; }
+footer { font-size: 14px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 20px; }
+@media (max-width: 420px) { .acro b { font-size: 22px; } .acro span { font-size: 11.5px; } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+</head>
+<body>
+<main class="wrap">
+
+<section class="hero" aria-labelledby="t">
+  <span class="badge">Desafio técnico CLAVIS VIA · conteúdo de demonstração</span>
+  <h1 id="t">VIDA: um momento para você, no seu ritmo.</h1>
+  <ul class="acro" aria-label="O que significa VIDA">
+    <li><b aria-hidden="true">V</b><span>Ver</span></li>
+    <li><b aria-hidden="true">I</b><span>Inspirar</span></li>
+    <li><b aria-hidden="true">D</b><span>Desacelerar</span></li>
+    <li><b aria-hidden="true">A</b><span>Avançar</span></li>
+  </ul>
+  <p>Protótipo mobile-first de check-in emocional. A sigla é o próprio fluxo: <strong>ver</strong> como você está (check-in), <strong>inspirar</strong> (reflexão do dia), <strong>desacelerar</strong> (prática guiada curta) e <strong>avançar</strong> (planos de poucos dias e a jornada). Não substitui acompanhamento profissional; o botão Apoio, em todas as telas, leva ao CVV (188).</p>
+  <div class="cta">
+    <a class="btn" href="https://vida.fontesmidias.com.br">Abrir a demo</a>
+    <span class="muted">vida.fontesmidias.com.br · sem cadastro, no celular ou em modo celular</span>
+  </div>
+</section>
+
+<section aria-labelledby="t-roteiro">
+  <p class="eyebrow">Roteiro para avaliar</p>
+  <h2 id="t-roteiro">O fluxo principal em 6 passos</h2>
+  <ol class="steps">
+    <li><span>Toque em <strong>Entrar como demonstração</strong>: uma pessoa visitante é criada, isolada das demais.</span></li>
+    <li><span><strong>Fazer check-in</strong> → <strong>Com ansiedade</strong>. Um toque registra; não há nada para digitar.</span></li>
+    <li><span>Em <strong>Hoje</strong>, a reflexão e a prática mudam conforme o estado. <strong>Começar</strong> abre a respiração guiada 4-6.</span></li>
+    <li><span><strong>Planos</strong> → <strong>Respirar com calma</strong> → <strong>Dia 1</strong> → <strong>Concluir dia</strong>.</span></li>
+    <li><span><strong>Jornada</strong> mostra o check-in e o progresso "1 de 5".</span></li>
+    <li><span>Recarregue a página: os dados continuam lá, no Postgres.</span></li>
+  </ol>
+  <p class="muted">Os 6 passos são um teste E2E que roda no CI e contra a demo pública, em Chrome (Pixel 7) e Safari (iPhone 13).</p>
+</section>
+
+<section aria-labelledby="t-produto">
+  <p class="eyebrow">Produto</p>
+  <h2 id="t-produto">Decisões de experiência</h2>
+  <p>8 estados em 4 famílias de conteúdo, cada um com ícone próprio desenhado (sem emoji, para que todo aparelho mostre o mesmo) e linguagem neutra em gênero ("Com ansiedade", "Sem ânimo").</p>
+  <div class="families" aria-label="Famílias de estados">
+    <span><i style="background: var(--f-agitado)"></i>Agitação</span>
+    <span><i style="background: var(--f-baixa)"></i>Baixa energia</span>
+    <span><i style="background: var(--f-pesado)"></i>Peso</span>
+    <span><i style="background: var(--f-sereno)"></i>Serenidade</span>
+  </div>
+  <p>Zero digitação, botões de 58 px, "Voltar" sempre visível, verbo em toda ação, área segura para a barra do navegador. As práticas são guiadas, um passo por vez, para levar a pessoa para fora da tela. O progresso só soma: não há sequência que zera.</p>
+</section>
+
+<section aria-labelledby="t-arq">
+  <p class="eyebrow">Arquitetura</p>
+  <h2 id="t-arq">Do toque ao banco</h2>
+  <figure>
+    <div class="diagram">
+      <svg viewBox="0 0 760 250" role="img" aria-labelledby="dg-t">
+        <title id="dg-t">Caminho de uma requisição: navegador, Cloudflare, Nginx, app Next.js em camadas e Postgres</title>
+        <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="head" d="M0 0L10 5L0 10z"/></marker></defs>
+        <rect class="box" x="10" y="85" width="120" height="70" rx="16"/>
+        <text x="70" y="115" text-anchor="middle">Navegador</text>
+        <text class="sub" x="70" y="134" text-anchor="middle">telas React</text>
+        <rect class="box" x="160" y="85" width="120" height="70" rx="16"/>
+        <text x="220" y="115" text-anchor="middle">Cloudflare</text>
+        <text class="sub" x="220" y="134" text-anchor="middle">proxy · TLS strict</text>
+        <rect class="box" x="310" y="85" width="120" height="70" rx="16"/>
+        <text x="370" y="115" text-anchor="middle">Nginx (VPS)</text>
+        <text class="sub" x="370" y="134" text-anchor="middle">só IPs do Cloudflare</text>
+        <rect class="hot" x="460" y="20" width="160" height="200" rx="18"/>
+        <text x="540" y="46" text-anchor="middle">App Next.js</text>
+        <text class="sub" x="540" y="64" text-anchor="middle">127.0.0.1:8097</text>
+        <rect class="box" x="476" y="78" width="128" height="30" rx="10"/>
+        <text class="sub" x="540" y="97" text-anchor="middle">api/ · sessão, Zod, S6</text>
+        <rect class="box" x="476" y="116" width="128" height="30" rx="10"/>
+        <text class="sub" x="540" y="135" text-anchor="middle">services/ · R1–R7</text>
+        <rect class="box" x="476" y="154" width="128" height="30" rx="10"/>
+        <text class="sub" x="540" y="173" text-anchor="middle">repositories/ · Prisma</text>
+        <rect class="box" x="650" y="85" width="100" height="70" rx="16"/>
+        <text x="700" y="115" text-anchor="middle">Postgres 16</text>
+        <text class="sub" x="700" y="134" text-anchor="middle">rede interna</text>
+        <path class="arrow" d="M130 120H158" marker-end="url(#ah)"/>
+        <path class="arrow" d="M280 120H308" marker-end="url(#ah)"/>
+        <path class="arrow" d="M430 120H458" marker-end="url(#ah)"/>
+        <path class="arrow" d="M620 120H648" marker-end="url(#ah)"/>
+      </svg>
+    </div>
+    <figcaption>Monolito Next.js em camadas (D1): as telas chamam a API REST em <code>/api</code>; as regras ficam em services que não importam nada do Next; o banco só existe na rede interna da stack.</figcaption>
+  </figure>
+  <div class="table">
+    <table>
+      <thead><tr><th>Camada</th><th>Tecnologia</th><th>Por quê</th></tr></thead>
+      <tbody>
+        <tr><td>Telas e API</td><td>Next.js 15, TypeScript, Tailwind</td><td>Uma linguagem e um deploy; API consumível por app nativo no futuro</td></tr>
+        <tr><td>Entrada</td><td>Zod, iron-session</td><td>Formato exato na fronteira (S5); sessão em cookie criptografado, sem tabela (S4)</td></tr>
+        <tr><td>Dados</td><td>Prisma 6, Postgres 16 + pgvector</td><td>Migrations versionadas; consultas parametrizadas; extensão pgvector disponível para RAG futuro</td></tr>
+        <tr><td>Qualidade</td><td>Vitest, Playwright, GitHub Actions</td><td>Testes citam a regra; E2E em Chrome e Safari; gitleaks no histórico</td></tr>
+        <tr><td>Infra</td><td>Docker, Portainer, Nginx, Cloudflare</td><td>Mesmo padrão dos sites da VPS; origem protegida</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section aria-labelledby="t-dados">
+  <p class="eyebrow">Modelo de dados</p>
+  <h2 id="t-dados">Sete tabelas, nenhuma exclusão em cascata</h2>
+  <div class="table">
+    <table>
+      <thead><tr><th>Tabela</th><th>Guarda</th><th>Regra</th></tr></thead>
+      <tbody>
+        <tr><td><code>users</code></td><td>Pessoa visitante</td><td>userId só da sessão (S2)</td></tr>
+        <tr><td><code>moods</code></td><td>Catálogo de estados</td><td>Novo estado sem migration (D6)</td></tr>
+        <tr><td><code>checkins</code></td><td>Instante do servidor, fuso do dispositivo, data local</td><td>Append-only (R1, R7)</td></tr>
+        <tr><td><code>daily_contents</code></td><td>Reflexão e prática por família, mais a neutra</td><td>R3, D17</td></tr>
+        <tr><td><code>plans</code>, <code>plan_days</code></td><td>Planos e seus dias</td><td>Dia único por plano</td></tr>
+        <tr><td><code>plan_day_completions</code></td><td>Conclusão de um dia</td><td>Único por pessoa e dia (R4)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Um detalhe que define o produto: <strong>de quem é o "dia"?</strong> O instante vem do servidor; o fuso vem do dispositivo, sem pedir localização. O mesmo instante, 02:30 UTC de 22/10, é dia 21 em São Paulo e dia 22 em Tóquio, e quem viaja vê o "Hoje" do lugar onde está (R1, R2).</p>
+</section>
+
+<section aria-labelledby="t-seg">
+  <p class="eyebrow">Segurança e operação</p>
+  <h2 id="t-seg">Camadas independentes</h2>
+  <div class="table">
+    <table>
+      <thead><tr><th>Camada</th><th>O que protege</th></tr></thead>
+      <tbody>
+        <tr><td>Borda</td><td>Proxy do Cloudflare; Nginx aceita só o Cloudflare (acesso direto ao IP → 403); TLS também até a origem; CSP, HSTS, X-Frame-Options</td></tr>
+        <tr><td>Aplicação</td><td>Sessão criptografada; Zod; Origin em escrita (CSRF); limite por IP: sessão 20/min, escritas 30/min (429); erros sem detalhes internos</td></tr>
+        <tr><td>Dados</td><td>Postgres sem porta exposta; consultas parametrizadas; sem texto livre (D4); "Apagar meus dados" (D19)</td></tr>
+        <tr><td>Processo</td><td>Container sem root; gitleaks no CI; segredos só na stack do Portainer</td></tr>
+        <tr><td>Operação</td><td>Deploy com portão de CI e backup antes; healthcheck que consulta o banco; backup diário com restauração provada</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="muted">Pendências registradas, sem esconder: limite de requisições também no Nginx, usuário do banco sem privilégio de dono e cópia dos backups fora da VPS (<code>ROADMAP.md</code>).</p>
+</section>
+
+<section aria-labelledby="t-qa">
+  <p class="eyebrow">Registro técnico</p>
+  <h2 id="t-qa">As 7 perguntas, em resumo</h2>
+  <div class="qa">
+    <details><summary>1. Arquitetura</summary><p>Next.js monolítico em camadas e Postgres via Prisma. Telas chamam a API REST; rotas tratam HTTP (sessão, Zod, limite); services têm as regras sem depender do Next; repositories acessam o banco com userId explícito.</p></details>
+    <details><summary>2. Modelagem</summary><p>Sete tabelas. Cada sessão aponta para um usuário; check-ins append-only com fuso e data local; progresso calculado a partir das conclusões, com conclusão idempotente por índice único.</p></details>
+    <details><summary>3. Segurança e LGPD</summary><p>Já aplicado: minimização, isolamento, defesa em camadas e exclusão a pedido. Para dados reais: conta com autenticação forte, consentimento específico para dado de saúde, criptografia em repouso, exportação, retenção e papéis separados no banco.</p></details>
+    <details><summary>4. Operação</summary><p>Deploy com um comando e portão de CI; logs com contexto e rotação; healthcheck que reinicia sozinho; backup diário com restauração testada a cada verificação de entrega.</p></details>
+    <details><summary>5. Evolução</summary><p>1) conta e consentimento; 2) painel de conteúdo com revisão de tom; 3) observabilidade, backup externo e lembretes opcionais.</p></details>
+    <details><summary>6. Integrações</summary><p>IA no servidor com dados mínimos, regras de tom, detecção de crise que mostra o Apoio e marcação clara do que é gerado. Kiwify: webhook com assinatura validada e idempotente, tabela de assinaturas e controle de acesso aplicado na API.</p></details>
+    <details><summary>7. O que ficou de fora e uso de IA</summary><p>Fora: conta real, texto livre, chat, Kiwify, streaks, música (com o motivo no ROADMAP). IA: Claude Code em specs, código, testes, protótipo, infraestrutura e documentação; as decisões de produto e as aprovações foram da pessoa responsável pelo projeto.</p></details>
+  </div>
+  <p>Respostas completas, com as referências ao código: <a href="../DECISOES.md">DECISOES.md</a>.</p>
+</section>
+
+<footer>
+  VIDA · protótipo para avaliação técnica · conteúdo de demonstração. Código, specs (<code>specs/</code>) e decisões (D1–D24) no repositório. Em sofrimento intenso, o CVV atende pelo 188, 24 horas, de graça.
+</footer>
+</main>
+</body>
+</html>

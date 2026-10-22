@@ -8,6 +8,7 @@ Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/); 
 - Respostas 204 (sem corpo) eram tratadas como erro pelo cliente da API.
 
 ### Adicionado
+- `DECISOES.md` (7 perguntas do desafio), `docs/apresentacao.html`, `docs/ROTEIRO_VIDEO.md`, cada um avaliado por revisor independente com rubrica fixa (`loops/`).
 - CI no GitHub (`Verificar`): lint, tipos, testes de unidade, E2E com Postgres em Chrome e Safari, gitleaks no histórico inteiro.
 - Deploy na VPS: Dockerfile em 3 estágios (usuário sem root, healthcheck no banco), `deploy/stack.yml`, `scripts/deploy.sh` com portão de CI e backup pré-deploy (D24), site no Nginx atrás do Cloudflare (D22/D23). Demo pública em https://vida.fontesmidias.com.br.
 - `GET /api/health/ready` (S7), bloqueado fora da VPS.
