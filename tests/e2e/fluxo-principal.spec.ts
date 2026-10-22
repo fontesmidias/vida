@@ -36,6 +36,13 @@ test("fluxo principal do desafio", async ({ page }) => {
   await page.screenshot({ path: shots("3-hoje"), fullPage: true });
   await expectNothingUnderNav(page);
 
+  // Passo 3 do roteiro: "Começar" abre a respiração guiada (D17)
+  await page.getByRole("link", { name: "Começar" }).click();
+  await expect(page).toHaveURL(/\/pratica$/);
+  await expect(page.getByText(/Inspire…|Solte o ar…|Prepare-se/)).toBeVisible();
+  await page.getByRole("button", { name: "Encerrar" }).click();
+  await expect(page).toHaveURL(/\/hoje$/);
+
   // 4. Abrir um plano e concluir o Dia 1
   await page.getByRole("navigation", { name: "Navegação principal" }).getByRole("link", { name: "Planos" }).click();
   await page.getByRole("link", { name: /Respirar com calma/ }).click();
