@@ -24,7 +24,8 @@
 ## Conteúdo e conformidade
 - **C1 — Tom.** Linguagem adulta e acolhedora. O app nunca promete diagnóstico, terapia ou cura. Rodapé fixo indica o CVV (188) para sofrimento intenso.
 - **C2 — Dados fictícios.** Conteúdos e planos são identificados como demonstração.
-- **C3 — Aviso de cuidado.** Na Entrada: o app é um espaço de autocuidado e reflexão e não substitui o acompanhamento de um profissional, que pode olhar para a história de cada pessoa com a atenção que ela merece.
+- **C3 — Aviso de cuidado.** Na Entrada: o app é um espaço de autocuidado e reflexão e não substitui o acompanhamento profissional, de quem pode olhar para a história de cada pessoa com a atenção que ela merece.
+- **C4 — Gênero neutro.** Sempre que possível, todo texto do projeto (telas, conteúdo, mensagens, documentação) usa linguagem de gênero neutro: construções como "com ansiedade", "a pessoa", "alguém querido", em vez de flexões como "ansioso", "sozinho", "amigo". Identificadores internos (slugs, nomes de tabela como `users`) não são texto para pessoas e ficam como estão.
 
 ## Processo
 - **P1 — Escopo.** Obrigatório primeiro; opcional do desafio depois; qualquer outra ideia vai para `ROADMAP.md` (nenhuma ideia é descartada).

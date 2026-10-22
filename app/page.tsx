@@ -4,8 +4,8 @@ export default function Home() {
       <h1 className="text-2xl font-semibold">VIDA</h1>
       {/* C3: aviso de cuidado na Entrada */}
       <p className="mt-4 text-neutral-700">
-        Este é um espaço de autocuidado e reflexão. Ele não substitui o acompanhamento de um
-        profissional, que pode olhar para a sua história com a atenção que ela merece.
+        Este é um espaço de autocuidado e reflexão. Ele não substitui o acompanhamento profissional, de quem pode olhar para a sua
+        história com a atenção que ela merece.
       </p>
     </main>
   );

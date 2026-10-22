@@ -1,6 +1,6 @@
 # VIDA
 
-Protótipo mobile-first de check-in emocional: o usuário registra como está, recebe uma reflexão e uma prática do dia, segue planos de alguns dias e acompanha sua jornada.
+Protótipo mobile-first de check-in emocional: a pessoa registra como está, recebe uma reflexão e uma prática do dia, segue planos de alguns dias e acompanha sua jornada.
 
 > Espaço de autocuidado e reflexão. Não substitui acompanhamento profissional. Em sofrimento intenso, ligue 188 (CVV).
 
