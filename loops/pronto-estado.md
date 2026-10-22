@@ -1,7 +1,7 @@
 # Estado do loop "pronto"
 
-- **Volta atual:** 3 concluída
-- **Placar:** `PRONTO: 5/12` (check completo, 2026-10-22 02:19, commit 5efc847)
+- **Volta atual:** 4 concluída
+- **Placar:** `PRONTO: 6/12` (check completo, 2026-10-22 02:26, commit 1deab58)
 - **Teto:** 40 voltas ou 2026-10-24 18h
 
 ## Linha de base (volta 0)
@@ -34,9 +34,13 @@ PRONTO: 1/12
 
 Escopo das aprovações: valem só para os recursos do VIDA (registro `vida.fontesmidias.com.br`, site `vida` no Nginx, stack `vida`). Os guardrails do "Nunca" continuam valendo: nada de outro site, stack, DNS ou container; nada de firewall ou Nginx global; `nginx -t` antes de todo reload.
 
+## Ordem planejada
+Itens 8 (backup) e 9 (exclusão LGPD) antes do 7 (DECISOES): as respostas 3 e 4 descrevem esses recursos, e escrevê-las antes forçaria reescrever e revisar de novo (regra: dependências antes).
+
 ## Histórico
 | Volta | Item | Mudança | Commit | Placar depois |
 |---|---|---|---|---|
+| 4 | 6 README | README de entrega: demo + roteiro, o que é demonstração, stack, estrutura, variáveis, banco, testes, deploy, uso de IA (rascunho a confirmar pelo responsável). Também: removida referência externa do documento do loop; gancho local de pre-push | 1deab58 | 6/12 |
 | 3 | 5 rate limit (S6) | Limitador em memória por IP (X-Real-IP do Nginx): sessão demo 10/min, escritas 30/min, 429 com Retry-After. Deploy 5efc847 com backup pré-deploy. 40 POST públicos → 6×201, 34×429 | 5efc847 | 5/12 |
 | 2 | 3 health público (+4 E2E público) | Dockerfile, `/api/health/ready`, stack no Portainer, `scripts/deploy.sh` (portão de CI, build na VPS, D24), DNS CNAME com proxy depois do certificado, site Nginx só para IPs do Cloudflare (D22/D23). Acesso direto ao IP → 403. Achados: `mockReset` do Vitest 5 quebra mock assíncrono; máquina local com pouca RAM derruba o Docker (usar `--workers=1`) | 2c3d3ab | 4/12 |
 | 1 | 2 CI + gitleaks | Workflow `Verificar`: lint, tipos, unit, E2E (Chrome e Safari) com Postgres de serviço, gitleaks no histórico inteiro (binário oficial, sem licença). Verde na 1ª execução | 52eb1bd | 2/12 |
