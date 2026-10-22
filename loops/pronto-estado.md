@@ -39,7 +39,10 @@ Escopo das aprovações: valem só para os recursos do VIDA (registro `vida.font
 |---|---|---|---|---|
 
 ## Bloqueios abertos
-- **SSL do Cloudflare (D22, D23):** a zona está em **Flexible**. O responsável cria a Configuration Rule `vida - SSL full strict` (Hostname equals `vida.fontesmidias.com.br` → SSL Full (strict)). O loop não cria o DNS proxied antes de o responsável confirmar a regra; depois, o item 3 do check prova o HTTPS de ponta a ponta.
+Nenhum.
+
+## Resolvidos
+- **SSL do Cloudflare (D23), 2026-10-22:** regra `vida - SSL full strict (D23)` criada pela API (token com Config Rules: Edit e Zone Settings: Read), no mesmo ruleset da regra existente "Stape", que não foi alterada. A zona continua em Flexible. O item 3 do check prova o HTTPS de ponta a ponta quando o DNS existir.
 
 ## Vereditos do revisor
 Nenhum ainda.
