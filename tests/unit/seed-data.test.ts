@@ -66,3 +66,20 @@ describe("tom dos textos (C1)", () => {
     },
   );
 });
+
+describe("gênero neutro (C4)", () => {
+  const textos = [
+    ...moods.map((m) => m.label),
+    ...dailyContents.flatMap((c) => [c.reflectionTitle, c.reflectionBody, c.practiceTitle, c.practiceBody]),
+    ...plans.flatMap((p) => [p.title, p.description, ...p.days.flatMap((d) => [d.title, d.body])]),
+  ];
+
+  // Flexões de gênero que já apareceram ou são prováveis neste conteúdo
+  it.each([
+    "ansios[oa]", "irritad[oa]", "cansad[oa]", "desanimad[oa]", "sobrecarregad[oa]", "grat[oa]",
+    "sozinh[oa]", "amig[oa]", "obrigad[oa]", "si mesm[oa]",
+  ])("nenhum texto usa a forma flexionada /%s/", (padrao) => {
+    const re = new RegExp(`(?<![\p{L}])${padrao}(?![\p{L}])`, "iu");
+    expect(textos.filter((t) => re.test(t))).toEqual([]);
+  });
+});

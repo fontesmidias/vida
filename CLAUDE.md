@@ -14,7 +14,7 @@ Protótipo mobile-first de check-in emocional (avaliação técnica). Specs em `
 - Nunca versionar nada da pasta `doc/`.
 - Nunca editar uma migration já aplicada; criar uma nova.
 - `userId` sempre da sessão no servidor (S2). Services não importam `next/*`.
-- Textos para o usuário: português, tom acolhedor, sem prometer diagnóstico/terapia/cura (C1).
+- Textos para quem usa o app: português, tom acolhedor, sem prometer diagnóstico/terapia/cura (C1); gênero neutro sempre que possível (C4).
 
 ## Fluxo
 1. Ler a spec relevante → 2. escrever/ajustar teste citando a regra (ex.: `R4`) → 3. ver falhar → 4. implementar o mínimo → 5. refatorar com testes verdes.

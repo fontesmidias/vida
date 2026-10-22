@@ -1,17 +1,18 @@
 // Conteúdo fictício de demonstração (C2). Tom: C1 — acolhedor, sem diagnóstico, terapia ou cura.
+// C4: gênero neutro nos textos; slugs são identificadores internos e não aparecem na tela.
 
 export const NEUTRAL_FAMILY = "neutro";
 
 // D11: 8 estados em 4 famílias
 export const moods = [
-  { slug: "ansioso", label: "Ansioso", emoji: "😰", family: "agitado", sortOrder: 1 },
-  { slug: "irritado", label: "Irritado", emoji: "😤", family: "agitado", sortOrder: 2 },
-  { slug: "cansado", label: "Cansado", emoji: "😮‍💨", family: "baixa_energia", sortOrder: 3 },
-  { slug: "desanimado", label: "Desanimado", emoji: "😔", family: "baixa_energia", sortOrder: 4 },
+  { slug: "ansioso", label: "Com ansiedade", emoji: "😰", family: "agitado", sortOrder: 1 },
+  { slug: "irritado", label: "Com irritação", emoji: "😤", family: "agitado", sortOrder: 2 },
+  { slug: "cansado", label: "Com cansaço", emoji: "😮‍💨", family: "baixa_energia", sortOrder: 3 },
+  { slug: "desanimado", label: "Sem ânimo", emoji: "😔", family: "baixa_energia", sortOrder: 4 },
   { slug: "triste", label: "Triste", emoji: "😢", family: "pesado", sortOrder: 5 },
-  { slug: "sobrecarregado", label: "Sobrecarregado", emoji: "😵‍💫", family: "pesado", sortOrder: 6 },
+  { slug: "sobrecarregado", label: "Com sobrecarga", emoji: "😵‍💫", family: "pesado", sortOrder: 6 },
   { slug: "em-paz", label: "Em paz", emoji: "😌", family: "sereno", sortOrder: 7 },
-  { slug: "grato", label: "Grato", emoji: "🙏", family: "sereno", sortOrder: 8 },
+  { slug: "grato", label: "Com gratidão", emoji: "🙏", family: "sereno", sortOrder: 8 },
 ];
 
 // R3: uma entrada por família + neutro (sem check-in no dia)
@@ -38,12 +39,12 @@ export const dailyContents = [
   },
   {
     family: "pesado",
-    reflectionTitle: "Você não precisa carregar tudo sozinho",
+    reflectionTitle: "Você não precisa carregar tudo sem apoio",
     reflectionBody:
       "Alguns dias pesam mais. Dar nome ao que você sente ajuda a abrir espaço para ele. Se fizer sentido, conversar com alguém de confiança pode deixar a carga mais leve.",
     practiceTitle: "Mão no peito",
     practiceBody:
-      "Coloque uma das mãos sobre o peito e respire devagar. A cada expiração, diga a si mesmo algo gentil, como: \"Estou fazendo o que posso\".",
+      "Coloque uma das mãos sobre o peito e respire devagar. A cada expiração, diga para você algo gentil, como: \"Estou fazendo o que posso\".",
     practiceMinutes: 3,
   },
   {
@@ -87,7 +88,7 @@ export const plans = [
     description: "Sete dias para olhar para si com mais cuidado e menos cobrança. Conteúdo de demonstração.",
     days: [
       { dayNumber: 1, title: "Como você fala com você", body: "Repare hoje no tom dos seus pensamentos sobre si. Só observe, sem julgar." },
-      { dayNumber: 2, title: "Como falaria com um amigo", body: "Pense em algo que cobrou de si recentemente. O que diria a um amigo na mesma situação?" },
+      { dayNumber: 2, title: "Como falaria com alguém querido", body: "Pense em algo que cobrou de si recentemente. O que diria a uma pessoa querida numa situação parecida?" },
       { dayNumber: 3, title: "Uma pausa merecida", body: "Reserve cinco minutos para algo de que você gosta, sem precisar justificar." },
       { dayNumber: 4, title: "Reconhecer o esforço", body: "Anote mentalmente uma coisa que você fez hoje, por menor que seja." },
       { dayNumber: 5, title: "Limites com carinho", body: "Pense em um pequeno \"não\" que proteja o seu tempo ou a sua energia." },
