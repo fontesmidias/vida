@@ -3,6 +3,12 @@
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/); versões seguem [SemVer](https://semver.org/lang/pt-BR/).
 
 ## [Não lançado]
+### Adicionado
+- `GET /api/today?tz=` (R2, R3): check-in mais recente do dia no fuso atual; sem check-in → conteúdo neutro.
+- `GET /api/checkins?cursor=` (R7): 10 por página, cursor opaco por (created_at, id); cursor inválido → 400.
+- `GET /api/plans`, `GET /api/plans/[slug]` (R5, R6): progresso, dias com status e próximo sugerido.
+- `POST /api/plans/[slug]/days/[day]/complete` (R4): 201 na primeira vez, 200 nas seguintes, sem duplicar (índice único + `skipDuplicates`).
+
 ### Alterado
 - Migration `conteudo_guiado_sem_emoji`: remove `moods.emoji` (D15) e adiciona `daily_contents.practice_kind` (D17). API de estados e check-in passam a devolver `family` no lugar de `emoji`.
 - Seed com reflexões curtas (U8) e tipo de prática guiada por família; testes cobrem D15, D17 e U8.
