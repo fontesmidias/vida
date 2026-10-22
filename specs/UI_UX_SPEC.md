@@ -15,12 +15,18 @@
 | U8 | **Menos texto, mais forma.** Reflexão em 1 frase + 1 linha; instruções um passo por vez, em letra grande (corpo 17 px, falas 30 px); ícones sempre acompanhados de rótulo | Intuitivo para todas as gerações, inclusive pessoas mais velhas |
 | U9 | **Voltar sempre visível.** Em toda tela abaixo do primeiro nível, botão "Voltar" com texto no topo; cada tela é uma rota, então o voltar do Android e o gesto do iOS também funcionam | Ninguém fica preso; não depender de gesto escondido |
 | U10 | **Guiar para fora do app.** Práticas são experiências guiadas (D17) que levam a pessoa ao corpo e ao ambiente, e terminam com um fechamento gentil | O valor está no que a pessoa faz, não no tempo de tela |
-| U11 | **Sem emoji** (D15): ícones próprios em SVG | Controle total do que é exibido |
+| U11 | **Sem emoji** (D15): ícones próprios em SVG, com traço de aparência feita à mão | Controle total do que é exibido |
+| U12 | **Respiro e área segura no navegador móvel** (Chrome, Safari, Edge): `viewport-fit=cover` + `env(safe-area-inset-*)`; altura com `dvh` (não `vh`), porque a barra do navegador aparece e some com a rolagem; a barra inferior do app reserva o próprio espaço (o conteúdo ganha `padding-bottom` igual à altura dela + área segura), então nada importante fica por baixo; margem lateral mínima de 24 px e espaço de pelo menos 12 px entre elementos tocáveis; avisos (toasts) aparecem acima da barra | Nada sobreposto, em qualquer estado da barra do navegador |
+| U13 | **Verbo em toda ação.** Botões usam verbo ("Fazer check-in", "Começar", "Concluir dia", "Ligar para o 188", "Escolher outro plano"), e interações intuitivas também ganham uma instrução curta com verbo ("Toque no que mais combina com você", "Toque em um dia para abrir"). Abas de navegação podem ser substantivos | Ninguém precisa adivinhar o que fazer |
+
+## Sigla VIDA na interface (D18)
+- **Entrada:** a sigla completa, com as quatro palavras em destaque.
+- **Etapas:** um rótulo discreto com a letra na tela correspondente: **V · Ver** (Check-in), **I · Inspirar** (cartão de reflexão), **D · Desacelerar** (prática e tela guiada), **A · Avançar** (Planos e Jornada).
 
 ## Navegação
 - **Entrada** (`/`): sem sessão. Após entrar, vai para **Hoje**.
 - Com sessão, uma **barra inferior fixa** com 4 destinos: **Hoje** (`/hoje`) · **Check-in** (`/check-in`) · **Planos** (`/planos`) · **Jornada** (`/jornada`). O destino atual fica destacado e marcado com `aria-current`.
-- Botão **Apoio** no topo de todas as telas (C1, D16): abre uma folha inferior com "Quer conversar com alguém?", **Ligar 188** e **Fechar**.
+- Botão **Apoio** no topo de todas as telas (C1, D16): abre uma folha inferior com "Quer conversar com alguém?", o nome por extenso ("O CVV, Centro de Valorização da Vida, …"), **Ligar para o 188** e **Fechar**.
 - Fim de plano: tela de celebração ("Plano concluído") com **Ver minha jornada** e **Outros planos**. Plano concluído ganha selo na Jornada.
 - Protótipo visual de referência: canvas "VIDA — protótipo visual" (claro e escuro, ícones e identidade).
 - Sem sessão em qualquer tela interna → volta para a Entrada (ver "Erros").
