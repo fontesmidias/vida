@@ -89,3 +89,50 @@ test("sem sessão, telas internas voltam para a Entrada (S2)", async ({ page }) 
   await page.goto("/jornada");
   await expect(page).toHaveURL(/\/$/);
 });
+
+test("LGPD: apagar meus dados remove tudo e encerra a sessão (D19)", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Entrar como demonstração" }).click();
+  await page.getByRole("link", { name: "Fazer check-in" }).click();
+  await page.getByRole("button", { name: "Em paz" }).click();
+  await expect(page).toHaveURL(/\/hoje$/);
+
+  await page.getByRole("navigation", { name: "Navegação principal" }).getByRole("link", { name: "Jornada" }).click();
+  await expect(page.getByText("Em paz")).toBeVisible();
+  await page.getByRole("button", { name: "Apagar meus dados" }).click();
+
+  // Confirmação explícita, sem diálogo nativo do navegador
+  const dialog = page.getByRole("dialog", { name: "Apagar todos os seus dados?" });
+  await expect(dialog).toBeVisible();
+  const box = await dialog.locator("xpath=..").boundingBox();
+  expect(box).toMatchObject({ x: 0, y: 0 }); // a camada cobre a janela, não só a tela
+  await page.waitForTimeout(500);
+  await page.screenshot({ path: `test-results/telas/${test.info().project.name}-8-apagar.png` });
+  await dialog.getByRole("button", { name: "Apagar definitivamente" }).click();
+
+  await expect(page).toHaveURL(/\/\?dados=apagados$/);
+  await expect(page.getByText("Seus dados foram apagados.")).toBeVisible();
+
+  // A sessão acabou: as telas internas voltam para a Entrada
+  await page.goto("/jornada");
+  await expect(page).toHaveURL(/\/$/);
+});
+
+test("celebração cobre a tela inteira ao concluir o último dia do plano", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Entrar como demonstração" }).click();
+  await expect(page).toHaveURL(/\/hoje$/);
+  for (let dia = 1; dia <= 5; dia++) {
+    await page.goto(`/planos/respirar-com-calma/dia/${dia}`);
+    await page.getByRole("button", { name: "Concluir dia" }).click();
+    if (dia < 5) await expect(page).toHaveURL(/\/planos\/respirar-com-calma$/);
+  }
+  const cel = page.getByRole("dialog", { name: "Plano concluído" });
+  await expect(cel).toBeVisible();
+  // A camada cobre a janela toda, não só a área da tela (bug de position:fixed dentro de tela animada)
+  const box = await cel.boundingBox();
+  const vp = page.viewportSize()!;
+  expect(box).toMatchObject({ x: 0, y: 0, width: vp.width, height: vp.height });
+  await page.waitForTimeout(1200);
+  await page.screenshot({ path: `test-results/telas/${test.info().project.name}-9-celebracao.png` });
+});
