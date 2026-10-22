@@ -4,9 +4,11 @@ import { Header } from "@/src/ui/AppFrame";
 import { EnterButton } from "@/src/ui/EnterButton";
 
 // Entrada: proposta, sigla (D18), aviso de cuidado (C3) e entrada como demonstração (C2)
-export default async function Entrada({ searchParams }: { searchParams: Promise<{ sessao?: string }> }) {
+export default async function Entrada({ searchParams }: { searchParams: Promise<{ sessao?: string; dados?: string }> }) {
   if (await currentUserId()) redirect("/hoje");
-  const sessionEnded = (await searchParams).sessao === "encerrada";
+  const params = await searchParams;
+  const sessionEnded = params.sessao === "encerrada";
+  const dataDeleted = params.dados === "apagados"; // D19
 
   return (
     <div className="shell">
@@ -38,6 +40,11 @@ export default async function Entrada({ searchParams }: { searchParams: Promise<
             ))}
           </ul>
           <p className="muted">Veja como você está, inspire-se, desacelere e avance no seu ritmo.</p>
+          {dataDeleted && (
+            <p className="card soft body" role="status">
+              Seus dados foram apagados.
+            </p>
+          )}
           {sessionEnded && (
             <p className="card soft body" role="status">
               Sua sessão terminou. Entre novamente para continuar.

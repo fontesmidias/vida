@@ -33,6 +33,7 @@ O progresso (R6) é calculado, não armazenado: evita dado duplicado e inconsist
 | GET | `/api/health/ready` | Só rede interna: verifica o banco (healthcheck do Docker) |
 | POST | `/api/session/demo` | Cria usuário demo e sessão (ou reutiliza a existente) |
 | DELETE | `/api/session` | Encerra a sessão |
+| DELETE | `/api/me` | Apaga os dados da pessoa da sessão e encerra a sessão (D19, LGPD) |
 | GET | `/api/moods` | Catálogo de estados ativos |
 | POST | `/api/checkins` | Cria check-in `{moodSlug, timezone}` (R1) |
 | GET | `/api/checkins?cursor=` | 10 por página, mais recentes primeiro (R7) |

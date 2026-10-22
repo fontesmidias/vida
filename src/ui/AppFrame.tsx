@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { ToastProvider } from "./feedback";
 import { BackIcon, HeartIcon, LeafIcon, MoonIcon, PathIcon, PhoneIcon, SunIcon, SupportIcon } from "./icons";
 import { activeTab, parentOf, TABS } from "./navigation";
+import { Overlay } from "./Overlay";
 
 const TAB_ICONS: Record<string, React.ReactNode> = {
   "/hoje": <SunIcon size={24} />,
@@ -87,6 +88,7 @@ export function SupportButton() {
         Apoio
       </button>
       {open && (
+        <Overlay>
         <div className="scrim" onClick={() => setOpen(false)}>
           <div
             className="sheet"
@@ -109,6 +111,7 @@ export function SupportButton() {
             </button>
           </div>
         </div>
+        </Overlay>
       )}
     </>
   );

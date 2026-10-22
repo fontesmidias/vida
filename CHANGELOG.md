@@ -3,11 +3,16 @@
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/); versões seguem [SemVer](https://semver.org/lang/pt-BR/).
 
 ## [Não lançado]
+### Corrigido
+- Painéis (Apoio, apagar dados) e celebração de fim de plano apareciam presos à área da tela, por baixo do conteúdo: a animação de entrada deixava um `transform` ativo. Agora as camadas são renderizadas no `body` e há E2E que mede a cobertura da janela.
+- Respostas 204 (sem corpo) eram tratadas como erro pelo cliente da API.
+
 ### Adicionado
 - CI no GitHub (`Verificar`): lint, tipos, testes de unidade, E2E com Postgres em Chrome e Safari, gitleaks no histórico inteiro.
 - Deploy na VPS: Dockerfile em 3 estágios (usuário sem root, healthcheck no banco), `deploy/stack.yml`, `scripts/deploy.sh` com portão de CI e backup pré-deploy (D24), site no Nginx atrás do Cloudflare (D22/D23). Demo pública em https://vida.fontesmidias.com.br.
 - `GET /api/health/ready` (S7), bloqueado fora da VPS.
 - Backup diário do banco na VPS (`deploy/backup/`, 03:15 UTC, retenção de 14 dias, integridade conferida) e restauração provada em banco temporário pelo `check-pronto.sh`; manual de operação em `docs/OPERACAO.md`.
+- "Apagar meus dados" na Jornada (D19, LGPD): confirmação explícita, exclusão em transação só do userId da sessão, sessão encerrada; `DELETE /api/me`; E2E nos dois navegadores.
 - Limite de requisições na aplicação (S6): sessão demo 10/min por IP, escritas 30/min; 429 com `Retry-After` e mensagem acolhedora.
 
 ## [0.2.0] - 2026-10-22

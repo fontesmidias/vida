@@ -6,6 +6,7 @@ import { useState } from "react";
 import { api, ApiError, useApi } from "@/src/ui/api";
 import { ErrorView, Loading, useToast } from "@/src/ui/feedback";
 import { CheckIcon, LeafIcon } from "@/src/ui/icons";
+import { Overlay } from "@/src/ui/Overlay";
 import type { PlanDetail } from "@/src/ui/types";
 
 // R4: concluir de novo não muda nada; o último dia abre a celebração
@@ -79,6 +80,7 @@ export default function DiaPage() {
 
 function Celebration({ title }: { title: string }) {
   return (
+    <Overlay>
     <div className="celebrate" role="dialog" aria-modal="true" aria-labelledby="t-cel">
       <div className="cel-art" aria-hidden="true">
         <span className="c1" />
@@ -99,5 +101,6 @@ function Celebration({ title }: { title: string }) {
         </Link>
       </div>
     </div>
+    </Overlay>
   );
 }

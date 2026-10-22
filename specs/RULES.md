@@ -10,7 +10,7 @@
 - **R4 — Conclusão idempotente.** Concluir um dia de plano já concluído não duplica registro nem gera erro.
 - **R5 — Ordem livre, próximo sugerido.** Qualquer dia de um plano pode ser concluído em qualquer ordem. A interface destaca o primeiro dia não concluído como "próximo sugerido".
 - **R6 — Progresso cumulativo e positivo.** O progresso é apresentado como conquista ("3 de 7 dias concluídos" + indicadores preenchidos), nunca como falta. Progresso nunca regride; não existem sequências (streaks) que zeram por ausência.
-- **R7 — Histórico preservado.** Check-ins e conclusões são registros *append-only*: a aplicação nunca os altera nem apaga. Minha Jornada exibe os 10 mais recentes e permite carregar mais (paginação). Exclusão só por solicitação do titular (LGPD; ver ROADMAP).
+- **R7 — Histórico preservado.** Check-ins e conclusões são registros *append-only*: a aplicação nunca os altera nem apaga. Minha Jornada exibe os 10 mais recentes e permite carregar mais (paginação). Exclusão só por solicitação do titular (LGPD, D19): "Apagar meus dados" na Jornada remove check-ins, conclusões e a pessoa, numa transação, e encerra a sessão.
 
 ## Segurança (detalhes em `specs/SECURITY.md`)
 - **S1 — Defesa em camadas.** Proteções independentes em borda (Nginx), aplicação, dados e infraestrutura; a falha de uma não abre as outras. Princípio de bloqueio por padrão: só passa o que é explicitamente permitido.

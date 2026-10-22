@@ -8,7 +8,7 @@ Ideias fora do escopo desta entrega. Nenhuma ideia é descartada: ela entra aqui
 | Modo guiado (dias sequenciais bloqueados) como opção do plano | Discussão de R5 | Gera atrito; só faz sentido para planos cuja didática dependa de ordem |
 | Regras de WAF personalizadas e bot management no Cloudflare | SECURITY.md | Proxy básico já ativo; regras finas exigem tráfego real para calibrar |
 | Conta real (e-mail/magic link) e vínculo do usuário anônimo | S4 | Sem isso, apagar o cookie perde o acesso ao histórico |
-| Exportação e exclusão de dados pelo titular | R7 / LGPD | Direitos do titular em produção |
+| Exportação dos dados pelo titular (portabilidade) | R7 / LGPD | A exclusão já existe (D19); exportar exige definir formato e autenticação forte |
 | Consentimento LGPD específico para dado sensível | SECURITY.md | Obrigatório com usuários reais |
 | Chat com IA e RAG com pgvector | Pergunta 6 do desafio | Fora do escopo obrigatório; exige guardrails e aviso de não aconselhamento |
 | Assinatura via Kiwify (webhooks + controle de acesso) | Pergunta 6 do desafio | Fora do escopo obrigatório |

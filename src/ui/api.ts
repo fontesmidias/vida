@@ -35,6 +35,8 @@ export async function api<T>(path: string, init?: RequestInit): Promise<T> {
     const body = await res.json().catch(() => null);
     throw new ApiError(res.status, typeof body?.error === "string" ? body.error : GENERIC);
   }
+  // 204: sucesso sem corpo (ex.: apagar dados, encerrar sessão)
+  if (res.status === 204) return undefined as T;
   return (await res.json()) as T;
 }
 

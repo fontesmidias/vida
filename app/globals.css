@@ -23,6 +23,8 @@
   --scrim: rgba(31, 42, 39, 0.32);
   --toast-bg: #1f2a27;
   --toast-fg: #f6f5f1;
+  --danger: #9b4a3c;
+  --on-danger: #ffffff;
   /* U12: a barra inferior reserva o próprio espaço */
   --nav-h: 80px;
   --safe-b: env(safe-area-inset-bottom, 0px);
@@ -53,6 +55,8 @@
     --scrim: rgba(0, 0, 0, 0.5);
     --toast-bg: #e7eeea;
     --toast-fg: #121816;
+    --danger: #e3a296;
+    --on-danger: #1f120f;
     color-scheme: dark;
   }
 }
@@ -79,6 +83,8 @@
   --scrim: rgba(0, 0, 0, 0.5);
   --toast-bg: #e7eeea;
   --toast-fg: #121816;
+  --danger: #e3a296;
+  --on-danger: #1f120f;
   color-scheme: dark;
 }
 
@@ -194,7 +200,8 @@ a {
     display: flex;
     flex-direction: column;
     gap: 18px;
-    animation: enter 0.34s cubic-bezier(0.2, 0.75, 0.25, 1) both;
+    /* backwards: depois de terminar não deixa transform ativo (que prenderia camadas fixed dentro da tela) */
+    animation: enter 0.34s cubic-bezier(0.2, 0.75, 0.25, 1) backwards;
   }
   .eyebrow {
     margin: 0;
@@ -322,6 +329,10 @@ a {
   .btn.ghost {
     background: var(--accent-soft);
     color: var(--on-soft);
+  }
+  .btn.danger {
+    background: var(--danger);
+    color: var(--on-danger);
   }
   .btn.quiet {
     background: transparent;
