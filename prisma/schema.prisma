@@ -20,12 +20,11 @@ model User {
   @@map("users")
 }
 
-// D6: estados em tabela, agrupados em famílias de conteúdo (R3)
+// D6: estados em tabela, agrupados em famílias de conteúdo (R3). D15: sem emoji; o ícone é desenhado pela interface a partir do slug
 model Mood {
   id        Int     @id @default(autoincrement())
   slug      String  @unique
   label     String
-  emoji     String
   family    String
   sortOrder Int     @map("sort_order")
   active    Boolean @default(true)
@@ -61,6 +60,8 @@ model DailyContent {
   practiceTitle   String @map("practice_title")
   practiceBody    String @map("practice_body")
   practiceMinutes Int    @map("practice_minutes")
+  // D17: como a prática é guiada na tela (breath | heart | tiny | three)
+  practiceKind    String @default("breath") @map("practice_kind")
 
   @@map("daily_contents")
 }

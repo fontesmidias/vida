@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { dailyContents, moods, NEUTRAL_FAMILY, plans } from "@/prisma/seed-data";
+import { dailyContents, moods, NEUTRAL_FAMILY, plans, PRACTICE_KINDS } from "@/prisma/seed-data";
 
 describe("catálogo de estados (D11)", () => {
   it("tem 8 estados em 4 famílias, 2 por família", () => {
@@ -14,6 +14,13 @@ describe("catálogo de estados (D11)", () => {
     expect(new Set(moods.map((m) => m.sortOrder)).size).toBe(moods.length);
   });
 
+  it("não usa emoji (D15)", () => {
+    for (const m of moods) {
+      expect(m).not.toHaveProperty("emoji");
+      expect(m.label).not.toMatch(/\p{Extended_Pictographic}/u);
+    }
+  });
+
   it("inclui o exemplo do desafio (ansioso)", () => {
     expect(moods.some((m) => m.slug === "ansioso")).toBe(true);
   });
@@ -25,6 +32,17 @@ describe("conteúdo do dia (R3)", () => {
     const comConteudo = dailyContents.map((c) => c.family);
     expect(new Set(comConteudo).size).toBe(comConteudo.length);
     expect(new Set(comConteudo)).toEqual(new Set([...familias, NEUTRAL_FAMILY]));
+  });
+
+  it("toda prática tem um tipo guiado conhecido (D17)", () => {
+    for (const c of dailyContents) expect(PRACTICE_KINDS).toContain(c.practiceKind);
+  });
+
+  it("reflexão é curta: uma frase e uma linha (U8)", () => {
+    for (const c of dailyContents) {
+      expect(c.reflectionTitle.length).toBeLessThanOrEqual(60);
+      expect(c.reflectionBody.length).toBeLessThanOrEqual(80);
+    }
   });
 
   it("práticas são curtas (até 10 minutos)", () => {

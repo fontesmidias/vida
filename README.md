@@ -33,6 +33,14 @@ Gerar um `SESSION_SECRET`: `node -e "console.log(require('crypto').randomBytes(4
 ## Banco de dados
 - O esquema fica em `prisma/schema.prisma`; cada mudança gera uma migration em `prisma/migrations/` (`npx prisma migrate dev --name <nome>`). Migrations já aplicadas nunca são editadas.
 - O conteúdo de demonstração fica em `prisma/seed-data.ts`, coberto por testes (D11, R3, C1, C2). O seed é idempotente: pode rodar de novo sem duplicar e nunca toca em dados de usuário.
+- Migration que **apaga dados** (ex.: remover coluna): o `migrate dev` pede confirmação interativa. Em terminal não interativo, gere o SQL, revise e aplique:
+  ```bash
+  docker compose exec db psql -U vida -d vida -c "create database vida_shadow;"
+  mkdir prisma/migrations/<AAAAMMDDHHMMSS>_<nome>
+  npx prisma migrate diff --from-migrations prisma/migrations --to-schema-datamodel prisma/schema.prisma     --shadow-database-url "postgresql://vida:<senha>@localhost:5433/vida_shadow" --script > prisma/migrations/<pasta>/migration.sql
+  npx prisma migrate deploy && npx prisma generate
+  docker compose exec db psql -U vida -d vida -c "drop database vida_shadow;"
+  ```
 - Inspecionar o banco: `npx prisma studio` ou `docker compose exec db psql -U vida -d vida`.
 
 ## Verificações (obrigatórias antes de cada commit)

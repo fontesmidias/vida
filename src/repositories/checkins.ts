@@ -10,7 +10,7 @@ export function checkinsRepository(db: PrismaClient): CheckinRepository {
     findActiveMoodBySlug: (slug) =>
       db.mood.findFirst({
         where: { slug, active: true },
-        select: { id: true, slug: true, label: true, emoji: true, family: true },
+        select: { id: true, slug: true, label: true, family: true },
       }),
     create: async ({ localDate, ...data }) => {
       const c = await db.checkin.create({

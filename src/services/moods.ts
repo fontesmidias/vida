@@ -1,4 +1,4 @@
-export type MoodOption = { slug: string; label: string; emoji: string };
+export type MoodOption = { slug: string; label: string; family: string };
 
 export interface MoodRepository {
   listActive(): Promise<MoodOption[]>;

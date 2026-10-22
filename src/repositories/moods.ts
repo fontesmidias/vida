@@ -7,7 +7,7 @@ export function moodsRepository(db: PrismaClient): MoodRepository {
       db.mood.findMany({
         where: { active: true },
         orderBy: { sortOrder: "asc" },
-        select: { slug: true, label: true, emoji: true },
+        select: { slug: true, label: true, family: true },
       }),
   };
 }

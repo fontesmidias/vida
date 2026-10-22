@@ -34,7 +34,7 @@ describe("data local (R1)", () => {
 });
 
 describe("criar check-in (R1)", () => {
-  const mood = { id: 1, slug: "ansioso", label: "Com ansiedade", emoji: "😰", family: "agitado" };
+  const mood = { id: 1, slug: "ansioso", label: "Com ansiedade", family: "agitado" };
 
   function fakeRepo(): CheckinRepository {
     return {
@@ -55,7 +55,7 @@ describe("criar check-in (R1)", () => {
       timezone: "America/Sao_Paulo",
       localDate: "2026-10-21",
     });
-    expect(r).toEqual({ id: "c1", createdAt: now, localDate: "2026-10-21", mood: { slug: "ansioso", label: "Com ansiedade", emoji: "😰" } });
+    expect(r).toEqual({ id: "c1", createdAt: now, localDate: "2026-10-21", mood: { slug: "ansioso", label: "Com ansiedade", family: "agitado" } });
   });
 
   it("fuso inválido cai no padrão em vez de falhar", async () => {
