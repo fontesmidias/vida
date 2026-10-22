@@ -24,10 +24,12 @@ PRONTO: 1/12
 ## Aprovações
 | Categoria | Status |
 |---|---|
-| DNS `vida` no Cloudflare | pendente |
-| Site `vida` no Nginx + certificado | pendente |
-| Stack `vida` no Portainer | pendente |
-| Exceção à R7 para exclusão de dados (LGPD) | pendente |
+| DNS `vida` no Cloudflare | **aprovado** pelo responsável em 2026-10-22 |
+| Site `vida` no Nginx + certificado | **aprovado** pelo responsável em 2026-10-22 |
+| Stack `vida` no Portainer | **aprovado** pelo responsável em 2026-10-22 |
+| Exceção à R7 para exclusão de dados (LGPD) | **aprovado** pelo responsável em 2026-10-22 (D19) |
+
+Escopo das aprovações: valem só para os recursos do VIDA (registro `vida.fontesmidias.com.br`, site `vida` no Nginx, stack `vida`). Os guardrails do "Nunca" continuam valendo: nada de outro site, stack, DNS ou container; nada de firewall ou Nginx global; `nginx -t` antes de todo reload.
 
 ## Histórico
 | Volta | Item | Mudança | Commit | Placar depois |
