@@ -1,0 +1,48 @@
+# Stack "vida" no Portainer (D24). Publicada por scripts/deploy.sh.
+# Segredos (POSTGRES_PASSWORD, SESSION_SECRET) e a versão (IMAGE_TAG) vêm das variáveis da stack,
+# nunca deste arquivo (S3).
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: vida
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?defina na stack}
+      POSTGRES_DB: vida
+    volumes:
+      - vida_pgdata:/var/lib/postgresql/data
+    networks: [interna]
+    # Sem "ports": o banco só existe na rede interna da stack
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vida -d vida"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    logging: &logs
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }
+
+  app:
+    # Imagem construída na própria VPS a partir do commit da main com CI verde
+    image: vida-app:${IMAGE_TAG:?defina na stack}
+    pull_policy: never
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://vida:${POSTGRES_PASSWORD}@db:5432/vida?schema=public
+      SESSION_SECRET: ${SESSION_SECRET:?defina na stack}
+    # Só o Nginx do host alcança o app (mesma regra dos outros sites da VPS)
+    ports:
+      - "127.0.0.1:8097:3000"
+    networks: [interna]
+    mem_limit: 768m
+    logging: *logs
+
+volumes:
+  vida_pgdata:
+    name: vida_pgdata
+
+networks:
+  interna:
