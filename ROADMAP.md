@@ -16,6 +16,7 @@ Ideias fora do escopo desta entrega. Nenhuma ideia é descartada: ela entra aqui
 | Painel administrativo de conteúdos e planos | Produto | Fora do escopo obrigatório; hoje o conteúdo vem do seed |
 | Música ambiente (lofi/calma) com ícone discreto | Teste do protótipo | Fora do escopo do desafio. Requisitos: **desligada por padrão e nunca uma surpresa**; só toca quando a pessoa escolher tocar no ícone; começa em volume baixo; controle de volume, pausa e escolha de faixa sempre visíveis; lembrar a preferência; só faixas com licença livre (CC0 ou royalty-free) com atribuição exibida |
 | Usuário do banco só com as permissões do app, separado do dono que roda as migrations | SECURITY.md (camada de dados) | O banco já fica isolado na rede interna da stack; separar papéis exige script de inicialização do Postgres e testes de permissão |
+| Criptografia em repouso (volume do banco e backups cifrados) | DECISOES.md, pergunta 3 | Dados de demonstração hoje; com dado de saúde real, obrigatória junto com a conta pessoal |
 | Cópia externa dos backups (outro provedor ou bucket S3) | docs/OPERACAO.md | Hoje o backup diário fica na própria VPS; protege contra erro e corrupção, não contra perda da máquina |
 | App nativo (iOS/Android) | Fora do escopo do desafio | A API REST já pode ser consumida por um app; o web app mobile-first atende a demonstração |
 | Rate limit também no Nginx (`limit_req`/`limit_conn`) | specs/SECURITY.md | Exige declarar zonas em arquivo de escopo global do Nginx da VPS compartilhada; hoje: Cloudflare na borda + limite na aplicação |

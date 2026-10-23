@@ -1,56 +1,57 @@
 # Veredito: DECISOES.md
 
-Data: 2026-10-22
-Rubrica: `loops/rubrica-entrega.md`, seção A. Avaliado do zero, sem consultar vereditos anteriores.
+Data: 2026-10-23
+Revisor: subagente independente, contexto limpo. Rubrica: `loops/rubrica-entrega.md`, seção A. Perguntas conferidas no PDF do desafio ("Perguntas técnicas obrigatórias", "Transparência sobre IA", "Identidade").
 
 ## A1. Completo: APROVADO
-Os títulos `## 1.` a `## 7.` reproduzem literalmente as perguntas do PDF ("Perguntas técnicas obrigatórias"), por exemplo `## 4. Operação: como faria deploy, observaria erros e recuperaria um serviço que parou?` e `## 7. Decisões: o que você deliberadamente deixou de fora e por quê? Onde usou IA no desenvolvimento?`.
+Os títulos `## 1.` a `## 7.` existem e reproduzem o texto das perguntas do PDF (ex.: "## 4. Operação: como faria deploy, observaria erros e recuperaria um serviço que parou?").
 
 ## A2. Responde o que foi perguntado: APROVADO
-- 1: o porquê da stack (D1, D2) e a comunicação em camadas (telas, rotas, services, repositories, produção).
-- 2: tabelas, mais as três subperguntas (usuários diferentes, check-ins, evolução nos planos).
-- 3: o que já existe e uma lista numerada do que "mudaria" para dados reais.
-- 4: tem deploy, observação de erros e recuperação, cada um como item próprio.
-- 5: três prioridades numeradas.
-- 6: IA com segurança, Kiwify/webhooks e controle de acesso (`entitlements` no servidor).
-- 7: o que ficou de fora com o motivo, e "Uso de IA".
+- 1: motivo da stack (D1, D2) e a comunicação em 4 camadas.
+- 2: as tabelas, mais usuários diferentes, check-ins e evolução nos planos.
+- 3: o que já existe e 5 mudanças para dados reais (LGPD).
+- 4: deploy, observar erros e recuperar, cada um com seu item.
+- 6: IA, webhooks Kiwify e controle de acesso (`entitlements` no servidor).
+- 7: o que ficou de fora com o motivo, mais o uso de IA.
 
 ## A3. Ancorado no projeto: APROVADO
-Toda resposta aponta para coisas verificáveis: `src/ui/api.ts`, `app/api/**/route.ts`, `src/services/`, `src/repositories/`, `deploy/stack.yml`, `deploy/nginx/vida.conf`, `prisma/schema.prisma`, `tests/unit/today.test.ts`, o E2E "S2: uma pessoa não vê os dados de outra", `scripts/deploy.sh`, `.github/workflows/ci.yml`, `docs/OPERACAO.md`, `scripts/check-pronto.sh` item 8, `ROADMAP.md`, além das regras R/S/C/U e das decisões D. As partes de futuro (3, 5, 6) também se apoiam no projeto: padrão do R4 para a idempotência, pgvector na imagem, D6, ROADMAP.
+Cada resposta cita arquivos e IDs que existem e conferem:
+- `src/ui/api.ts`, `deploy/stack.yml`, `deploy/nginx/vida.conf`, `scripts/deploy.sh`, `scripts/check-pronto.sh`.
+- `tests/integration/journey.test.ts`, `tests/unit/today.test.ts` (caso Tóquio/São Paulo) e o E2E "S2: uma pessoa não vê os dados de outra" em `tests/e2e/fluxo-principal.spec.ts:158`.
+- Regras R1–R8, S2/S4/S6/S8 e decisões D4, D6, D19, D23, D24, D26 e D27.
 
 ## A4. Objetivo: APROVADO
-As respostas são diretas, em tabela ou listas curtas. Não há enchimento nem marketing. O texto é denso, mas cada frase traz um fato ou uma referência.
+As respostas são diretas, em listas curtas e tabela, sem marketing.
 
-## A5. Honesto: APROVADO
-Conferi no repositório:
-- **Rotas:** `app/api/*` existe. Os services não importam `next/*` (grep vazio).
-- **Tabelas:** são 7 em `prisma/schema.prisma`, com os índices `(userId, createdAt desc)` e `(userId, localDate)` e os únicos `(planId, dayNumber)` e `(userId, planDayId)`. As relações usam `onDelete: Restrict`.
-- **Idempotência:** `createMany(... skipDuplicates: true)` em `src/repositories/plans.ts`.
-- **Exclusão (D19):** a exclusão acontece numa `$transaction` que apaga conclusões, check-ins e a pessoa (`src/repositories/delete-data.ts`).
-- **Testes citados:** `today.test.ts` cobre São Paulo 21/10 e Tóquio 22/10. O E2E S2 com duas sessões está em `tests/e2e/fluxo-principal.spec.ts:140`.
-- **Nginx:** só aceita as faixas do Cloudflare e tem `deny all` (403). Traz HSTS, X-Frame-Options e CSP, e `/api/health/ready` tem `deny all`.
-- **Stack (`deploy/stack.yml`):** o banco não tem `ports`, o app está em `127.0.0.1:8097`, `restart: unless-stopped`, `depends_on: service_healthy`, log json-file 10m×3 e volume `vida_pgdata`. A imagem `pgvector/pgvector:pg16` não tem nenhuma migration que habilite vector, como o texto diz.
-- **Dockerfile:** `USER node`. O HEALTHCHECK consulta `/api/health/ready`.
-- **Recuperação:** o texto diz certo que o healthcheck só marca `unhealthy` e não reinicia no Docker standalone, e que o reinício automático está no ROADMAP.
-- **Subida do container:** `docker-entrypoint.sh` roda `prisma migrate deploy` e depois o seed.
-- **`scripts/deploy.sh`:** recusa CI não verde, faz backup antes do deploy, constrói via `git archive` e atualiza a stack pelo Portainer com `IMAGE_TAG`.
-- **CI:** lint, tipos, unit, E2E chromium+webkit e gitleaks com `fetch-depth: 0`. Os perfis do Playwright são Pixel 7 e iPhone 13.
-- **`docs/OPERACAO.md`:** backup diário, retenção de 14 dias e restauração em banco temporário no item 8 do `check-pronto.sh`.
-- **Logs:** os erros saem com contexto (`src/lib/http.ts`: `console.error(\`[${context}]\`)`).
-- **Itens "pendentes"/futuros:** usuário do banco com permissão mínima, rate limit no Nginx, backup externo, Sentry/uptime, conta real, consentimento, exportação, IA e Kiwify estão marcados como pendentes ou ROADMAP, e todos aparecem em `ROADMAP.md` e em `specs/SECURITY.md`.
+## A5. Honesto: REPROVADO
+Conferi no código e nas specs as afirmações sobre comportamento, e todas têm respaldo:
+- **Banco:** 8 tabelas e os índices `(user_id, created_at desc)`, `(user_id, local_date)` e o único `(user_id, plan_day_id, cycle)` (schema e migration `20261023073401_contas_e_ciclos`).
+- **Idempotência e exclusão:** `createMany(skipDuplicates)` em `src/repositories/plans.ts:42`. A exclusão roda numa transação e mantém a conta (`src/repositories/delete-data.ts`).
+- **Senha e login:** scrypt com `timingSafeEqual` (`src/lib/password.ts`). A mensagem de erro de login é a mesma para conta inexistente e senha errada. O cookie é `httpOnly`, `sameSite=lax` e `secure`.
+- **Borda e container:** Nginx com allowlist do Cloudflare, `deny all`, CSP, HSTS e X-Frame-Options. `/api/health/ready` é bloqueado no Nginx. O container usa `USER node`.
+- **Stack:** porta `127.0.0.1:8097`, `restart: unless-stopped`, logs 10m×3, `depends_on service_healthy`, volume `vida_pgdata`.
+- **Deploy:** `deploy.sh` faz gate de CI, backup, `git archive` e Portainer. Na subida, o entrypoint roda `migrate deploy` e o seed.
+- **Backup:** diário com `gunzip -t` e retenção de 14 dias. A restauração é provada no item 8 do `check-pronto.sh`.
+- **CI:** Chromium e WebKit (Pixel 7 e iPhone 13) e gitleaks com `fetch-depth: 0`.
+- **Futuro:** a imagem pgvector existe sem migration que habilite a extensão. O que é plano futuro está marcado e consta do `ROADMAP.md`.
 
-Não encontrei afirmação sem respaldo.
+Há porém uma afirmação falsa sobre o repositório, na linha 3: "Regras citadas por ID (R1–R7, S1–S7, C1–C4, U1–U13) ... decisões (D1–D24) em `specs/DECISIONS_LOG.md`".
+- `specs/RULES.md` tem R8 e S8, e o log vai até D28.
+- O próprio documento cita R8, S8, D26 e D27, fora das faixas que anuncia.
+
+Ponto menor: na pergunta 3, item 3, o "(ROADMAP)" vem logo depois de "Criptografia em repouso", mas o `ROADMAP.md` só registra a cópia externa dos backups, não a criptografia em repouso.
 
 ## A6. Tom (C1, C4): APROVADO
-Nada promete diagnóstico, terapia ou cura. A pergunta 6 reforça C1 nos guardrails e o aviso de "não é aconselhamento profissional". A linguagem é neutra: "pessoa visitante", "pessoa responsável pelo projeto", "a pessoa". As únicas formas no masculino ("usuários reais", "diferentes usuários") são citação literal das perguntas do PDF, o que é aceito.
+- Nenhuma promessa de diagnóstico, terapia ou cura. A IA aparece com a C1 como guardrail e com o aviso "não é aconselhamento profissional".
+- O texto usa formas neutras: "pessoa responsável", "a pessoa", "pessoas reais". "Usuários" aparece só no eco do texto do PDF; `avaliador1`–`avaliador3` são identificadores.
 
 ## A7. Transparência sobre IA: APROVADO
-- **Ferramenta:** "Claude Code (modelo Claude Opus), no VS Code".
-- **Etapas:** specs, código e testes, protótipo visual, infraestrutura (Docker, Nginx, DNS/SSL Cloudflare) e documentação.
-- **O que a pessoa fez:** definiu escopo e regras (C4, D18, D16, D15, D17), testou o protótipo, pediu mudanças e aprovou cada decisão e cada ação na infraestrutura.
-- **Validação:** testes, CI com gitleaks, `check-pronto.sh` e revisor com rubrica (`loops/`).
+- **Ferramentas:** "Claude Code (modelo Claude Opus), no VS Code".
+- **Etapas:** specs, código e testes, protótipo visual, infraestrutura e documentação.
+- **Revisão pessoal:** a pessoa responsável definiu escopo e regras, testou o protótipo e pediu mudanças, e aprovou cada decisão e cada ação na infraestrutura.
 
 ## Correções necessárias
-Nenhuma.
+1. Linha 3: atualizar as faixas para R1–R8, S1–S8 e D1–D28, ou retirar as faixas e deixar só a indicação dos arquivos.
+2. Pergunta 3, item 3: deixar claro que só a cópia externa dos backups está no ROADMAP, ou registrar a criptografia em repouso no `ROADMAP.md`.
 
-VEREDITO: APROVADO
+VEREDITO: REPROVADO

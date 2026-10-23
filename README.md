@@ -44,7 +44,7 @@ Next.js 15 (App Router) + TypeScript + Tailwind · Zod · iron-session · Prisma
 app/(app)/            telas internas: hoje, check-in, pratica, planos, planos/[slug]/dia/[n], jornada
 app/page.tsx          Entrada
 app/api/**/route.ts   HTTP: sessão, validação Zod, rate limit, mapeamento de erros
-src/services/         regras de negócio (R1–R7), sem dependência de Next
+src/services/         regras de negócio (R1–R8), sem dependência de Next
 src/repositories/     acesso a dados via Prisma, sempre com userId explícito
 src/validation/       esquemas Zod da entrada
 src/lib/              sessão, ambiente, http, rate limit
@@ -136,12 +136,12 @@ Caminho de uma requisição: Cloudflare (proxy, SSL full strict só neste host, 
 | [`docs/apresentacao.html`](docs/apresentacao.html) | Apresentação do projeto: roteiro, arquitetura, dados, segurança e as 7 respostas em resumo |
 | [`docs/ROTEIRO_VIDEO.md`](docs/ROTEIRO_VIDEO.md) | Roteiro do vídeo de até 5 minutos |
 | `specs/PRD.md` | O que o produto faz e para quem |
-| `specs/RULES.md` | Regras com IDs (R1–R7, S1–S7, C1–C4, P1–P3), citadas em testes e commits |
+| `specs/RULES.md` | Regras com IDs (R1–R8, S1–S8, C1–C4, P1–P3), citadas em testes e commits |
 | `specs/ARCHITECTURE.md` | Camadas, modelo de dados, API e erros |
 | `specs/SECURITY.md` | Segurança em camadas, da borda ao banco |
 | `specs/UI_UX_SPEC.md` | Princípios de interface (U1–U13), telas, estados e tratamento de erros |
 | `specs/TECH_STACK.md` | Tecnologias e por que foram escolhidas |
-| `specs/DECISIONS_LOG.md` | Decisões consolidadas (D1–D25) |
+| `specs/DECISIONS_LOG.md` | Decisões consolidadas (D1–D28) |
 | `docs/OPERACAO.md` | Operação: logs, recuperação, backup e restauração |
 | `CHANGELOG.md` / `ROADMAP.md` | O que mudou em cada versão / ideias para depois, com o motivo |
 | `loops/` | Como a entrega foi conduzida: meta, check, estado e rubrica do revisor |

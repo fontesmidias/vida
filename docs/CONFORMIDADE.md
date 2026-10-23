@@ -81,7 +81,7 @@ Regra do PDF respeitada: extras só depois do obrigatório funcionando. A ordem 
 | Apagar meus dados | Direito do titular na LGPD (D19) | `DELETE /api/me`; E2E "LGPD" |
 | Hoje pelo fuso do dispositivo, com viagens | O dia é o da pessoa (R1, R2) | `src/services/checkins.ts`, `src/services/today.ts` |
 | Ícones próprios, sigla VIDA, tema claro e escuro, linguagem neutra | Identidade e acessibilidade (D15, D18, C4) | `src/ui/MoodIcon.tsx`, `app/globals.css` |
-| Segurança em camadas: Cloudflare, Nginx só para o Cloudflare, rate limit, CSP | S1–S7, D22, D23 | `specs/SECURITY.md`, `deploy/nginx/vida.conf` |
+| Segurança em camadas: Cloudflare, Nginx só para o Cloudflare, rate limit, CSP | S1–S8, D22, D23 | `specs/SECURITY.md`, `deploy/nginx/vida.conf` |
 | Deploy com portão de CI e backup diário com restauração provada | Operação confiável | `scripts/deploy.sh`, `docs/OPERACAO.md` |
 | E2E em dois motores, contra a demo pública | Prova real, não só local | `scripts/check-pronto.sh` |
 | Documentos revisados por revisor independente com rubrica fixa | Honestidade da entrega | `loops/` |
