@@ -2,6 +2,10 @@
 
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/); versões seguem [SemVer](https://semver.org/lang/pt-BR/).
 
+## [1.1.1] - 2026-10-23
+### Corrigido
+- Teste E2E da R8 abria a Entrada enquanto o "Sair" ainda navegava, e as navegações colidiam no CI. O CI da v1.1.0 falhou por isso e a v1.1.0 **não foi publicada em produção** (o deploy recusa commit sem CI verde); a v1.1.1 tem o mesmo app, com o teste corrigido.
+
 ## [1.1.0] - 2026-10-23
 ### Adicionado
 - Contas de demonstração (D26, S8): `avaliador1`–`avaliador3` com senha visível na Entrada e no README; senha em hash scrypt, comparação em tempo constante, erro genérico e limite de tentativas por IP. Contas `e2e1`–`e2e3` reservadas aos testes automáticos.
