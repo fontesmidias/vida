@@ -25,3 +25,10 @@ Uma mudança por vez; commits pequenos no padrão Conventional Commits (`feat:`,
 - `npm run dev` — app em http://localhost:3000
 - `npx prisma migrate dev --name <nome>` — nova migration
 - `npm test` / `npm run test:e2e`
+
+## Economia de esforço (limites de uso baixos)
+- **Modelo por tarefa:** busca, leitura longa e resumo em subagente `haiku`/Explore; revisão com rubrica em `sonnet`; o agente principal fica com decisão, arquitetura, segurança e código crítico.
+- **Verificação proporcional:** durante o trabalho, só o teste do que mudou; suíte completa + E2E antes do merge; `scripts/check-pronto.sh` completo só na release. Mudança só em documento não exige E2E nem deploy.
+- **Revisores** só para documento que mudou; juntar as correções antes de pedir nova rodada.
+- **Não perder trabalho:** commit e `loops/pronto-estado.md` atualizados a cada etapa concluída.
+- Comandos longos em segundo plano; nunca encadear ação crítica depois de pipe (`cmd | tail && próximo` esconde a falha).
