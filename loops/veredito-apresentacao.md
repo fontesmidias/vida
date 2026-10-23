@@ -1,55 +1,52 @@
-# Veredito: docs/apresentacao.html (rubrica seção B)
+# Veredito: docs/apresentacao.html
 
 Data: 2026-10-23
-Revisor: subagente independente, contexto limpo, rubrica `loops/rubrica-entrega.md` (seção B).
+Revisor: subagente independente, contexto limpo, rubrica `loops/rubrica-entrega.md` seção B (e "Como o revisor trabalha"). Fontes: PDF do desafio (6 passos do fluxo, 7 perguntas), repositório na `main` (23f480a).
 
 ## B1. Para o avaliador: APROVADO
-- Abre com o botão "Abrir a demo" (`https://vida.fontesmidias.com.br`), as contas `avaliador1`–`avaliador3` e a senha `vida2026`.
-- Logo depois vem "O fluxo principal em 6 passos". Os passos batem com os 6 do PDF (seção 03): entrar, check-in "Com ansiedade", Hoje coerente, plano e Dia 1 concluído, Jornada, recarregar e conferir a persistência.
+- Abre com o botão "Abrir a demo" (`https://vida.fontesmidias.com.br`), as contas `avaliador1`–`avaliador3` e a senha `vida2026`, logo no primeiro bloco.
+- "O fluxo principal em 6 passos" cobre os 6 passos do PDF: entrar → check-in "Com ansiedade" → Hoje coerente → plano "Respirar com calma", dia 1, "Concluir dia" → Jornada "1 de 5" → recarregar.
 
 ## B2. Cobre o essencial: APROVADO
-- Proposta e sigla: V·I·D·A = Ver, Inspirar, Desacelerar, Avançar (D18).
-- Arquitetura: diagrama SVG (Navegador → Cloudflare → Nginx → App Next.js em camadas → Postgres 16) e uma tabela de stack.
-- Modelo de dados: tabela com as 8 tabelas.
-- Segurança e operação: tabela "Camadas independentes" e as pendências.
-- As 7 respostas: resumidas em `<details>` numerados de 1 a 7, com link `../DECISOES.md`.
+- Sigla VIDA (Ver · Inspirar · Desacelerar · Avançar, D18) e proposta.
+- Arquitetura com diagrama SVG (Navegador → Cloudflare → Nginx → app em camadas → Postgres) e tabela de stack.
+- Modelo de dados (tabela das 8 tabelas), segurança e operação (tabela "Camadas independentes", com linha "Operação" e pendências).
+- As 7 respostas em `<details>` com o mesmo tema das 7 perguntas do PDF e link `../DECISOES.md`.
 
-## B3. Consistente com o repositório: REPROVADO
-Conferido e consistente:
-- **Banco:** 8 tabelas com `@@map` e `onDelete: Restrict` em todas as FKs. Nenhum `ON DELETE CASCADE` nas migrations (só `ON UPDATE CASCADE`). `@@unique([planId, dayNumber])`, `@@unique([userId, planDayId, cycle])`, `journey_resets` e `current_cycle` existem.
-- **Limites:** login 30/min (`session`, usado em `api/session/demo`) e escritas 60/min, com resposta 429 (`src/lib/rate-limit.ts`).
-- **Seed:** contas, senha `vida2026`, 8 estados em 4 famílias, "Com ansiedade" e "Sem ânimo", plano "Respirar com calma" com 5 dias e prática `breath` na família agitado (`prisma/seed-data.ts`).
-- **Infraestrutura:** `127.0.0.1:8097`, `pgvector/pgvector:pg16` sem `ports`, `restart: unless-stopped` (`deploy/stack.yml`). `USER node` e HEALTHCHECK em `/api/health/ready` com `SELECT 1` (`Dockerfile`). Allowlist do Cloudflare com `deny all`, TLS, CSP, HSTS e X-Frame-Options (`deploy/nginx/vida.conf`).
-- **Código e testes:** scrypt (`src/lib/password.ts`); verificação de Origin (`src/lib/http.ts`); Next 15.5, Prisma 6, Zod, iron-session, Tailwind e Vitest (`package.json`); Pixel 7 e iPhone 13 (`playwright.config.ts`); E2E no CI (`.github/workflows/ci.yml`) e contra a demo via `E2E_BASE_URL` (`scripts/check-pronto.sh`).
-- **Faixas de IDs:** D1–D28 (`specs/DECISIONS_LOG.md`), R1–R8 (`specs/RULES.md`) e S2, S4, S5, S6, S8 (`specs/SECURITY.md`).
-- **Pendências:** as três citadas estão no `ROADMAP.md`.
-- **Exemplo de fuso:** 02:30 UTC de 22/10 é 21/10 em São Paulo e 22/10 em Tóquio. Correto.
-- **Rótulos:** "Entrar", "Continuar de onde parou", "Começar do zero", "Fazer check-in", "Começar", "Planos", "Concluir dia", "Jornada", "1 de 5", "Voltar", "Apoio" com 188 e "Apagar meus dados" aparecem em `app/` e `src/ui/`. Botões de 58 px confirmados (`app/globals.css`).
-- **Resumos das 7 respostas:** batem com `DECISOES.md` e `docs/OPERACAO.md`, inclusive o `unhealthy` com reinício manual e o autoheal no ROADMAP.
+## B3. Consistente com o repositório: APROVADO
+Cada frase verificável foi conferida:
+- **Contas e senha:** `avaliador1`–`3` e `DEMO_PASSWORD = "vida2026"` (`prisma/seed-data.ts`). Rótulos "Com ansiedade", "Sem ânimo", 8 estados em 4 famílias (seed, D11). Plano "Respirar com calma" com dia 1 "Perceber a respiração" e 5 dias, daí "1 de 5" (seed; `app/(app)/jornada/page.tsx`). Na tela do plano aparecem o número do dia e o título, o que confere com "dia 1 · Perceber a respiração".
+- **Rótulos de tela:** "Entrar", "Continuar de onde parou", "Começar do zero" (`src/ui/DemoLogin.tsx`); "Fazer check-in" e "Começar" → `/pratica` (`app/(app)/hoje/page.tsx`); prática "Respiração 4-6" da família agitado (seed); "Concluir dia"; "Voltar" no cabeçalho (`src/ui/AppFrame.tsx`); botão Apoio no cabeçalho de todas as telas, inclusive a Entrada e a prática (`Header` em `AppFrame.tsx` e `app/page.tsx`).
+- **E2E:** os 6 passos estão em `tests/e2e/fluxo-principal.spec.ts`. `playwright.config.ts` usa Pixel 7 (Chromium) e iPhone 13 (WebKit) e aceita `E2E_BASE_URL`. A suíte roda no CI (`.github/workflows/ci.yml`) e contra a demo (`scripts/check-pronto.sh`).
+- **Princípios de UX:** zero digitação com exceção da senha, D28 (U1 em `specs/UI_UX_SPEC.md`, D28 no log); botões de 58 px (`.btn { min-height: 58px }`, `app/globals.css`); Voltar visível (U9); verbo em toda ação (U13); área segura (U12); práticas um passo por vez (D17); sem streaks (D8).
+- **Modelo de dados:** as 8 tabelas são `users`, `moods`, `checkins`, `daily_contents`, `plans`, `plan_days`, `plan_day_completions` e `journey_resets` (`@@map` em `prisma/schema.prisma`). Todas as FKs são `ON DELETE RESTRICT` nas 3 migrations: nenhuma exclusão em cascata. Também conferem: `(plan_id, day_number)` único; `(user_id, plan_day_id, cycle)` único (R4); `current_cycle`; `password_hash`; `timezone` e `local_date`; `practice_kind` (D17). O exemplo de fuso está certo: 02:30 UTC de 22/10 é 23:30 de 21/10 em São Paulo e 11:30 de 22/10 em Tóquio.
+- **Segurança:** login 30/min e escritas 60/min, com resposta 429 (`src/lib/rate-limit.ts` aplicado em `app/api/session/demo` e nas 4 rotas de escrita); scrypt (`src/lib/password.ts`); Origin/CSRF (`specs/SECURITY.md`); iron-session sem tabela (S4). No Nginx: `allow` só para faixas do Cloudflare + `deny all` (403); CSP, HSTS e X-Frame-Options (`deploy/nginx/vida.conf`). TLS strict (D23). O banco não publica `ports`, o app fica em `127.0.0.1:8097` e a imagem é `pgvector/pgvector:pg16` (`deploy/stack.yml`). `USER node` e healthcheck em `/api/health/ready` com `SELECT 1` (`Dockerfile`, rota). gitleaks no CI (histórico inteiro).
+- **Operação:** `scripts/deploy.sh` recusa commit sem CI `success` e faz backup pré-deploy. Backup diário com restauração provada no item 8 do check (`docs/OPERACAO.md`). Logs com rotação 10 MB × 3 (`stack.yml`). "Unhealthy" exige reinício manual, e o automático está no ROADMAP.
+- **Pendências:** Nginx `limit_req`, usuário do banco sem privilégio de dono e cópia externa de backups são linhas do `ROADMAP.md`.
+- **Stack:** Next 15.5, Prisma 6, Zod, iron-session, Tailwind 4, Vitest e Playwright (`package.json`). As decisões vão de D1 a D28 (`specs/DECISIONS_LOG.md`).
+- **7 resumos contra `DECISOES.md`:** todos condizem com o texto completo, sem afirmar nada a mais. Q4 condiz com `docs/OPERACAO.md`. Q7 cita o ROADMAP para conta real, chat, Kiwify e música, mais D4, D7 e D8.
+- Observação, sem divergência: os nomes das famílias na legenda ("Agitação", "Baixa energia", "Peso", "Serenidade") são substantivações neutras (C4) das famílias `agitado`, `baixa_energia`, `pesado` e `sereno` (D11). Não são rótulos de tela, e a página não os apresenta como rótulos de tela.
 
-Divergência:
-- A seção Produto afirma, sem ressalva: "Zero digitação, botões de 58 px…". O código tem um campo de senha digitado (`src/ui/DemoLogin.tsx`, `input type="password"`), e a decisão D28 registra isso como "Exceção a U1 (zero digitação): a senha da conta de demonstração é digitada". A frase contradiz a D28, o código e o passo 1 da própria página ("digite a senha").
-
-## B4. Legível em celular e em tela grande; claro e escuro: APROVADO
-- **CSS:** tokens em `:root`, redefinidos em `@media (prefers-color-scheme: dark)` com `:root:not([data-theme="light"])` e em `:root[data-theme="dark"]`. O `body` tem fundo explícito, `.wrap` usa `overflow-x: clip` e as tabelas e o diagrama rolam dentro da própria caixa (`overflow-x: auto`).
-- **Playwright** (Pixel 7/Chromium, iPhone 13/WebKit, 1280 px/Chromium; claro e escuro): `window.scrollTo(500,0)` deixou `scrollX = 0` nos 6 casos, com `scrollWidth` igual à viewport (412, 390, 1280). Nenhum elemento sai da tela fora de uma caixa com rolagem. O fundo e o texto mudam corretamente (claro `rgb(246,245,241)`/`rgb(31,42,39)`; escuro `rgb(18,24,22)`/`rgb(231,238,234)`).
-- **Rolagem interna no celular:** só o diagrama (652 px em 370) e a tabela de arquitetura (423 px em 370) rolam dentro da caixa, o que é aceitável.
-- **Capturas:** `test-results/apresentacao-{pixel7,iphone13,desktop1280}-{light,dark}.png`.
+## B4. Legível em celular e tela grande, claro e escuro: APROVADO
+- **CSS:** tokens em `:root`. O escuro vale em `prefers-color-scheme: dark` (com a guarda `:root:not([data-theme="light"])`) e em `[data-theme="dark"]`. `body` tem fundo explícito. A coluna tem `max-width: 46rem`. O `.wrap` usa `overflow-x: clip` e margens com `env(safe-area-inset-*)`. Tabelas e diagrama rolam dentro da própria caixa (`overflow-x: auto`).
+- **Playwright** em Pixel 7 (Chromium), iPhone 13 (WebKit) e 1280px (Chromium), claro e escuro. Depois de `window.scrollTo(500,0)`, `window.scrollX = 0` nos 6 casos, e `scrollWidth` é igual a `clientWidth` (412/412, 390/390, 1280/1280). Nenhum elemento fora das caixas roláveis passa da viewport.
+- **Fundo e texto:** claro `rgb(246,245,241)`/`rgb(31,42,39)`, escuro `rgb(18,24,22)`/`rgb(231,238,234)`.
+- **Celular:** o diagrama (652px) e a tabela de dados (423px) rolam dentro da caixa, o que a rubrica aceita.
+- **Capturas** em `test-results/apresentacao-*.png`: topo do celular no escuro, seção de dados no claro e arquitetura em 1280px no escuro, todas legíveis e sem sobreposição.
 
 ## B5. Honesto e no tema: APROVADO
-- **Marcação de demonstração (C2):** o selo diz "conteúdo de demonstração" e o rodapé também.
-- **Planos futuros marcados como plano:**
-  - "extensão pgvector disponível para RAG futuro";
+- **Demonstração (C2):** o selo "conteúdo de demonstração" aparece no topo, e o rodapé diz "protótipo para avaliação técnica · conteúdo de demonstração". A página tem o aviso de cuidado (C1/C3) e não promete diagnóstico.
+- **Plano futuro marcado como plano:**
+  - "pgvector disponível para RAG futuro";
   - "API consumível por app nativo no futuro";
-  - a pergunta 3 separa "Já aplicado" de "Para dados reais";
-  - a pergunta 6 começa com "Plano (nada disso está no protótipo)";
-  - o reinício automático aparece como "automático está no ROADMAP";
-  - as pendências são citadas como pendências, com o ROADMAP.
-- **Tom (C1):** não promete diagnóstico nem cura ("Não substitui acompanhamento profissional").
+  - Q3 "Para dados reais: …";
+  - Q5 como prioridades;
+  - Q6 "Plano (nada disso está no protótipo)";
+  - Q4 "automático está no ROADMAP";
+  - "Pendências registradas, sem esconder … (`ROADMAP.md`)".
+- Nada fora do escopo do desafio aparece como feito: chat, Kiwify e música estão como "Fora" na Q7.
 
 ## Correções necessárias
-1. Na seção Produto, troque "Zero digitação" por uma frase que traga a exceção da D28. Exemplo: "Zero digitação depois de entrar (a senha da conta de demonstração é a única exceção, D28)".
+Nenhuma.
 
-Recomendação, não bloqueia: no passo 4, "Dia 1" é o nome acessível do link. Na tela aparecem o número "1" e o título "Perceber a respiração". Pode valer citar o título.
-
-VEREDITO: REPROVADO
+VEREDITO: APROVADO

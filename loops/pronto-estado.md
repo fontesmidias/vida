@@ -40,6 +40,7 @@ Itens 8 (backup) e 9 (exclusão LGPD) antes do 7 (DECISOES): as respostas 3 e 4 
 ## Histórico
 | Volta | Item | Mudança | Commit | Placar depois |
 |---|---|---|---|---|
+| 12 | contas de demonstração (pedido da pessoa responsável) | D26–D28, R8, S8: três contas com senha visível, continuar ou começar do zero sem apagar (ciclos + `journey_resets`), contas e2e para os testes, `reset-demo.sh`. Revisores: roteiro aprovado na 1ª; DECISOES aprovado na 3ª (faixas de IDs, criptografia em repouso no ROADMAP); apresentação aprovada na 3ª (faixas, exceção da senha D28). Versão 1.1.0 | (tag v1.1.0) | ver check final |
 | 11 | regressão 9/12 (cont.) | Mesmo com espera maior, falhas em massa só com vários navegadores em paralelo; máquina com 2,6 GB livres. `workers: 1` local (CI segue paralelo); versão 1.0.3 | (tag v1.0.3) | ver check final |
 | 10 | regressão 9/12 | Check sobre v1.0.1 caiu: banco local desligado (Docker Desktop reiniciou) e E2E público estourando 5 s por verificação no WebKit (a API respondia; a navegação pela internet demorava). Espera de 15 s só contra a demo pública, mesmas verificações; versão 1.0.2 | (tag v1.0.2) | 9/12 |
 | 9 | pós-loop | `docs/CONFORMIDADE.md` (matriz do desafio) e D25 (repositório privado, substitui D20); versão 1.0.1 | (tag v1.0.1) | 9/12 |
