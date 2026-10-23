@@ -5,7 +5,7 @@
 ## Princípios
 | ID | Princípio | Por quê |
 |---|---|---|
-| U1 | **Zero digitação.** Toda entrada é feita por toque: botões, cartões, listas. Nenhum campo de texto livre no app | A persona usa o celular de pé, entre tarefas. Sem digitar, não há o que digitar errado; também evita coletar dado sensível (D4) |
+| U1 | **Zero digitação.** Toda entrada é feita por toque: botões, cartões, listas. Nenhum campo de texto livre no app. Única exceção: a senha da conta de demonstração (D28) | A persona usa o celular de pé, entre tarefas. Sem digitar, não há o que digitar errado; também evita coletar dado sensível (D4) |
 | U2 | **Uma ação principal por tela**, sempre visível sem rolar em 360 px de largura | Decidir rápido, com o polegar |
 | U3 | **Alvos de toque ≥ 48 px** e espaço entre eles | Evita toque errado |
 | U4 | **Dados automáticos não são perguntados.** O fuso vem do dispositivo (`Intl...timeZone`), sem pedir permissão nem localização | O dispositivo já está ajustado para a realidade da pessoa (R1) |
