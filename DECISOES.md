@@ -8,7 +8,7 @@ Respostas objetivas, cada uma apontando onde a decisão está no repositório. R
 Comunicação:
 1. **Telas** (`app/(app)/*`, componentes React no navegador) chamam a **API REST** em `/api/*` com `fetch`, por um cliente único (`src/ui/api.ts`) que trata carregando, erro, sem conexão e sessão expirada da mesma forma (U5).
 2. **Rotas** (`app/api/**/route.ts`) cuidam só de HTTP: sessão (S2), validação Zod (S5), limite de requisições (S6), Origin em escrita, e traduzem erros em status.
-3. **Services** (`src/services/`) têm as regras R1–R7 e não importam nada de `next/*`, então poderiam virar um back-end separado sem reescrita.
+3. **Services** (`src/services/`) têm as regras R1–R8 e não importam nada de `next/*`, então poderiam virar um back-end separado sem reescrita.
 4. **Repositories** (`src/repositories/`) falam com o Postgres via Prisma, sempre recebendo o `userId` explícito.
 
 Em produção: Cloudflare → Nginx da VPS → container do app (`127.0.0.1:8097`) → Postgres numa rede interna da stack, sem porta exposta (`deploy/stack.yml`, `deploy/nginx/vida.conf`).
@@ -26,7 +26,7 @@ Oito tabelas (`prisma/schema.prisma`, migrations em `prisma/migrations/`):
 | `plan_day_completions` | Conclusão de um dia por uma pessoa, no ciclo; `(user_id, plan_day_id, cycle)` único |
 | `journey_resets` | Registro de cada "Começar do zero": conta, ciclo anterior, instante (R8, D27) |
 
-- **Usuários diferentes:** três contas de demonstração para avaliação (`avaliador1`–`avaliador3`) e três reservadas aos testes automáticos (D26). O login põe na sessão o id da conta; o `userId` vem só do cookie criptografado (S4), nunca do corpo ou da URL. O E2E "S2: uma pessoa não vê os dados de outra" prova com duas contas reais.
+- **Pessoas diferentes:** três contas de demonstração para avaliação (`avaliador1`–`avaliador3`) e três reservadas aos testes automáticos (D26). O login põe na sessão o id da conta; o `userId` vem só do cookie criptografado (S4), nunca do corpo ou da URL. O E2E "S2: uma pessoa não vê os dados de outra" prova com duas contas reais.
 - **Ciclos da jornada:** cada check-in e conclusão guarda o ciclo em que foi feito. "Começar do zero" só avança `users.current_cycle` e grava o pedido em `journey_resets`; as telas mostram o ciclo atual e nada é alterado nem apagado (R8, D27; provado contra o Postgres em `tests/integration/journey.test.ts`).
 - **Check-ins:** append-only (R7), vários por dia; "Hoje" usa o mais recente cuja `local_date` é hoje no fuso **atual** do dispositivo (R2), o que trata viagens: o mesmo instante é 21/10 em São Paulo e 22/10 em Tóquio (`tests/unit/today.test.ts`).
 - **Evolução nos planos:** progresso é calculado a partir das conclusões, nunca armazenado (R6), em qualquer ordem, com o primeiro dia aberto como "próximo sugerido" (R5). Concluir de novo não duplica: o índice único somado a `createMany(skipDuplicates)` garante a idempotência mesmo com toques simultâneos (R4).
