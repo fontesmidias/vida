@@ -100,7 +100,7 @@ Obrigatórias antes de cada commit e repetidas no CI (GitHub Actions) a cada pus
 - Contra a demo pública: `E2E_BASE_URL=https://vida.fontesmidias.com.br npx playwright test`.
 - No VS Code, a extensão **Playwright Test for VS Code** mostra os testes na aba *Testing*: rodar um teste só, ver o navegador, depurar passo a passo.
 - O E2E usa o build de produção, não o `npm run dev`: o modo dev compila cada tela na primeira visita e estoura o tempo dos testes.
-- Com pouca memória livre na máquina, use `--workers=1` (o Docker Desktop pode derrubar o banco).
+- Localmente o E2E roda um navegador por vez (`workers: 1` no `playwright.config.ts`): com pouca memória livre, vários em paralelo derrubavam o Docker Desktop. No CI roda em paralelo.
 - No Windows, o WebKit de teste desenha as fontes mais finas que um iPhone real; o peso é aplicado (medido), é só a renderização.
 - `bash scripts/check-pronto.sh` mostra o placar de entrega (12 itens, cada um provado por comando).
 
