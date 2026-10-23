@@ -40,7 +40,8 @@ Itens 8 (backup) e 9 (exclusão LGPD) antes do 7 (DECISOES): as respostas 3 e 4 
 ## Histórico
 | Volta | Item | Mudança | Commit | Placar depois |
 |---|---|---|---|---|
-| 10 | regressão 9/12 | Check sobre v1.0.1 caiu: banco local desligado (Docker Desktop reiniciou) e E2E público estourando 5 s por verificação no WebKit (a API respondia; a navegação pela internet demorava). Espera de 15 s só contra a demo pública, mesmas verificações; versão 1.0.2 | (tag v1.0.2) | ver check final |
+| 11 | regressão 9/12 (cont.) | Mesmo com espera maior, falhas em massa só com vários navegadores em paralelo; máquina com 2,6 GB livres. `workers: 1` local (CI segue paralelo); versão 1.0.3 | (tag v1.0.3) | ver check final |
+| 10 | regressão 9/12 | Check sobre v1.0.1 caiu: banco local desligado (Docker Desktop reiniciou) e E2E público estourando 5 s por verificação no WebKit (a API respondia; a navegação pela internet demorava). Espera de 15 s só contra a demo pública, mesmas verificações; versão 1.0.2 | (tag v1.0.2) | 9/12 |
 | 9 | pós-loop | `docs/CONFORMIDADE.md` (matriz do desafio) e D25 (repositório privado, substitui D20); versão 1.0.1 | (tag v1.0.1) | 9/12 |
 | 8 | 12 tag + CHANGELOG | Versão 1.0.0: CHANGELOG fechado, `package.json` 1.0.0, tag anotada `v1.0.0` | (tag v1.0.0) | ver check final |
 | 7 | 7, 10, 11 (documentos) | DECISOES.md (3 rodadas), roteiro (1), apresentação (3); E2E novo de isolamento entre pessoas (S2); limite de sessão 20/min para o E2E completo caber | — | 11/12 |

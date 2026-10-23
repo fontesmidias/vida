@@ -2,6 +2,10 @@
 
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/); versões seguem [SemVer](https://semver.org/lang/pt-BR/).
 
+## [1.0.3] - 2026-10-22
+### Corrigido
+- E2E local roda um navegador por vez: com pouca memória livre, 4 navegadores em paralelo derrubavam o Docker e estouravam o tempo. O CI continua em paralelo.
+
 ## [1.0.2] - 2026-10-22
 ### Corrigido
 - E2E contra a demo pública: espera de até 15 s por verificação (latência da internet até a VPS); local continua com 5 s. As verificações em si não mudaram.
