@@ -196,6 +196,7 @@ test("R8: começar do zero esvazia a jornada sem apagar a conta", async ({ page 
 
   // A conta continua existindo: sair e entrar de novo leva direto ao Hoje (ciclo novo, sem registros)
   await page.getByRole("button", { name: "Sair" }).click();
+  await expect(page).toHaveURL(/\/$/); // espera o Sair terminar de navegar antes de abrir a Entrada de novo
   await page.goto(`/?conta=${conta()}`);
   await page.getByPlaceholder("Digite a senha").fill("vida2026");
   await page.getByRole("button", { name: "Entrar", exact: true }).click();
