@@ -12,16 +12,16 @@ const item = (i: number) => ({
 describe("histórico paginado (R7)", () => {
   it("devolve 10 por página e o cursor da próxima", async () => {
     const repo: HistoryRepository = { listCheckins: vi.fn(async () => Array.from({ length: PAGE_SIZE + 1 }, (_, i) => item(i))) };
-    const r = await listCheckins(repo, { userId: "u1" });
+    const r = await listCheckins(repo, { userId: "u1", cycle: 2 });
     expect(PAGE_SIZE).toBe(10);
     expect(r.items).toHaveLength(10);
     expect(decodeCursor(r.nextCursor!)).toEqual({ createdAt: item(9).createdAt, id: item(9).id });
-    expect(repo.listCheckins).toHaveBeenCalledWith("u1", null, PAGE_SIZE + 1);
+    expect(repo.listCheckins).toHaveBeenCalledWith("u1", 2, null, PAGE_SIZE + 1);
   });
 
   it("última página não tem cursor", async () => {
     const repo: HistoryRepository = { listCheckins: vi.fn(async () => [item(0)]) };
-    expect((await listCheckins(repo, { userId: "u1" })).nextCursor).toBeNull();
+    expect((await listCheckins(repo, { userId: "u1", cycle: 2 })).nextCursor).toBeNull();
   });
 
   it("cursor ida e volta", () => {

@@ -25,8 +25,8 @@ describe("Hoje (R2, R3)", () => {
 
   it("usa o check-in mais recente do dia no fuso informado", async () => {
     const repo = fakeRepo({ slug: "ansioso", label: "Com ansiedade", family: "agitado", createdAt: now });
-    const r = await getToday(repo, { userId: "u1", timezone: "America/Sao_Paulo", now });
-    expect(repo.latestCheckinOn).toHaveBeenCalledWith("u1", "2026-10-21");
+    const r = await getToday(repo, { userId: "u1", cycle: 2, timezone: "America/Sao_Paulo", now });
+    expect(repo.latestCheckinOn).toHaveBeenCalledWith("u1", 2, "2026-10-21");
     expect(r.date).toBe("2026-10-21");
     expect(r.checkin?.mood.slug).toBe("ansioso");
     expect(r.content.family).toBe("agitado");
@@ -34,18 +34,18 @@ describe("Hoje (R2, R3)", () => {
 
   it("o dia muda com o fuso: em Tóquio já é 22/10 (viagem)", async () => {
     const repo = fakeRepo(null);
-    await getToday(repo, { userId: "u1", timezone: "Asia/Tokyo", now });
-    expect(repo.latestCheckinOn).toHaveBeenCalledWith("u1", "2026-10-22");
+    await getToday(repo, { userId: "u1", cycle: 2, timezone: "Asia/Tokyo", now });
+    expect(repo.latestCheckinOn).toHaveBeenCalledWith("u1", 2, "2026-10-22");
   });
 
   it("sem check-in no dia → conteúdo neutro", async () => {
-    const r = await getToday(fakeRepo(null), { userId: "u1", timezone: "America/Sao_Paulo", now });
+    const r = await getToday(fakeRepo(null), { userId: "u1", cycle: 2, timezone: "America/Sao_Paulo", now });
     expect(r.checkin).toBeNull();
     expect(r.content.family).toBe("neutro");
   });
 
   it("fuso inválido cai no padrão (R1)", async () => {
-    const r = await getToday(fakeRepo(null), { userId: "u1", timezone: "nada", now });
+    const r = await getToday(fakeRepo(null), { userId: "u1", cycle: 2, timezone: "nada", now });
     expect(r.timezone).toBe("America/Sao_Paulo");
   });
 });

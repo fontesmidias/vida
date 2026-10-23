@@ -5,10 +5,22 @@ Protótipo mobile-first de check-in emocional, feito para o desafio técnico CLA
 > Espaço de autocuidado e reflexão. Não substitui acompanhamento profissional. O botão **Apoio**, em todas as telas, leva ao CVV (Centro de Valorização da Vida, 188).
 
 ## Demo
-**https://vida.fontesmidias.com.br**: abra no celular (ou no navegador em modo celular). Não há cadastro: o botão "Entrar como demonstração" cria uma pessoa visitante, isolada das demais.
+**https://vida.fontesmidias.com.br**: abra no celular (ou no navegador em modo celular).
+
+**Acesso** (contas de demonstração, D26; a senha também aparece na tela de entrada):
+
+| Conta | Usuário | Senha |
+|---|---|---|
+| Avaliação 1 | `avaliador1` | `vida2026` |
+| Avaliação 2 | `avaliador2` | `vida2026` |
+| Avaliação 3 | `avaliador3` | `vida2026` |
+
+Cada pessoa que avalia usa uma conta; as jornadas são isoladas (S2) e quem testa ao mesmo tempo não interfere em ninguém.
+
+**Recomeçar do zero:** ao entrar numa conta que já tem registros, a Entrada oferece **Continuar de onde parou** ou **Começar do zero**; a opção também fica na aba **Jornada**. Recomeçar não apaga nada: abre um novo ciclo da jornada, e o pedido fica registrado (R8). Para deixar as três contas limpas de uma vez antes de uma rodada de avaliação: `bash scripts/reset-demo.sh`.
 
 Roteiro do fluxo principal (o mesmo do desafio, coberto por teste E2E):
-1. Toque em **Entrar como demonstração**.
+1. Escolha uma conta, digite a senha `vida2026` e toque em **Entrar** (se a conta já tiver registros, escolha **Começar do zero**).
 2. Toque em **Fazer check-in** e escolha **Com ansiedade** (um toque registra).
 3. Em **Hoje**, veja a reflexão e a prática coerentes com o estado; toque em **Começar** para a respiração guiada.
 4. Na aba **Planos**, abra **Respirar com calma** e conclua o **Dia 1**.
@@ -21,7 +33,7 @@ Respostas às perguntas técnicas do desafio: [`DECISOES.md`](DECISOES.md). Vis�
 | Real | Demonstração / fictício |
 |---|---|
 | Persistência em Postgres (check-ins, conclusões, sessões) com API própria | Textos de reflexão, práticas e planos (identificados como demonstração, C2) |
-| Isolamento por pessoa: o `userId` vem só da sessão no servidor (S2) | A pessoa é anônima ("Visitante"): sem e-mail nem senha (D3) |
+| Login com senha guardada como hash scrypt e isolamento por conta: o `userId` vem só da sessão no servidor (S2, S8) | As contas são de demonstração, com senha pública de propósito (D26); não há cadastro nem e-mail |
 | Regras de tempo por fuso, idempotência, paginação, rate limit: todas testadas | Nenhum chat ou IA no app; nada é simulado no back-end |
 
 ## Stack
@@ -39,9 +51,10 @@ src/lib/              sessão, ambiente, http, rate limit
 src/ui/               componentes, ícones próprios, práticas guiadas, cliente da API
 prisma/               schema, migrations versionadas, seed de demonstração
 tests/unit/           Vitest (regras, validação, formatação)
+tests/integration/    Vitest contra o Postgres (ex.: recomeçar não apaga nada, R8)
 tests/e2e/            Playwright (fluxo principal em Chrome Android e Safari iPhone)
 deploy/               stack do Portainer e site do Nginx
-scripts/              deploy.sh e check-pronto.sh
+scripts/              deploy.sh, check-pronto.sh e reset-demo.sh
 specs/                PRD, regras, arquitetura, segurança, UX, stack e decisões
 ```
 Regra de dependência: `app → services → repositories → Prisma`. Detalhes em [`specs/ARCHITECTURE.md`](specs/ARCHITECTURE.md).
@@ -54,7 +67,7 @@ cp .env.example .env          # preencha POSTGRES_PASSWORD, DATABASE_URL e SESSI
 npm install
 docker compose up -d db       # Postgres 16 + pgvector em container
 npx prisma migrate dev        # cria as tabelas (aplica as migrations)
-npm run db:seed               # estados, conteúdos e planos de demonstração
+npm run db:seed               # estados, conteúdos, planos e contas de demonstração
 npm run dev                   # http://localhost:3000
 ```
 
@@ -92,7 +105,7 @@ Obrigatórias antes de cada commit e repetidas no CI (GitHub Actions) a cada pus
 |---|---|
 | `npm run lint` | Procura problemas de qualidade e padrões errados no código (ESLint) |
 | `npm run typecheck` | Confere se os tipos do TypeScript batem, sem rodar o app |
-| `npm test` | Testes de unidade (Vitest); cada teste cita a regra que protege (R1, S6…) |
+| `npm test` | Testes de unidade e de integração com o banco (Vitest); cada teste cita a regra que protege (R1, S6…) |
 | `npm run test:e2e` | Fluxo real no navegador, em tela de celular (Playwright) |
 
 - Primeira vez no E2E: `npx playwright install chromium webkit`.

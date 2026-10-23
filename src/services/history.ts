@@ -8,7 +8,7 @@ export type Cursor = { createdAt: Date; id: string };
 export type HistoryItem = { id: string; createdAt: Date; timezone: string; localDate: string; mood: MoodSummary };
 
 export interface HistoryRepository {
-  listCheckins(userId: string, after: Cursor | null, take: number): Promise<HistoryItem[]>;
+  listCheckins(userId: string, cycle: number, after: Cursor | null, take: number): Promise<HistoryItem[]>;
 }
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -29,8 +29,8 @@ export function decodeCursor(raw: string): Cursor | null {
   }
 }
 
-export async function listCheckins(repo: HistoryRepository, input: { userId: string; cursor?: Cursor | null }) {
-  const rows = await repo.listCheckins(input.userId, input.cursor ?? null, PAGE_SIZE + 1);
+export async function listCheckins(repo: HistoryRepository, input: { userId: string; cycle: number; cursor?: Cursor | null }) {
+  const rows = await repo.listCheckins(input.userId, input.cycle, input.cursor ?? null, PAGE_SIZE + 1);
   const items = rows.slice(0, PAGE_SIZE);
   const last = items.at(-1);
   const nextCursor = rows.length > PAGE_SIZE && last ? encodeCursor({ createdAt: last.createdAt, id: last.id }) : null;

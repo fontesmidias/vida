@@ -46,10 +46,11 @@ describe("criar check-in (R1)", () => {
   it("registra o instante do servidor e a data local do fuso informado", async () => {
     const repo = fakeRepo();
     const now = new Date("2026-10-22T02:30:00Z");
-    const r = await createCheckin(repo, { userId: "u1", moodSlug: "ansioso", timezone: "America/Sao_Paulo", now });
+    const r = await createCheckin(repo, { userId: "u1", cycle: 2, moodSlug: "ansioso", timezone: "America/Sao_Paulo", now });
 
     expect(repo.create).toHaveBeenCalledWith({
       userId: "u1",
+      cycle: 2,
       moodId: 1,
       createdAt: now,
       timezone: "America/Sao_Paulo",
@@ -60,13 +61,13 @@ describe("criar check-in (R1)", () => {
 
   it("fuso inválido cai no padrão em vez de falhar", async () => {
     const repo = fakeRepo();
-    await createCheckin(repo, { userId: "u1", moodSlug: "ansioso", timezone: "xx", now: new Date() });
+    await createCheckin(repo, { userId: "u1", cycle: 2, moodSlug: "ansioso", timezone: "xx", now: new Date() });
     expect(repo.create).toHaveBeenCalledWith(expect.objectContaining({ timezone: DEFAULT_TIMEZONE }));
   });
 
   it("estado inexistente ou inativo é recusado", async () => {
     const repo = fakeRepo();
-    await expect(createCheckin(repo, { userId: "u1", moodSlug: "feliz", now: new Date() })).rejects.toBeInstanceOf(UnknownMoodError);
+    await expect(createCheckin(repo, { userId: "u1", cycle: 2, moodSlug: "feliz", now: new Date() })).rejects.toBeInstanceOf(UnknownMoodError);
     expect(repo.create).not.toHaveBeenCalled();
   });
 });

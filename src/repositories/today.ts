@@ -5,9 +5,9 @@ const moodSelect = { slug: true, label: true, family: true } as const;
 
 export function todayRepository(db: PrismaClient): TodayRepository {
   return {
-    latestCheckinOn: (userId, localDate) =>
+    latestCheckinOn: (userId, cycle, localDate) =>
       db.checkin.findFirst({
-        where: { userId, localDate: new Date(`${localDate}T00:00:00.000Z`) },
+        where: { userId, cycle, localDate: new Date(`${localDate}T00:00:00.000Z`) },
         orderBy: { createdAt: "desc" },
         select: { createdAt: true, mood: { select: moodSelect } },
       }),

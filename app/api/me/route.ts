@@ -1,4 +1,4 @@
-import { currentUserId, unauthorized } from "@/src/lib/auth";
+import { currentUser, unauthorized } from "@/src/lib/auth";
 import { forbidden, internalError, isSameOrigin } from "@/src/lib/http";
 import { prisma } from "@/src/lib/prisma";
 import { tooManyRequests } from "@/src/lib/rate-limit";
@@ -12,10 +12,10 @@ export async function DELETE(request: Request) {
   const limited = tooManyRequests(request, "write"); // S6
   if (limited) return limited;
   try {
-    const userId = await currentUserId();
-    if (!userId) return unauthorized();
+    const user = await currentUser();
+    if (!user) return unauthorized();
 
-    await deleteMyData(deleteRepository(prisma), userId);
+    await deleteMyData(deleteRepository(prisma), user.id);
     (await getSession()).destroy();
     return new Response(null, { status: 204 });
   } catch (error) {

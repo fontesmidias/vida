@@ -52,10 +52,11 @@ jobs:
         run: npm run lint
       - name: Tipos
         run: npm run typecheck
-      - name: Testes de unidade
-        run: npm test
+      # Antes dos testes: há teste de integração que usa o banco (R8)
       - name: Migrations e seed
         run: npx prisma migrate deploy && npm run db:seed
+      - name: Testes de unidade e integração
+        run: npm test
       - name: Navegadores do E2E
         run: npx playwright install --with-deps chromium webkit
       - name: E2E (Chrome Android e Safari iPhone)
