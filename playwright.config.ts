@@ -1,5 +1,12 @@
 import { defineConfig, devices } from "@playwright/test";
 
+// DEMO_PASSWORD (D29) vem do .env local; no CI, das variáveis do workflow
+try {
+  process.loadEnvFile();
+} catch {
+  // sem .env: segue com as variáveis do ambiente
+}
+
 // E2E_BASE_URL aponta os testes para a demo pública (ex.: https://vida.fontesmidias.com.br); sem ela, sobe o app local
 const publicUrl = process.env.E2E_BASE_URL;
 

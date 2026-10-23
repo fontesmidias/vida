@@ -11,13 +11,16 @@ async function expectNothingUnderNav(page: Page) {
   expect(last!.y + last!.height).toBeLessThanOrEqual(nav!.y);
 }
 
+// D29: a senha vem do ambiente, nunca do código nem da tela
+const SENHA = process.env.DEMO_PASSWORD ?? "";
+
 // D26: cada navegador de teste usa a própria conta de teste (nunca as de avaliação)
 const conta = () => (test.info().project.name === "iphone-safari" ? "e2e2" : "e2e1");
 
 // Entra pela Entrada real e começa sempre de um ciclo limpo (R8), para o teste não depender de execuções anteriores
 async function entrar(page: Page, username = conta()) {
   await page.goto(`/?conta=${username}`);
-  await page.getByPlaceholder("Digite a senha").fill("vida2026");
+  await page.getByPlaceholder("Digite a senha").fill(SENHA);
   await page.getByRole("button", { name: "Entrar", exact: true }).click();
   const continuar = page.getByRole("button", { name: "Continuar de onde parou" });
   // O primeiro carregamento depois do login (Hoje + dados) é o mais pesado: espera maior só aqui
@@ -33,8 +36,9 @@ test("fluxo principal do desafio", async ({ page }) => {
   await expect(page.getByText("Não substitui o acompanhamento profissional")).toBeVisible(); // C3
   await page.screenshot({ path: shots("1-entrada"), fullPage: true });
 
-  // 1. Entrar com uma conta de demonstração (D26)
-  await expect(page.getByRole("radiogroup", { name: "Escolha uma conta" })).toBeVisible();
+  // 1. Entrar com a conta de avaliação (D29): a senha não aparece na tela
+  expect(SENHA.length).toBeGreaterThanOrEqual(8);
+  await expect(page.getByText(SENHA)).toHaveCount(0);
   await entrar(page);
   await expect(page.getByText("Um momento para você.")).toBeVisible(); // R3: conteúdo neutro
 
@@ -198,7 +202,7 @@ test("R8: começar do zero esvazia a jornada sem apagar a conta", async ({ page 
   await page.getByRole("button", { name: "Sair" }).click();
   await expect(page).toHaveURL(/\/$/); // espera o Sair terminar de navegar antes de abrir a Entrada de novo
   await page.goto(`/?conta=${conta()}`);
-  await page.getByPlaceholder("Digite a senha").fill("vida2026");
+  await page.getByPlaceholder("Digite a senha").fill(SENHA);
   await page.getByRole("button", { name: "Entrar", exact: true }).click();
   await expect(page).toHaveURL(/\/hoje$/);
 });

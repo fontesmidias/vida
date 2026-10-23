@@ -1,5 +1,5 @@
 # Stack "vida" no Portainer (D24). Publicada por scripts/deploy.sh.
-# Segredos (POSTGRES_PASSWORD, SESSION_SECRET) e a versão (IMAGE_TAG) vêm das variáveis da stack,
+# Segredos (POSTGRES_PASSWORD, SESSION_SECRET, DEMO_PASSWORD) e a versão (IMAGE_TAG) vêm das variáveis da stack,
 # nunca deste arquivo (S3).
 services:
   db:
@@ -33,6 +33,7 @@ services:
     environment:
       DATABASE_URL: postgresql://vida:${POSTGRES_PASSWORD}@db:5432/vida?schema=public
       SESSION_SECRET: ${SESSION_SECRET:?defina na stack}
+      DEMO_PASSWORD: ${DEMO_PASSWORD:?defina na stack}
     # Só o Nginx do host alcança o app (mesma regra dos outros sites da VPS)
     ports:
       - "127.0.0.1:8097:3000"

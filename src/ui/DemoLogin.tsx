@@ -2,18 +2,16 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { DEMO_PASSWORD, demoAccounts, testAccounts } from "@/prisma/seed-data";
+import { demoAccount, testAccounts } from "@/prisma/seed-data";
 import { api, ApiError } from "./api";
 
 type LoginResult = { displayName: string; hasProgress: boolean };
 
-// D26/D28: escolher a conta por toque, digitar a senha exibida; R8: continuar ou começar do zero
-// `testAccount` vem de /?conta=e2eN: só os testes automáticos usam, para nunca tocar nas contas de avaliação
+// D29: uma conta de avaliação; a senha vem nas instruções de entrega, nunca na tela. R8: continuar ou começar do zero
+// `testAccount` vem de /?conta=e2eN: só os testes automáticos usam, para nunca tocar na conta de avaliação
 export function DemoLogin({ testAccount }: { testAccount?: string }) {
   const router = useRouter();
-  const extra = testAccounts.find((a) => a.username === testAccount);
-  const accounts = extra ? [extra] : demoAccounts;
-  const [username, setUsername] = useState(accounts[0].username);
+  const { username } = testAccounts.find((a) => a.username === testAccount) ?? demoAccount;
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [returning, setReturning] = useState<string | null>(null);
@@ -77,29 +75,12 @@ export function DemoLogin({ testAccount }: { testAccount?: string }) {
   }
 
   return (
-    <form className="card login" onSubmit={enter} aria-labelledby="t-contas">
-      <p id="t-contas" className="h2">
-        Contas de demonstração
-      </p>
-      <div className="accounts" role="radiogroup" aria-label="Escolha uma conta">
-        {accounts.map((a) => (
-          <button
-            key={a.username}
-            type="button"
-            role="radio"
-            aria-checked={username === a.username}
-            className="acc"
-            onClick={() => setUsername(a.username)}
-          >
-            <span className="acc-n">{a.displayName}</span>
-            <span className="acc-u">{a.username}</span>
-          </button>
-        ))}
-      </div>
+    <form className="card login" onSubmit={enter} aria-labelledby="t-acesso">
       <label className="field" htmlFor="senha">
-        <span>
-          Senha: <strong className="pw">{DEMO_PASSWORD}</strong>
+        <span id="t-acesso" className="h2">
+          Acesso de avaliação
         </span>
+        <span>Use a senha enviada com as instruções de avaliação.</span>
         <input
           id="senha"
           name="senha"
@@ -117,7 +98,6 @@ export function DemoLogin({ testAccount }: { testAccount?: string }) {
       <button className="btn" type="submit" disabled={busy}>
         {busy ? "Entrando…" : "Entrar"}
       </button>
-      <p className="small">Três contas para quem avalia testar ao mesmo tempo, cada uma com a própria jornada.</p>
     </form>
   );
 }

@@ -41,6 +41,8 @@ jobs:
       DATABASE_URL: postgresql://vida:senha-apenas-do-ci@localhost:5432/vida?schema=public
       # Valor fictício, só para o CI (S3): o segredo real vive na stack do Portainer
       SESSION_SECRET: segredo-apenas-para-o-ci-com-mais-de-32-caracteres
+      # Senha fictícia só do CI (D29); a da demo pública vive na stack do Portainer
+      DEMO_PASSWORD: senha-apenas-do-ci
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

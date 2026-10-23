@@ -35,7 +35,7 @@
 
 ### Entrada `/`
 - Conteúdo: nome VIDA, proposta em 1 frase, aviso de cuidado (C3), selo "Demonstração" (C2).
-- **Contas de demonstração** (D26): três botões (Avaliador 1, 2 e 3) e a senha visível; tocar na conta + digitar a senha (D28) → **Entrar**.
+- **Acesso de avaliação** (D29): um campo de senha e **Entrar**. A senha não aparece na tela; vem nas instruções de entrega.
 - Depois de entrar: se o ciclo atual não tem nada, vai para Hoje. Se já tem registros, a Entrada oferece **Continuar de onde parou** ou **Começar do zero** (R8).
 - Estados: carregando ("Entrando…", botões desabilitados) → erro: "Usuário ou senha não conferem." (sem dizer qual) → sucesso.
 - Se já existe sessão válida, vai direto para Hoje.
