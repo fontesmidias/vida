@@ -2,6 +2,10 @@
 
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/); versões seguem [SemVer](https://semver.org/lang/pt-BR/).
 
+## [1.0.2] - 2026-10-22
+### Corrigido
+- E2E contra a demo pública: espera de até 15 s por verificação (latência da internet até a VPS); local continua com 5 s. As verificações em si não mudaram.
+
 ## [1.0.1] - 2026-10-22
 ### Adicionado
 - `docs/CONFORMIDADE.md`: matriz de cada exigência do desafio (obrigatório, fora do escopo, opcional, extras, divergências e pendências) com a prova de cada item.

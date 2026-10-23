@@ -7,6 +7,8 @@ const publicUrl = process.env.E2E_BASE_URL;
 export default defineConfig({
   testDir: "tests/e2e",
   timeout: 60_000,
+  // Contra a demo pública cada passo atravessa a internet até a VPS: mais tempo de espera, mesmas verificações
+  expect: { timeout: publicUrl ? 15_000 : 5_000 },
   use: { baseURL: publicUrl ?? "http://localhost:3000", trace: "retain-on-failure" },
   projects: [
     { name: "android-chrome", use: { ...devices["Pixel 7"] } },
