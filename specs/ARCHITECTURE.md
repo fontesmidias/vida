@@ -7,7 +7,7 @@ Next.js + TypeScript + Tailwind · Zod · iron-session · Prisma + Postgres 16 (
 ```
 app/(telas)          UI: componentes React, chamam a API via fetch
 app/api/**/route.ts  HTTP: sessão (S1/S2), validação Zod (S5), mapeia erros para status
-src/services/        Regras de negócio (R1–R7); não conhecem HTTP nem Next
+src/services/        Regras de negócio (R1–R8); não conhecem HTTP nem Next
 src/repositories/    Acesso a dados via Prisma; sempre recebe userId explícito
 prisma/              schema.prisma, migrations versionadas, seed
 ```
