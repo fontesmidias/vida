@@ -1,34 +1,33 @@
-# Veredito: docs/ROTEIRO_VIDEO.md
+# Veredito — docs/ROTEIRO_VIDEO.md
 
-Data: 2026-10-22
-Rubrica: `loops/rubrica-entrega.md`, seção C (congelada em 2026-10-22).
+Data: 2026-10-23
+Rubrica: `loops/rubrica-entrega.md`, seção C (congelada). Avaliação feita do zero, sem consultar vereditos anteriores.
 
-## C1. Cabe em até 5 minutos, com marcações de tempo: APROVADO
-- A tabela tem 8 blocos contínuos: 0:00–0:25, 0:25–1:15, 1:15–1:50, 1:50–2:30, 2:30–2:45, 2:45–4:15, 4:15–4:45 e 4:45–5:00. Não há buracos nem sobreposições, e o total fecha em exatamente 5:00.
-- O bloco da decisão técnica repete a marcação ("Texto do bloco de decisão (2:45–4:15)"), em linha com a tabela.
+## C1. Cabe em até 5 minutos, com marcações de tempo — APROVADO
+- Tabela com 8 blocos contíguos e sem sobreposição: 0:00–0:25, 0:25–1:15, 1:15–1:50, 1:50–2:30, 2:30–2:45, 2:45–4:15, 4:15–4:45, 4:45–5:00. Total = 5:00, dentro do limite do PDF ("vídeo de até 5 minutos").
+- Título do documento: "Roteiro do vídeo (até 5 minutos)".
 
-## C2. Mostra o fluxo principal completo e explica uma decisão técnica com profundidade: APROVADO
-Os 6 passos do PDF ("03 Fluxo que precisa funcionar de ponta a ponta") aparecem no roteiro:
-1. Entrar como demo: "Toque em **Entrar como demonstração**" (rótulo em `src/ui/EnterButton.tsx`).
-2. Fazer o check-in: "**Fazer check-in** → **Com ansiedade**" (`app/(app)/hoje/page.tsx`; "Com ansiedade" é o rótulo do slug `ansioso` em `prisma/seed-data.ts:13`).
-3. Hoje com conteúdo coerente: "tela **Hoje** … para ansiedade, uma reflexão curta e uma respiração 4-6" (a respiração usa `IN_MS = 4000` e `OUT_MS = 6000` em `src/ui/practices.tsx`; o botão "Começar" está em `app/(app)/hoje/page.tsx:80` e "Encerrar" em `src/ui/practices.tsx`).
-4. Plano e primeiro dia: "**Planos** → **Respirar com calma** → **Dia 1** → **Concluir dia**" (o plano está em `prisma/seed-data.ts:83`, o rótulo "Dia N" em `app/(app)/planos/[slug]/page.tsx:43` e "Concluir dia" em `app/(app)/planos/[slug]/dia/[n]/page.tsx`).
-5. Minha Jornada: "→ **Jornada** … Na Jornada estão o check-in e a conclusão" (`app/(app)/jornada/page.tsx`).
-6. Recarregar a página: "Recarregar a página na Jornada … está no banco, não no navegador."
+## C2. Fluxo principal completo e uma decisão técnica com profundidade — APROVADO
+Os 6 passos do "Fluxo que precisa funcionar de ponta a ponta" (PDF, seção 03) aparecem em ordem:
+1. Entrar como demo: "Escolha **Avaliação 1**, digite a senha `vida2026` → **Entrar**" (confere com `prisma/seed-data.ts:111` `DEMO_PASSWORD = "vida2026"`, `:114` displayName "Avaliação 1"; botão "Entrar" em `src/ui/DemoLogin.tsx:118`).
+2. Check-in: "**Fazer check-in** → **Com ansiedade**" (`app/(app)/hoje/page.tsx:56`; label em `prisma/seed-data.ts:13`; um toque salva e redireciona, `app/(app)/check-in/page.tsx:26,65`).
+3. Hoje com prática coerente: "para ansiedade, uma reflexão curta e uma respiração 4-6" (`prisma/seed-data.ts:37` "Respiração 4-6"; `src/ui/practices.tsx:25-26` IN_MS 4000 / OUT_MS 6000; botões "Começar" e "Encerrar" existem).
+4. Plano, primeiro dia: "**Planos** → **Respirar com calma** → **Dia 1** → **Concluir dia**" (`prisma/seed-data.ts:83`; `app/(app)/planos/[slug]/dia/[n]/page.tsx:73`).
+5. Jornada: "Na Jornada estão o check-in e a conclusão" (`app/(app)/jornada/page.tsx`).
+6. Atualizar: bloco "Persistência — Recarregar a página na Jornada".
 
-Há **uma** decisão técnica, explicada com profundidade: de quem é o "dia" (R1, D5).
-- **O porquê:** "o **instante** vem sempre do relógio do servidor, e o **fuso** vem do dispositivo, pelo `Intl` … O servidor valida o fuso (só nomes IANA; inválido cai em São Paulo)". Bate com `specs/RULES.md` R1 e com a linha D5 de `specs/DECISIONS_LOG.md`.
-- **A alternativa descartada:** "usar a hora do próprio celular. Ela pode estar errada ou ser ajustada à mão … pedir geolocalização seria coletar um dado sensível sem necessidade". Isso corresponde ao "Por quê" de R1.
-- **Confere com o código:** `src/services/checkins.ts` tem `resolveTimezone` (regex IANA, com volta para `America/Sao_Paulo`) e `localDateFor`. Em `tests/unit/today.test.ts:24`, `new Date("2026-10-22T02:30:00Z") // 21/10 em São Paulo, 22/10 em Tóquio`, e em `:35`, o caso "em Tóquio já é 22/10 (viagem)". Isso bate com a frase "02:30 UTC de 22/10, é dia 21 em São Paulo e dia 22 em Tóquio".
-- **Hora com o fuso de cada check-in:** o formato "horário de …" existe em `src/ui/time-format.ts`.
+Uma única decisão técnica, com profundidade:
+- Problema: "hoje" depende do fuso; o servidor usa UTC.
+- O porquê / o que fez: instante do servidor, fuso IANA do dispositivo via `Intl`, validado, fallback São Paulo — confere com `specs/RULES.md` R1 e `specs/DECISIONS_LOG.md` D5 ("Relógio do cliente não é confiável") e com `src/services/checkins.ts` (`resolveTimezone`, `localDateFor`, `DEFAULT_TIMEZONE = "America/Sao_Paulo"`).
+- Exemplo verificável: "02:30 UTC de 22/10 é dia 21 em São Paulo e dia 22 em Tóquio" = `tests/unit/today.test.ts:24` (`2026-10-22T02:30:00Z`) e `:35` ("em Tóquio já é 22/10 (viagem)").
+- Alternativa descartada explícita: "usar a hora do próprio celular… pode estar errada ou ser ajustada à mão" e geolocalização (dado sensível sem necessidade).
+- Consequência: Jornada mostra "· horário de Lisboa" — confere com `src/ui/time-format.ts:45`.
 
-## C3. Diz o que mostrar na tela em cada trecho: APROVADO
-- Cada linha da tabela preenche a coluna "Mostrar na tela": a entrada do site, a sequência de botões, o círculo de respiração, a recarga da página, os arquivos `src/services/checkins.ts` e `tests/unit/today.test.ts`, o terminal com `bash scripts/check-pronto.sh` (o arquivo existe) e o CI, e o botão **Apagar meus dados** (`src/ui/DeleteData.tsx`).
-- Os rótulos citados existem no código. "Apoio" e o link para o CVV estão em `src/ui/AppFrame.tsx`.
+## C3. Diz o que mostrar na tela em cada trecho — APROVADO
+- Todas as 8 linhas têm a coluna "Mostrar na tela" preenchida com telas, botões ou arquivos concretos.
+- Itens citados existem: `src/services/checkins.ts`, `tests/unit/today.test.ts`, `scripts/check-pronto.sh` (cobre E2E local e público em Chrome/WebKit, rate limit e backup restaurado em banco temporário, linhas 67-113); "Começar do zero" e "Apagar meus dados" estão na Jornada (`app/(app)/jornada/page.tsx:113,117`); botão "Apoio" e CVV em `src/ui/AppFrame.tsx:88,104`.
 
 ## Correções necessárias
 Nenhuma.
-
-Observação, que não reprova: o PDF chama a tela de "Minha Jornada", e o roteiro diz "Jornada", que é o rótulo da navegação (`src/ui/navigation.ts`). O sentido é o mesmo.
 
 VEREDITO: APROVADO

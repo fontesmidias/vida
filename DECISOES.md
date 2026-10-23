@@ -1,6 +1,6 @@
 # Decisões técnicas: as 7 perguntas do desafio
 
-Respostas objetivas, cada uma apontando onde a decisão está no repositório. Regras citadas por ID (R1–R7, S1–S7, C1–C4, U1–U13) estão em `specs/RULES.md` e `specs/UI_UX_SPEC.md`; decisões (D1–D24) em `specs/DECISIONS_LOG.md`. Demo: https://vida.fontesmidias.com.br
+Respostas objetivas, cada uma apontando onde a decisão está no repositório. Regras citadas por ID (R1–R8, S1–S8, C1–C4, U1–U13) estão em `specs/RULES.md` e `specs/UI_UX_SPEC.md`; decisões (D1–D28) em `specs/DECISIONS_LOG.md`. Demo: https://vida.fontesmidias.com.br
 
 ## 1. Arquitetura: por que escolheu essa stack e como front-end, backend e banco se comunicam?
 **Next.js (App Router) + TypeScript monolítico em camadas, Postgres 16 via Prisma** (D1, D2; justificativas e alternativas em `specs/TECH_STACK.md`). Uma linguagem e um deploy para tela e API, sem a infraestrutura dobrada de front e back separados; Postgres porque os dados são relacionais (pessoa → check-ins, planos → dias → conclusões).
