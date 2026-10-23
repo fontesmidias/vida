@@ -40,6 +40,7 @@ Itens 8 (backup) e 9 (exclusão LGPD) antes do 7 (DECISOES): as respostas 3 e 4 
 ## Histórico
 | Volta | Item | Mudança | Commit | Placar depois |
 |---|---|---|---|---|
+| 9 | pós-loop | `docs/CONFORMIDADE.md` (matriz do desafio) e D25 (repositório privado, substitui D20); versão 1.0.1 | (tag v1.0.1) | ver check final |
 | 8 | 12 tag + CHANGELOG | Versão 1.0.0: CHANGELOG fechado, `package.json` 1.0.0, tag anotada `v1.0.0` | (tag v1.0.0) | ver check final |
 | 7 | 7, 10, 11 (documentos) | DECISOES.md (3 rodadas), roteiro (1), apresentação (3); E2E novo de isolamento entre pessoas (S2); limite de sessão 20/min para o E2E completo caber | — | 11/12 |
 | 6 | 9 exclusão LGPD (D19) | `DELETE /api/me` em transação, só userId da sessão; confirmação em painel; E2E nos 2 navegadores (também contra a demo pública). Achados corrigidos: camadas fixed presas à tela animada (portal + `backwards`; E2E mede cobertura da janela) e cliente tratando 204 como erro. Atenção: E2E público já cria 8 de 10 sessões/min permitidas | 2d2bbc7 | 8/12 |
@@ -53,7 +54,7 @@ Itens 8 (backup) e 9 (exclusão LGPD) antes do 7 (DECISOES): as respostas 3 e 4 
 Nenhum que trave o loop.
 
 ## Pendências para o responsável (não bloqueiam)
-- **Antes do repositório público (D20): limpar o histórico.** O commit bae15d0 (já enviado, repo privado) continha referência ao autor das referências de método, que não deve ser pública. Arquivos já corrigidos e gancho local de pre-push instalado. Falta reescrever o histórico (`git filter-repo --replace-text`) e fazer force push, o que só acontece com autorização explícita do responsável, como parte do passo D20.
+- **Acesso dos avaliadores (D25):** a pessoa responsável decidiu não reescrever o histórico; o repositório fica privado. Falta convidar os avaliadores (usuário GitHub deles) ou enviar um `.zip`.
 - **Rate limit na borda (Nginx):** exige declarar zonas `limit_req_zone` num arquivo em `/etc/nginx/conf.d/` (escopo global do Nginx da VPS). Não afeta os outros sites (zonas com prefixo `vida_` usadas só no site `vida`), mas o guardrail pede aprovação. Hoje: proxy do Cloudflare + limite na aplicação.
 
 ## Resolvidos

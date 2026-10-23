@@ -2,6 +2,13 @@
 
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/); versões seguem [SemVer](https://semver.org/lang/pt-BR/).
 
+## [1.0.1] - 2026-10-22
+### Adicionado
+- `docs/CONFORMIDADE.md`: matriz de cada exigência do desafio (obrigatório, fora do escopo, opcional, extras, divergências e pendências) com a prova de cada item.
+
+### Alterado
+- D25 substitui D20: o repositório continua privado e os avaliadores recebem acesso por convite.
+
 ## [1.0.0] - 2026-10-22
 Entrega do desafio: demo pública, CI, segurança em camadas, backup, exclusão de dados e documentação revisada.
 ### Corrigido

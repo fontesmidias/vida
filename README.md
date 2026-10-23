@@ -15,7 +15,7 @@ Roteiro do fluxo principal (o mesmo do desafio, coberto por teste E2E):
 5. Na aba **Jornada**, veja o check-in e o progresso do plano.
 6. Recarregue a página: os dados continuam lá (Postgres).
 
-Respostas às perguntas técnicas do desafio: [`DECISOES.md`](DECISOES.md). Visão geral para a conversa técnica (abre no navegador, claro e escuro): [`docs/apresentacao.html`](docs/apresentacao.html). Roteiro do vídeo: [`docs/ROTEIRO_VIDEO.md`](docs/ROTEIRO_VIDEO.md).
+Respostas às perguntas técnicas do desafio: [`DECISOES.md`](DECISOES.md). Visão geral para a conversa técnica (abre no navegador, claro e escuro): [`docs/apresentacao.html`](docs/apresentacao.html). Roteiro do vídeo: [`docs/ROTEIRO_VIDEO.md`](docs/ROTEIRO_VIDEO.md). O que o desafio pediu, o que fizemos, o que ficou de fora e por quê: [`docs/CONFORMIDADE.md`](docs/CONFORMIDADE.md).
 
 ## O que é demonstração
 | Real | Demonstração / fictício |
@@ -119,6 +119,7 @@ Caminho de uma requisição: Cloudflare (proxy, SSL full strict só neste host, 
 | Arquivo | Conteúdo |
 |---|---|
 | [`DECISOES.md`](DECISOES.md) | As 7 perguntas técnicas do desafio |
+| [`docs/CONFORMIDADE.md`](docs/CONFORMIDADE.md) | Matriz: cada exigência do desafio, status e prova |
 | [`docs/apresentacao.html`](docs/apresentacao.html) | Apresentação do projeto: roteiro, arquitetura, dados, segurança e as 7 respostas em resumo |
 | [`docs/ROTEIRO_VIDEO.md`](docs/ROTEIRO_VIDEO.md) | Roteiro do vídeo de até 5 minutos |
 | `specs/PRD.md` | O que o produto faz e para quem |
@@ -127,7 +128,7 @@ Caminho de uma requisição: Cloudflare (proxy, SSL full strict só neste host, 
 | `specs/SECURITY.md` | Segurança em camadas, da borda ao banco |
 | `specs/UI_UX_SPEC.md` | Princípios de interface (U1–U13), telas, estados e tratamento de erros |
 | `specs/TECH_STACK.md` | Tecnologias e por que foram escolhidas |
-| `specs/DECISIONS_LOG.md` | Decisões consolidadas (D1–D24) |
+| `specs/DECISIONS_LOG.md` | Decisões consolidadas (D1–D25) |
 | `docs/OPERACAO.md` | Operação: logs, recuperação, backup e restauração |
 | `CHANGELOG.md` / `ROADMAP.md` | O que mudou em cada versão / ideias para depois, com o motivo |
 | `loops/` | Como a entrega foi conduzida: meta, check, estado e rubrica do revisor |
