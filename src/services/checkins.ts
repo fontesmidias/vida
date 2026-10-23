@@ -24,7 +24,7 @@ export function localDateFor(instant: Date, timezone: string): string {
 
 export type Mood = { id: number; slug: string; label: string; family: string };
 
-export type NewCheckin = { userId: string; moodId: number; createdAt: Date; timezone: string; localDate: string };
+export type NewCheckin = { userId: string; cycle: number; moodId: number; createdAt: Date; timezone: string; localDate: string };
 
 export interface CheckinRepository {
   findActiveMoodBySlug(slug: string): Promise<Mood | null>;
@@ -39,7 +39,7 @@ export class UnknownMoodError extends Error {
 
 export async function createCheckin(
   repo: CheckinRepository,
-  input: { userId: string; moodSlug: string; timezone?: string; now: Date },
+  input: { userId: string; cycle: number; moodSlug: string; timezone?: string; now: Date },
 ) {
   const mood = await repo.findActiveMoodBySlug(input.moodSlug);
   if (!mood) throw new UnknownMoodError();
@@ -47,6 +47,7 @@ export async function createCheckin(
   const timezone = resolveTimezone(input.timezone);
   const checkin = await repo.create({
     userId: input.userId,
+    cycle: input.cycle, // R8: o check-in pertence ao ciclo atual
     moodId: mood.id,
     createdAt: input.now,
     timezone,

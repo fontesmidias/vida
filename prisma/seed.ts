@@ -1,6 +1,7 @@
 // Idempotente: pode rodar várias vezes (upsert por chave única). Nunca toca em dados de usuário (R7).
 import { PrismaClient } from "@prisma/client";
-import { dailyContents, moods, plans } from "./seed-data";
+import { verifyPassword, hashPassword } from "../src/lib/password";
+import { dailyContents, DEMO_PASSWORD, demoAccounts, moods, plans, testAccounts } from "./seed-data";
 
 const prisma = new PrismaClient();
 
@@ -24,7 +25,19 @@ async function main() {
     }
   }
 
-  console.log(`Seed: ${moods.length} estados, ${dailyContents.length} conteúdos, ${plans.length} planos.`);
+  // D26: contas de demonstração. Só troca o hash se a senha mudou; nunca mexe em check-ins nem no ciclo (R7, R8)
+  const accounts = [...demoAccounts, ...testAccounts];
+  for (const a of accounts) {
+    const current = await prisma.user.findUnique({ where: { username: a.username }, select: { passwordHash: true } });
+    const passwordHash = verifyPassword(DEMO_PASSWORD, current?.passwordHash) ? current!.passwordHash! : hashPassword(DEMO_PASSWORD);
+    await prisma.user.upsert({
+      where: { username: a.username },
+      update: { displayName: a.displayName, passwordHash },
+      create: { username: a.username, displayName: a.displayName, passwordHash, isDemo: true },
+    });
+  }
+
+  console.log(`Seed: ${moods.length} estados, ${dailyContents.length} conteúdos, ${plans.length} planos, ${accounts.length} contas.`);
 }
 
 main()

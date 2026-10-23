@@ -27,7 +27,8 @@ export async function api<T>(path: string, init?: RequestInit): Promise<T> {
     throw new ApiError(0, OFFLINE);
   }
 
-  if (res.status === 401) {
+  // 401 no login é só senha errada; em qualquer outra rota, a sessão terminou
+  if (res.status === 401 && !path.startsWith("/api/session")) {
     window.location.assign("/?sessao=encerrada");
     throw new ApiError(401, "Sua sessão terminou. Entre novamente para continuar.");
   }

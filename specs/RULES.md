@@ -11,11 +11,13 @@
 - **R5 — Ordem livre, próximo sugerido.** Qualquer dia de um plano pode ser concluído em qualquer ordem. A interface destaca o primeiro dia não concluído como "próximo sugerido".
 - **R6 — Progresso cumulativo e positivo.** O progresso é apresentado como conquista ("3 de 7 dias concluídos" + indicadores preenchidos), nunca como falta. Progresso nunca regride; não existem sequências (streaks) que zeram por ausência.
 - **R7 — Histórico preservado.** Check-ins e conclusões são registros *append-only*: a aplicação nunca os altera nem apaga. Minha Jornada exibe os 10 mais recentes e permite carregar mais (paginação). Exclusão só por solicitação do titular (LGPD, D19): "Apagar meus dados" na Jornada remove check-ins, conclusões e a pessoa, numa transação, e encerra a sessão.
+- **R8 — Começar do zero sem apagar.** "Começar do zero" abre um novo **ciclo** da jornada: a conta passa a ver só os check-ins e conclusões do ciclo atual, mas nada é alterado nem apagado. Cada pedido fica registrado (`journey_resets`: conta, ciclo anterior, instante). É diferente de "Apagar meus dados" (D19), que remove os registros.
 
 ## Segurança (detalhes em `specs/SECURITY.md`)
 - **S1 — Defesa em camadas.** Proteções independentes em borda (Nginx), aplicação, dados e infraestrutura; a falha de uma não abre as outras. Princípio de bloqueio por padrão: só passa o que é explicitamente permitido.
 - **S2 — Isolamento.** O `userId` vem somente da sessão no servidor, nunca do corpo, da query ou da URL. Toda consulta a dados de usuário filtra por esse `userId`.
 - **S3 — Segredos.** Nenhum segredo no repositório. Variáveis documentadas em `.env.example`; o CI bloqueia segredos com gitleaks.
+- **S8 — Contas de demonstração.** Acesso só pelas contas de demonstração (`avaliador1`–`avaliador3`, e `e2e1`–`e2e3` reservadas aos testes automáticos), com senha guardada como hash scrypt e comparação em tempo constante; erro de login genérico (não revela se o usuário existe); tentativas limitadas por IP (S6). A senha é pública de propósito: dados fictícios (C2).
 - **S4 — Sessão.** Cookie criptografado e assinado (iron-session), `httpOnly`, `sameSite=lax`, `secure` em produção, contendo apenas o `userId`. `SESSION_SECRET` com ≥ 32 caracteres, validado na inicialização.
 - **S5 — Entrada e erros.** Toda entrada é validada por esquema (Zod) antes de chegar às regras; o que não bate com o esquema é rejeitado (400). Erros internos retornam mensagem genérica e amigável; detalhes vão só para o log do servidor.
 - **S6 — Limites de uso.** Rate limit por IP na borda e na aplicação (mais restrito em escrita e na criação de sessão demo); limite de tamanho de corpo da requisição.

@@ -2,6 +2,18 @@
 
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/); versões seguem [SemVer](https://semver.org/lang/pt-BR/).
 
+## [Não lançado]
+### Adicionado
+- Contas de demonstração (D26, S8): `avaliador1`–`avaliador3` com senha visível na Entrada e no README; senha em hash scrypt, comparação em tempo constante, erro genérico e limite de tentativas por IP. Contas `e2e1`–`e2e3` reservadas aos testes automáticos.
+- "Começar do zero" (R8, D27): na Entrada (quando a conta já tem registros) e na Jornada. Abre um novo ciclo da jornada; nada é alterado nem apagado, e cada pedido fica em `journey_resets`. Teste de integração contra o Postgres prova isso.
+- `scripts/reset-demo.sh`: deixa as três contas de avaliação limpas antes de uma rodada, pela própria API.
+
+### Alterado
+- Fim do visitante anônimo (D3 substituída por D26); sessões antigas sem conta deixam de valer.
+- "Apagar meus dados" (D19) mantém a conta compartilhada e volta ao ciclo 1.
+- Limites por IP: login 30/min, escritas 60/min (cada teste E2E faz um login).
+- CI roda as migrations antes dos testes (há teste de integração com banco).
+
 ## [1.0.3] - 2026-10-22
 ### Corrigido
 - E2E local roda um navegador por vez: com pouca memória livre, 4 navegadores em paralelo derrubavam o Docker e estouravam o tempo. O CI continua em paralelo.

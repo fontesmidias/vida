@@ -7,7 +7,7 @@ Legenda: ✅ feito · ⚪ fora por regra do desafio (não fizemos de propósito)
 ## 1. Escopo obrigatório: as 5 telas
 | Exigência do PDF | Status | Onde está | Prova |
 |---|---|---|---|
-| **Entrada:** identificar usuário de demonstração e mostrar a proposta | ✅ | `app/page.tsx`, `POST /api/session/demo` | E2E "fluxo principal do desafio" |
+| **Entrada:** identificar usuário de demonstração e mostrar a proposta | ✅ | `app/page.tsx`, `src/ui/DemoLogin.tsx`, `POST /api/session/demo`: três contas de demonstração com usuário e senha visíveis (D26) | E2E "fluxo principal do desafio" e "S8: senha errada…" |
 | **Check-in:** escolher estado (ex.: ansioso, cansado, em paz) e salvar estado e data no backend | ✅ | `app/(app)/check-in`, `POST /api/checkins`, tabela `checkins` | E2E + `tests/unit/checkins.test.ts` (R1) |
 | **Hoje:** conteúdo curto e prática do dia, variando conforme o check-in | ✅ | `app/(app)/hoje`, `GET /api/today`, 4 famílias + neutro | E2E (ansiedade → "Nem tudo precisa ser resolvido agora.") + `tests/unit/today.test.ts` (R2, R3) |
 | **Planos:** listar pelo menos 2 planos seedados, abrir um e concluir o Dia 1 | ✅ | `app/(app)/planos`, 2 planos em `prisma/seed-data.ts` | E2E conclui o Dia 1 + `tests/unit/plans.test.ts` (R4–R6) |
@@ -16,7 +16,7 @@ Legenda: ✅ feito · ⚪ fora por regra do desafio (não fizemos de propósito)
 ## 2. Fluxo de ponta a ponta (os 6 passos)
 | Passo | Status | Prova |
 |---|---|---|
-| 1. Entrar como demonstração | ✅ | Teste E2E `fluxo principal do desafio` (`tests/e2e/fluxo-principal.spec.ts`), que percorre os 6 passos em sequência |
+| 1. Entrar como usuário de demonstração (conta + senha) | ✅ | Teste E2E `fluxo principal do desafio` (`tests/e2e/fluxo-principal.spec.ts`), que percorre os 6 passos em sequência |
 | 2. Check-in "ansioso" e salvar | ✅ | idem |
 | 3. Hoje coerente com o check-in | ✅ | idem (inclui abrir a prática) |
 | 4. Abrir plano e concluir o primeiro dia | ✅ | idem |
@@ -68,13 +68,14 @@ Regra do PDF respeitada: extras só depois do obrigatório funcionando. A ordem 
 ## 6. Opcionais do próprio desafio
 | Opcional | Status | Observação |
 |---|---|---|
-| Autenticação completa | ◐ não feita | O PDF aceita usuário demo; explicamos como proteger dados reais (`DECISOES.md`, 3) |
+| Autenticação completa | ◐ parcial | Login com senha (hash scrypt, limite de tentativas) nas contas de demonstração (D26, S8); cadastro e conta pessoal ficam no ROADMAP, com a proteção para dados reais em `DECISOES.md`, 3 |
 | Vídeo de até 5 minutos | ◐ roteiro pronto | `docs/ROTEIRO_VIDEO.md` |
 | Chat com IA (mockado ou real) | ◐ não feito | Preferimos não simular; ver acima |
 
 ## 7. Além do mínimo, dentro do tema
 | Extra | Por quê | Onde está |
 |---|---|---|
+| Contas de demonstração com continuar ou começar do zero, sem apagar nada | Avaliadores voltam à própria jornada ou recomeçam; histórico preservado e auditável (D26, D27, R8) | `src/ui/DemoLogin.tsx`, `POST /api/me/reset`, `tests/integration/journey.test.ts`, `scripts/reset-demo.sh` |
 | Práticas guiadas (respiração 4-6, mão no peito, uma coisa pequena, três coisas boas) | Levar a pessoa para fora da tela (D17) | `src/ui/practices.tsx` |
 | Botão Apoio com o CVV por extenso | Cuidado sem alarme (C1, D16) | `src/ui/AppFrame.tsx` |
 | Apagar meus dados | Direito do titular na LGPD (D19) | `DELETE /api/me`; E2E "LGPD" |

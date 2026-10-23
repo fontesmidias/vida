@@ -16,13 +16,14 @@ Regra de dependência: `app → services → repositories → Prisma`. Os servic
 ## Modelo de dados
 | Tabela | Campos principais | Observações |
 |---|---|---|
-| `users` | id (uuid), display_name, is_demo, created_at | Um registro por visitante anônimo |
+| `users` | id (uuid), display_name, is_demo, created_at, username (único), password_hash, current_cycle | Contas de demonstração (D26); senha em hash scrypt (S8); `current_cycle` é o ciclo da jornada (R8) |
+| `journey_resets` | id, user_id → users, from_cycle, created_at | Registro de cada "Começar do zero" (R8, D27); append-only |
 | `moods` | id, slug (único), label, emoji, family, sort_order, active | Catálogo de estados (seed). Novo estado = novo registro, sem mudar código nem esquema |
-| `checkins` | id, user_id → users, mood_id → moods, created_at (UTC), timezone (IANA), local_date | Append-only (R7). Índices (user_id, created_at desc) e (user_id, local_date) |
+| `checkins` | id, user_id → users, mood_id → moods, created_at (UTC), timezone (IANA), local_date, cycle | Append-only (R7). Índices (user_id, created_at desc) e (user_id, local_date) |
 | `daily_contents` | id, family (único), reflection_title, reflection_body, practice_title, practice_body, practice_minutes | Seed; uma família por grupo de estados + `NEUTRO` (R3) |
 | `plans` | id, slug (único), title, description | Seed (≥ 2) |
 | `plan_days` | id, plan_id → plans, day_number, title, body | Único (plan_id, day_number) |
-| `plan_day_completions` | id, user_id → users, plan_day_id → plan_days, completed_at | Único (user_id, plan_day_id) garante R4 |
+| `plan_day_completions` | id, user_id → users, plan_day_id → plan_days, completed_at, cycle | Único (user_id, plan_day_id, cycle) garante R4 dentro do ciclo |
 
 O progresso (R6) é calculado, não armazenado: evita dado duplicado e inconsistente.
 
@@ -31,7 +32,8 @@ O progresso (R6) é calculado, não armazenado: evita dado duplicado e inconsist
 |---|---|---|
 | GET | `/api/health` | Público, mínimo: `{status:"ok"}` (S7) |
 | GET | `/api/health/ready` | Só rede interna: verifica o banco (healthcheck do Docker) |
-| POST | `/api/session/demo` | Cria usuário demo e sessão (ou reutiliza a existente) |
+| POST | `/api/session/demo` | Entra numa conta de demonstração `{username, password}`; devolve `{displayName, hasProgress}` (D26, S8) |
+| POST | `/api/me/reset` | Começar do zero: abre um novo ciclo, sem apagar nada (R8) |
 | DELETE | `/api/session` | Encerra a sessão |
 | DELETE | `/api/me` | Apaga os dados da pessoa da sessão e encerra a sessão (D19, LGPD) |
 | GET | `/api/moods` | Catálogo de estados ativos |

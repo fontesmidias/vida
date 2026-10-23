@@ -5,6 +5,7 @@ import { useState } from "react";
 import { api, ApiError, useApi } from "@/src/ui/api";
 import { ErrorView, Kicker, Loading, ProgressDots } from "@/src/ui/feedback";
 import { DeleteDataButton } from "@/src/ui/DeleteData";
+import { StartOverButton } from "@/src/ui/StartOver";
 import { MoodIcon } from "@/src/ui/MoodIcon";
 import { deviceTimezone, formatCheckinTime } from "@/src/ui/time-format";
 import type { CheckinItem, PlanSummary } from "@/src/ui/types";
@@ -109,8 +110,9 @@ export default function JornadaPage() {
           {loadingMore ? "Carregando…" : "Carregar mais"}
         </button>
       )}
+      <StartOverButton />
       <button className="link-btn" onClick={logout}>
-        Sair da demonstração
+        Sair
       </button>
       <DeleteDataButton />
     </section>

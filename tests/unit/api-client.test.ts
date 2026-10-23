@@ -20,4 +20,12 @@ describe("cliente da API (U5)", () => {
     expect(e).toBeInstanceOf(ApiError);
     expect(e.status).toBe(0);
   });
+
+  it("401 no login é senha errada: mostra a mensagem, sem redirecionar (S8)", async () => {
+    vi.stubGlobal("fetch", vi.fn(async () => Response.json({ error: "Usuário ou senha não conferem." }, { status: 401 })));
+    await expect(api("/api/session/demo", { method: "POST" })).rejects.toMatchObject({
+      status: 401,
+      message: "Usuário ou senha não conferem.",
+    });
+  });
 });

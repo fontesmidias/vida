@@ -1,11 +1,11 @@
 import { redirect } from "next/navigation";
-import { currentUserId } from "@/src/lib/auth";
+import { currentUser } from "@/src/lib/auth";
 import { Header } from "@/src/ui/AppFrame";
-import { EnterButton } from "@/src/ui/EnterButton";
+import { DemoLogin } from "@/src/ui/DemoLogin";
 
-// Entrada: proposta, sigla (D18), aviso de cuidado (C3) e entrada como demonstração (C2)
-export default async function Entrada({ searchParams }: { searchParams: Promise<{ sessao?: string; dados?: string }> }) {
-  if (await currentUserId()) redirect("/hoje");
+// Entrada: proposta, sigla (D18), aviso de cuidado (C3) e contas de demonstração (C2, D26)
+export default async function Entrada({ searchParams }: { searchParams: Promise<{ sessao?: string; dados?: string; conta?: string }> }) {
+  if (await currentUser()) redirect("/hoje");
   const params = await searchParams;
   const sessionEnded = params.sessao === "encerrada";
   const dataDeleted = params.dados === "apagados"; // D19
@@ -50,7 +50,7 @@ export default async function Entrada({ searchParams }: { searchParams: Promise<
               Sua sessão terminou. Entre novamente para continuar.
             </p>
           )}
-          <EnterButton />
+          <DemoLogin testAccount={params.conta} />
           <p className="small">Um espaço de autocuidado. Não substitui o acompanhamento profissional.</p>
         </section>
       </main>

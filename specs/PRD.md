@@ -27,7 +27,7 @@ Adulto que quer um momento breve de autocuidado no celular, sem compromisso de t
 ## Telas
 | Tela | Mínimo |
 |---|---|
-| Entrada | Proposta do produto + aviso de cuidado (C3) + botão "Entrar como demonstração" |
+| Entrada | Proposta do produto + aviso de cuidado (C3) + contas de demonstração com usuário e senha visíveis (D26); continuar ou começar do zero (R8) |
 | Check-in | Escolha de estado emocional; salva estado e data no backend |
 | Hoje | Reflexão + prática do dia; varia conforme o último check-in do dia |
 | Planos | ≥ 2 planos seedados; detalhe do plano; concluir Dia 1 |
@@ -43,7 +43,7 @@ Adulto que quer um momento breve de autocuidado no celular, sem compromisso de t
 - Pagamentos, assinatura, integração Kiwify.
 - App nativo, notificações push, painel admin, comunidade, vídeos, lives.
 - Chat com IA (nem mockado).
-- Autenticação com e-mail/senha (usuário de demonstração anônimo basta; ver SECURITY.md).
+- Cadastro e autenticação com e-mail (as contas de demonstração bastam; ver SECURITY.md).
 - Texto livre/diário no check-in (evita coletar dado sensível sem necessidade).
 - Animações elaboradas.
 

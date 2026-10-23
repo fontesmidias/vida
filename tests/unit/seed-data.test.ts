@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { dailyContents, moods, NEUTRAL_FAMILY, plans, PRACTICE_KINDS } from "@/prisma/seed-data";
+import { dailyContents, DEMO_PASSWORD, demoAccounts, moods, NEUTRAL_FAMILY, plans, PRACTICE_KINDS, testAccounts } from "@/prisma/seed-data";
 
 describe("catálogo de estados (D11)", () => {
   it("tem 8 estados em 4 famílias, 2 por família", () => {
@@ -99,5 +99,24 @@ describe("gênero neutro (C4)", () => {
   ])("nenhum texto usa a forma flexionada /%s/", (padrao) => {
     const re = new RegExp(`(?<![\p{L}])${padrao}(?![\p{L}])`, "iu");
     expect(textos.filter((t) => re.test(t))).toEqual([]);
+  });
+});
+
+describe("contas de demonstração (D26, S8)", () => {
+  const todas = [...demoAccounts, ...testAccounts];
+
+  it("3 contas para avaliação e 3 só para testes, sem repetir usuário", () => {
+    expect(demoAccounts.map((a) => a.username)).toEqual(["avaliador1", "avaliador2", "avaliador3"]);
+    expect(testAccounts).toHaveLength(3);
+    expect(new Set(todas.map((a) => a.username)).size).toBe(6);
+  });
+
+  it("nome exibido neutro em gênero (C4)", () => {
+    for (const a of todas) expect(a.displayName).not.toMatch(/avaliador|avaliadora/i);
+  });
+
+  it("senha curta o bastante para digitar no celular (D28)", () => {
+    expect(DEMO_PASSWORD.length).toBeGreaterThanOrEqual(6);
+    expect(DEMO_PASSWORD.length).toBeLessThanOrEqual(10);
   });
 });

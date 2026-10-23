@@ -49,8 +49,8 @@ export function DeleteDataButton() {
               Apagar todos os seus dados?
             </h2>
             <p className="muted">
-              Seus check-ins e o progresso nos planos saem de forma definitiva, e esta sessão termina. Isso não pode ser
-              desfeito.
+              Seus check-ins e o progresso nos planos, de todas as jornadas, saem de forma definitiva, e esta sessão
+              termina. Isso não pode ser desfeito. Para só recomeçar sem apagar, use “Começar do zero”.
             </p>
             {error && (
               <p className="card soft body" role="alert">
