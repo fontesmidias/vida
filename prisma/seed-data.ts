@@ -105,3 +105,20 @@ export const plans = [
     ],
   },
 ];
+
+// D26/S8: contas de demonstração. A senha é pública de propósito (dados fictícios, C2) e aparece na Entrada.
+// Os nomes de usuário são identificadores; o nome exibido é neutro (C4).
+export const DEMO_PASSWORD = "vida2026";
+
+export const demoAccounts = [
+  { username: "avaliador1", displayName: "Avaliação 1" },
+  { username: "avaliador2", displayName: "Avaliação 2" },
+  { username: "avaliador3", displayName: "Avaliação 3" },
+];
+
+// Reservadas aos testes automáticos (E2E local, CI e contra a demo pública): nunca mexem nas contas acima
+export const testAccounts = [
+  { username: "e2e1", displayName: "Teste 1" },
+  { username: "e2e2", displayName: "Teste 2" },
+  { username: "e2e3", displayName: "Teste 3" },
+];

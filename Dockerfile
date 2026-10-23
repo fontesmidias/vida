@@ -12,7 +12,7 @@ COPY . .
 RUN npx prisma generate \
   && npm run build \
   # Seed compilado para JS: roda na subida sem precisar de tsx na imagem final
-  && npx tsc prisma/seed.ts prisma/seed-data.ts --outDir seed-dist --module commonjs --target es2022 \
+  && npx tsc prisma/seed.ts --rootDir . --outDir seed-dist --module commonjs --target es2022 \
      --esModuleInterop --skipLibCheck --moduleResolution node
 
 FROM node:24-bookworm-slim AS run

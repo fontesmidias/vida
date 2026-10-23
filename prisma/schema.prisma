@@ -13,9 +13,15 @@ model User {
   displayName String   @map("display_name")
   isDemo      Boolean  @default(true) @map("is_demo")
   createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  // D26/S8: contas de demonstração (login); usuários sem username não entram mais
+  username     String? @unique
+  passwordHash String? @map("password_hash")
+  // R8: ciclo atual da jornada; "Começar do zero" só avança este número
+  currentCycle Int     @default(1) @map("current_cycle")
 
   checkins    Checkin[]
   completions PlanDayCompletion[]
+  resets      JourneyReset[]
 
   @@map("users")
 }
@@ -42,11 +48,13 @@ model Checkin {
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
   timezone  String
   localDate DateTime @map("local_date") @db.Date
+  cycle     Int      @default(1)
 
   user User @relation(fields: [userId], references: [id], onDelete: Restrict)
   mood Mood @relation(fields: [moodId], references: [id], onDelete: Restrict)
 
   @@index([userId, createdAt(sort: Desc)])
+  @@index([userId, cycle, createdAt(sort: Desc)])
   @@index([userId, localDate])
   @@map("checkins")
 }
@@ -97,10 +105,25 @@ model PlanDayCompletion {
   userId      String   @map("user_id") @db.Uuid
   planDayId   Int      @map("plan_day_id")
   completedAt DateTime @default(now()) @map("completed_at") @db.Timestamptz(3)
+  cycle       Int      @default(1)
 
   user    User    @relation(fields: [userId], references: [id], onDelete: Restrict)
   planDay PlanDay @relation(fields: [planDayId], references: [id], onDelete: Restrict)
 
-  @@unique([userId, planDayId])
+  // R4 dentro do ciclo: um dia conclui uma vez por ciclo
+  @@unique([userId, planDayId, cycle])
   @@map("plan_day_completions")
+}
+
+// R8/D27: registro de cada "Começar do zero" (append-only; nada é apagado)
+model JourneyReset {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  fromCycle Int      @map("from_cycle")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Restrict)
+
+  @@index([userId, createdAt(sort: Desc)])
+  @@map("journey_resets")
 }
