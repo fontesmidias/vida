@@ -1,6 +1,6 @@
 # UI/UX: telas, estados e transições
 
-> Baseado em PRD (telas e persona), RULES (R1–R7, C1–C4) e SECURITY. Toda tela nova ou mudança de fluxo começa aqui.
+> Baseado em PRD (telas e persona), RULES (R1–R8, C1–C4) e SECURITY. Toda tela nova ou mudança de fluxo começa aqui.
 
 ## Princípios
 | ID | Princípio | Por quê |
