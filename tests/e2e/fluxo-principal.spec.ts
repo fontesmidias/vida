@@ -55,6 +55,8 @@ test("fluxo principal do desafio", async ({ page }) => {
   await page.screenshot({ path: shots("3-hoje"), fullPage: true });
   await expectNothingUnderNav(page);
 
+  await expect(page.getByText("Demonstração")).toBeVisible(); // C2
+
   // Passo 3 do roteiro: "Começar" abre a respiração guiada (D17)
   await page.getByRole("link", { name: "Começar" }).click();
   await expect(page).toHaveURL(/\/pratica$/);
@@ -62,8 +64,9 @@ test("fluxo principal do desafio", async ({ page }) => {
   await page.getByRole("button", { name: "Encerrar" }).click();
   await expect(page).toHaveURL(/\/hoje$/);
 
-  // 4. Abrir um plano e concluir o Dia 1
-  await page.getByRole("navigation", { name: "Navegação principal" }).getByRole("link", { name: "Planos" }).click();
+  // 4. Fluxo guiado: o próximo passo leva aos planos; abrir um plano e concluir o Dia 1
+  await expect(page.getByRole("link", { name: "Ver planos" })).toBeInViewport(); // U2: sem rolar
+  await page.getByRole("link", { name: "Ver planos" }).click();
   await page.getByRole("link", { name: /Respirar com calma/ }).click();
   await expect(page.getByRole("link", { name: /Dia 1: .*próximo sugerido/ })).toBeVisible(); // R5
   await page.screenshot({ path: shots("4-plano"), fullPage: true });
@@ -71,11 +74,11 @@ test("fluxo principal do desafio", async ({ page }) => {
   await page.getByRole("link", { name: /Dia 1:/ }).click();
   await expect(page.getByRole("link", { name: "Voltar" })).toBeVisible(); // U9
   await page.getByRole("button", { name: "Concluir dia" }).click();
-  await expect(page.getByRole("link", { name: /Dia 1: .*concluído/ })).toBeVisible();
-  await expect(page.getByText("1 de 5 dias concluídos")).toBeVisible(); // R6
+  await expect(page.getByRole("button", { name: "Concluído" })).toBeVisible();
 
-  // 5. Minha Jornada mostra check-in e conclusão
-  await page.getByRole("navigation", { name: "Navegação principal" }).getByRole("link", { name: "Jornada" }).click();
+  // 5. Fluxo guiado: o próximo passo leva à Jornada, que mostra check-in e conclusão (R6)
+  await page.getByRole("link", { name: "Ver minha jornada" }).click();
+  await expect(page).toHaveURL(/\/jornada$/);
   await expect(page.getByText("Com ansiedade")).toBeVisible();
   await expect(page.getByText(/^Hoje, \d{2}:\d{2}$/)).toBeVisible();
   await expect(page.getByText("1 de 5")).toBeVisible();
@@ -147,7 +150,7 @@ test("celebração cobre a tela inteira ao concluir o último dia do plano", asy
   for (let dia = 1; dia <= 5; dia++) {
     await page.goto(`/planos/respirar-com-calma/dia/${dia}`);
     await page.getByRole("button", { name: "Concluir dia" }).click();
-    if (dia < 5) await expect(page).toHaveURL(/\/planos\/respirar-com-calma$/);
+    if (dia < 5) await expect(page.getByRole("button", { name: "Concluído" })).toBeVisible();
   }
   const cel = page.getByRole("dialog", { name: "Plano concluído" });
   await expect(cel).toBeVisible();

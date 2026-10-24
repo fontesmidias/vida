@@ -1,7 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { createContext, useCallback, useContext, useState } from "react";
-import { CheckIcon } from "./icons";
+import { CheckIcon, ChevronIcon } from "./icons";
 
 // Aviso curto de sucesso, acima da barra inferior (U12)
 const ToastContext = createContext<(text: string) => void>(() => {});
@@ -69,4 +70,24 @@ export function Kicker({ letter, word }: { letter: string; word: string }) {
       {word}
     </p>
   );
+}
+
+// Fluxo guiado (desafio, seção 03): cada etapa termina apontando a próxima, com verbo (U13)
+export function NextStep({ hint, href, label }: { hint: string; href: string; label: string }) {
+  return (
+    <div className="next">
+      <p className="small">
+        <strong>Próximo passo:</strong> {hint}
+      </p>
+      <Link className="btn" href={href}>
+        {label}
+        <ChevronIcon />
+      </Link>
+    </div>
+  );
+}
+
+// C2: conteúdo fictício sempre identificado
+export function DemoTag() {
+  return <span className="tag">Demonstração</span>;
 }

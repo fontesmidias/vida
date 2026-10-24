@@ -6,7 +6,7 @@
 | ID | Princípio | Por quê |
 |---|---|---|
 | U1 | **Zero digitação.** Toda entrada é feita por toque: botões, cartões, listas. Nenhum campo de texto livre no app. Única exceção: a senha da conta de demonstração (D28) | A persona usa o celular de pé, entre tarefas. Sem digitar, não há o que digitar errado; também evita coletar dado sensível (D4) |
-| U2 | **Uma ação principal por tela**, sempre visível sem rolar em 360 px de largura | Decidir rápido, com o polegar |
+| U2 | **Uma ação principal por tela**, sempre visível sem rolar; cada tela do fluxo principal cabe inteira em 360×640 (D30) | Decidir rápido, com o polegar |
 | U3 | **Alvos de toque ≥ 48 px** e espaço entre eles | Evita toque errado |
 | U4 | **Dados automáticos não são perguntados.** O fuso vem do dispositivo (`Intl...timeZone`), sem pedir permissão nem localização | O dispositivo já está ajustado para a realidade da pessoa (R1) |
 | U5 | **Todo pedido ao servidor tem 3 estados visíveis:** carregando, sucesso e erro, com saída clara | Nunca deixar a pessoa sem saber o que aconteceu |
@@ -27,6 +27,7 @@
 - **Entrada** (`/`): sem sessão. Após entrar, vai para **Hoje**.
 - Com sessão, uma **barra inferior fixa** com 4 destinos: **Hoje** (`/hoje`) · **Check-in** (`/check-in`) · **Planos** (`/planos`) · **Jornada** (`/jornada`). O destino atual fica destacado e marcado com `aria-current`.
 - Botão **Apoio** no topo de todas as telas (C1, D16): abre uma folha inferior com "Quer conversar com alguém?", o nome por extenso ("O CVV, Centro de Valorização da Vida, …"), **Ligar para o 188** e **Fechar**.
+- **Fluxo guiado (D30):** ao fim de cada etapa, um "Próximo passo" com verbo leva à seguinte: Hoje (com check-in) → **Ver planos**; dia concluído → **Ver minha jornada**; na Jornada, "Tudo salvo: pode atualizar a página."
 - Fim de plano: tela de celebração ("Plano concluído") com **Ver minha jornada** e **Outros planos**. Plano concluído ganha selo na Jornada.
 - Protótipo visual de referência: canvas "VIDA — protótipo visual" (claro e escuro, ícones e identidade).
 - Sem sessão em qualquer tela interna → volta para a Entrada (ver "Erros").

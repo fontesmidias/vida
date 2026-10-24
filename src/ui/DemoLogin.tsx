@@ -54,10 +54,9 @@ export function DemoLogin({ testAccount }: { testAccount?: string }) {
   if (returning) {
     return (
       <div className="card soft" role="status">
-        <p className="h2">Que bom ter você de volta.</p>
         <p className="muted">
-          A conta <strong>{returning}</strong> já tem registros. Você pode seguir de onde parou ou recomeçar a jornada.
-          Recomeçar não apaga nada: só abre uma página nova.
+          <strong>Que bom ter você de volta.</strong> A conta {returning} já tem registros. Siga de onde parou ou
+          recomece: nada é apagado.
         </p>
         {error && (
           <p className="body" role="alert">
@@ -80,7 +79,7 @@ export function DemoLogin({ testAccount }: { testAccount?: string }) {
         <span id="t-acesso" className="h2">
           Acesso de avaliação
         </span>
-        <span>Use a senha enviada com as instruções de avaliação.</span>
+        <span>Use a senha enviada com as instruções.</span>
         <input
           id="senha"
           name="senha"

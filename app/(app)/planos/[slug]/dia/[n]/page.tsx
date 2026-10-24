@@ -4,12 +4,12 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { api, ApiError, useApi } from "@/src/ui/api";
-import { ErrorView, Loading, useToast } from "@/src/ui/feedback";
+import { ErrorView, Loading, NextStep, useToast } from "@/src/ui/feedback";
 import { CheckIcon, LeafIcon } from "@/src/ui/icons";
 import { Overlay } from "@/src/ui/Overlay";
 import type { PlanDetail } from "@/src/ui/types";
 
-// R4: concluir de novo não muda nada; o último dia abre a celebração
+// R4: concluir de novo não muda nada; o último dia abre a celebração. Fluxo guiado: depois de concluir, a Jornada
 export default function DiaPage() {
   const { slug, n } = useParams<{ slug: string; n: string }>();
   const router = useRouter();
@@ -40,7 +40,7 @@ export default function DiaPage() {
         setCelebrate(r.plan.title);
       } else {
         toast("Dia concluído");
-        router.push(`/planos/${slug}`);
+        setBusy(false);
       }
     } catch (e) {
       setActionError(e instanceof ApiError ? e.message : "Algo não saiu como esperado. Tente de novo em instantes.");
@@ -72,6 +72,9 @@ export default function DiaPage() {
         <button className="btn" onClick={complete} disabled={busy}>
           {busy ? "Concluindo…" : "Concluir dia"}
         </button>
+      )}
+      {done && (
+        <NextStep hint="ver tudo na sua jornada." href="/jornada" label="Ver minha jornada" />
       )}
       {celebrate && <Celebration title={celebrate} />}
     </section>

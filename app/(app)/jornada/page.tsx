@@ -53,12 +53,19 @@ export default function JornadaPage() {
 
   return (
     <section className="screen" aria-labelledby="t-jornada">
-      <Kicker letter="A" word="Avançar" />
-      <h1 id="t-jornada" className="h1">
-        Sua jornada
-      </h1>
+      <div className="row-between">
+        <h1 id="t-jornada" className="h1">
+          Sua jornada
+        </h1>
+        <Kicker letter="A" word="Avançar" />
+      </div>
+      {items.length > 0 && (
+        <p className="small" role="note">
+          Tudo salvo: pode atualizar a página.
+        </p>
+      )}
 
-      <h2 className="h2">Planos</h2>
+      <h2 className="section-t">Planos</h2>
       <div className="card">
         {plans.data?.plans.map((p) => (
           <div key={p.slug} className="li">
@@ -77,7 +84,7 @@ export default function JornadaPage() {
         ))}
       </div>
 
-      <h2 className="h2">Check-ins</h2>
+      <h2 className="section-t">Check-ins</h2>
       {items.length === 0 ? (
         <div className="card soft">
           <p className="body">Seus check-ins aparecem aqui.</p>
@@ -89,7 +96,7 @@ export default function JornadaPage() {
         <div className="card">
           {items.map((c) => (
             <div key={c.id} className="li">
-              <MoodIcon slug={c.mood.slug} family={c.mood.family} size={40} />
+              <MoodIcon slug={c.mood.slug} family={c.mood.family} size={36} />
               <span className="grow">
                 <span className="li-title">{c.mood.label}</span>
                 <span className="small" suppressHydrationWarning>
@@ -110,11 +117,13 @@ export default function JornadaPage() {
           {loadingMore ? "Carregando…" : "Carregar mais"}
         </button>
       )}
-      <StartOverButton />
-      <button className="link-btn" onClick={logout}>
-        Sair
-      </button>
-      <DeleteDataButton />
+      <div className="actions">
+        <StartOverButton />
+        <button className="link-btn" onClick={logout}>
+          Sair
+        </button>
+        <DeleteDataButton />
+      </div>
     </section>
   );
 }
