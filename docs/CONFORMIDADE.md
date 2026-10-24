@@ -47,7 +47,7 @@ Roda em Chromium (perfil Pixel 7) e WebKit (perfil iPhone 13), no CI a cada push
 | Item | Status | Onde está |
 |---|---|---|
 | 1. Demo com instruções de acesso e roteiro do fluxo | ✅ | README, seção "Demo" |
-| 2. Código com acesso ao avaliador | ⏳ | Repositório privado (D25). Falta convidar os avaliadores (precisa do usuário GitHub deles) ou enviar um `.zip` |
+| 2. Código com acesso ao avaliador | ✅ | Repositório público em https://github.com/fontesmidias/vida (D31) |
 | 3. README: passo a passo, stack, estrutura, variáveis, migrations, o que é mockado | ✅ | `README.md` (seções "Como rodar", "Stack", "Estrutura", "Variáveis de ambiente", "Banco de dados", "O que é demonstração") |
 | 4. Registro técnico com as 7 perguntas | ✅ | `DECISOES.md`, aprovado por revisor independente com rubrica fixa (`loops/veredito-decisoes.md`) |
 | 5. Vídeo de até 5 minutos (opcional) | ◐ | Roteiro pronto e revisado em `docs/ROTEIRO_VIDEO.md`; a gravação é da pessoa candidata |
@@ -92,7 +92,7 @@ Regra do PDF respeitada: extras só depois do obrigatório funcionando. A ordem 
 |---|---|---|
 | Referência visual do PDF (branco, azul pastel, lavanda, rosa claro, símbolo de chave) | Divergência deliberada | O PDF diz que é direção, não layout a copiar. A identidade VIDA usa névoa e sálvia, com lavanda nas famílias; não usa o símbolo de chave; o elemento de identidade é a sigla VIDA (D18) |
 | Nome do produto | VIDA, não CLAVIS VIA | Escolha da pessoa responsável; o desafio continua identificado em toda a documentação |
-| Acesso dos avaliadores ao código | ⏳ | Repositório privado (D25): convidar avaliadores ou enviar `.zip` |
+| Acesso dos avaliadores ao código | ✅ | Repositório público (D31) |
 | Rate limit também no Nginx | ⏳ | Exige configuração global da VPS compartilhada (`ROADMAP.md`) |
 | Usuário do banco sem privilégio de dono | ⏳ | `specs/SECURITY.md`, `ROADMAP.md` |
 | Reinício automático quando o healthcheck falha | ⏳ | `ROADMAP.md`; hoje o restart cobre queda do processo |

@@ -82,4 +82,4 @@ As variáveis de deploy (VPS, Portainer, Cloudflare) ficam em [`.env.deploy.exam
 - **Garantias que não dependem da IA:** testes de unidade, integração e E2E em dois navegadores, CI com gitleaks e revisão dos documentos.
 
 ## Mais
-[`DECISOES.md`](DECISOES.md) (as 7 perguntas) · [`docs/apresentacao.html`](docs/apresentacao.html) (visão geral para a conversa técnica) · [`docs/ROTEIRO_VIDEO.md`](docs/ROTEIRO_VIDEO.md) (vídeo de 5 min) · [`docs/OPERACAO.md`](docs/OPERACAO.md) (deploy, logs, backup) · [`specs/`](specs/) (regras e decisões D1–D30) · [`CHANGELOG.md`](CHANGELOG.md) · [`ROADMAP.md`](ROADMAP.md)
+[`DECISOES.md`](DECISOES.md) (as 7 perguntas) · [`docs/apresentacao.html`](docs/apresentacao.html) (visão geral para a conversa técnica) · [`docs/ROTEIRO_VIDEO.md`](docs/ROTEIRO_VIDEO.md) (vídeo de 5 min) · [`docs/OPERACAO.md`](docs/OPERACAO.md) (deploy, logs, backup) · [`specs/`](specs/) (regras e decisões D1–D31) · [`CHANGELOG.md`](CHANGELOG.md) · [`ROADMAP.md`](ROADMAP.md)
