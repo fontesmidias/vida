@@ -1,51 +1,43 @@
 # Veredito: DECISOES.md
 
 Data: 2026-10-23
-Revisor independente, contexto limpo. Rubrica: `loops/rubrica-entrega.md`, seção A. Perguntas conferidas no PDF do desafio ("Perguntas técnicas obrigatórias", "Transparência sobre IA", "Identidade").
+Revisor independente, contexto limpo. Rubrica: `loops/rubrica-entrega.md`, seção A. Perguntas conferidas no PDF do desafio (páginas 3 a 5: escopo, "Transparência sobre IA", "Perguntas técnicas obrigatórias").
 
 ## A1. Completo: APROVADO
-Os títulos `## 1.` a `## 7.` reproduzem o texto das 7 perguntas do PDF (Arquitetura, Modelagem, Segurança, Operação, Evolução, Integrações, Decisões), sem omissões.
+Os títulos `## 1.` a `## 7.` reproduzem o texto das 7 perguntas do PDF, por exemplo `## 2. Modelagem: quais entidades/tabelas criou? Como representaria diferentes usuários, check-ins e evolução nos planos?` e `## 7. Decisões: o que você deliberadamente deixou de fora e por quê? Onde usou IA no desenvolvimento?`. Nenhuma pergunta omitida.
 
 ## A2. Responde o que foi perguntado: APROVADO
-- 1: por que essa stack (D1, D2, TECH_STACK) e como tela, API e banco se comunicam (4 camadas + caminho em produção).
-- 2: tabelas (8, em tabela), pessoas diferentes, check-ins e evolução nos planos, cada um com tópico próprio.
-- 3: o que o protótipo já faz e uma lista numerada "Com pessoas reais usando o app, mudaria".
-- 4: deploy, observar erros **e** recuperar, em tópicos separados.
-- 5: exatamente 3 prioridades.
-- 6: IA (service, minimização, guardrails, transparência) **e** Kiwify/webhooks (assinatura, idempotência, fila) **e** controle de acesso (`entitlements` no servidor, conciliação).
-- 7: o que ficou de fora com o motivo **e** o uso de IA.
+- 1: stack (D1, D2) e comunicação tela, API, services, repositories e banco, mais o caminho em produção.
+- 2: tabela com as 8 entidades; usuários diferentes (`user_id`, S2), check-ins (R1, R2, R7) e evolução nos planos (R4, R5, R6), cada um em tópico próprio.
+- 3: "Já existe no protótipo" e "Para pessoas reais, mudaria" com 5 itens (conta, consentimento, criptografia, direitos do titular, acesso mínimo).
+- 4: três tópicos: **Deploy**, **Observar** e **Recuperar**.
+- 5: exatamente 3 prioridades numeradas.
+- 6: **IA** (servidor, minimização, guardrails C1, transparência, limite) e **Kiwify** (webhook idempotente, `subscriptions`) e **controle de acesso** (`entitlements` no servidor, conciliação).
+- 7: "Fora, de propósito" com motivos e "Uso de IA".
 
 ## A3. Ancorado no projeto: APROVADO
-Todas as respostas citam arquivos, regras ou testes existentes: `src/ui/api.ts`, `app/api/**/route.ts`, `deploy/stack.yml`, `deploy/nginx/vida.conf`, `prisma/schema.prisma`, `tests/integration/journey.test.ts`, `tests/unit/today.test.ts`, E2E "S2: uma pessoa não vê os dados de outra", `scripts/deploy.sh`, `scripts/check-pronto.sh` (item 8), `.github/workflows/ci.yml`, `docs/OPERACAO.md`, `specs/SECURITY.md`, `ROADMAP.md`, D1–D28, R1–R8, S1–S8, C1–C4, U1–U13. A pergunta 6 (futura) se ancora em S3, S6, R4, C1/C4, pgvector da imagem e no Apoio/CVV.
+Cada pergunta cita itens verificáveis: `src/ui/api.ts`, `app/api/**`, `src/services/`, `src/repositories/`, `deploy/stack.yml`, `prisma/schema.prisma`, `scripts/deploy.sh`, `docs/OPERACAO.md`, `ROADMAP.md`, `docker logs vida-app-1`, IDs R1 a R8, S2 a S8, D1 a D29. Nada genérico: até a pergunta 6, que é futura, se ancora em S3, S6, R4, C1 e D6.
 
 ## A4. Objetivo: APROVADO
-Respostas em tópicos curtos e tabela; sem marketing. O tamanho é proporcional à quantidade de partes de cada pergunta.
+Tópicos curtos e uma tabela; sem marketing nem enchimento. A abertura diz "Respostas curtas; cada uma aponta onde está no repositório". O tamanho acompanha o número de partes de cada pergunta.
 
 ## A5. Honesto: APROVADO
-Conferido no repositório:
-- Faixas de IDs: R1–R8 e S1–S8 e C1–C4 existem em `specs/RULES.md`; U1–U13 em `specs/UI_UX_SPEC.md`; D1–D28 em `specs/DECISIONS_LOG.md`.
-- Services e repositories não importam `next/*` (grep sem resultados). Rotas usam Zod (`safeParse`), `isSameOrigin` e `tooManyRequests`.
-- 8 tabelas, índices `(user_id, created_at desc)` e `(user_id, local_date)`, únicos `(plan_id, day_number)` e `(user_id, plan_day_id, cycle)`, `current_cycle`, `journey_resets`, todas as relações `onDelete: Restrict`: `prisma/schema.prisma`.
-- 8 estados, contas `avaliador1`–`avaliador3` e `e2e1`–`e2e3`: `prisma/seed-data.ts`.
-- `createMany(skipDuplicates)`: `src/repositories/plans.ts:42`.
-- scrypt + `timingSafeEqual`: `src/lib/password.ts`; mensagem única para conta inexistente e senha errada: `src/services/accounts.ts`; limite por IP no login antes de tudo: `app/api/session/demo/route.ts` + `src/lib/rate-limit.ts`.
-- Cookie `httpOnly`, `sameSite=lax`, `secure` em produção: `src/lib/session-options.ts`.
-- "Apagar meus dados": transação que remove conclusões, check-ins e recomeços e mantém a conta (volta ao ciclo 1): `src/repositories/delete-data.ts`, coerente com D27 (a resposta não repete a frase antiga de R7 sobre remover a pessoa; descreve o comportamento real).
-- Teste de integração contra Postgres real (R8): `tests/integration/journey.test.ts`; Tóquio 22/10: `tests/unit/today.test.ts`; E2E S2 com duas contas (`entrar` + `e2e3`).
-- Nginx: `deny all` fora das faixas do Cloudflare (403), CSP, HSTS, X-Frame-Options, `/api/health/ready` negado de fora. Banco sem `ports`, app em `127.0.0.1:8097`, logs json-file 10m × 3, `restart: unless-stopped`, `depends_on: service_healthy`, volume `vida_pgdata`, imagem `pgvector/pgvector:pg16` sem migration que habilite a extensão.
-- Dockerfile com `USER node` e healthcheck em `/api/health/ready`; `docker-entrypoint.sh` roda `prisma migrate deploy` e seed idempotente.
-- `scripts/deploy.sh`: recusa sem CI verde, backup pré-deploy, `git archive` → build na VPS, atualiza stack via Portainer com `IMAGE_TAG`.
-- CI: lint, tipos, testes, E2E Chromium + WebKit (Pixel 7, iPhone 13 em `playwright.config.ts`) com Postgres, gitleaks com `fetch-depth: 0`.
-- `docs/OPERACAO.md`: backup diário, retenção 14 dias, `docker restart vida-app-1`, restauração passo a passo; `check-pronto.sh` item 8 restaura em banco temporário e item 4 roda E2E contra a URL pública.
-- Pendências marcadas como futuras e presentes no `ROADMAP.md`/`SECURITY.md`: conta pessoal + 2FA, consentimento, exportação, criptografia em repouso, cópia externa de backup, usuário do banco separado (pendente em SECURITY.md), rate limit no Nginx, reinício por healthcheck, Sentry/uptime, chat com IA/RAG, Kiwify, notificações, painel admin, app nativo, música, modo em ordem.
-- Uso de IA coerente com a seção de transparência do `README.md`.
+Afirmações conferidas no repositório:
+- 8 tabelas com os nomes citados (`@@map` em `prisma/schema.prisma`); único `(user_id, plan_day_id, cycle)` (R4); `journey_resets`; `onDelete: Restrict`.
+- Regras: R1 a R8, S1 a S8 e C1 a C4 existem em `specs/RULES.md`, com o conteúdo descrito (S4 cookie `httpOnly`, S5 erros amigáveis, S6 limites, S7 health, S8 scrypt e `timingSafeEqual` em `src/lib/password.ts`).
+- Services e repositories sem import de `next/*` (grep vazio).
+- `scripts/deploy.sh`: recusa sem CI verde (`Deploy recusado.`), backup pré-deploy, build na VPS, `IMAGE_TAG` na stack; `docker-entrypoint.sh` roda `prisma migrate deploy`; reverter por `IMAGE_TAG` consta em `docs/OPERACAO.md`.
+- `deploy/stack.yml`: banco sem `ports`, `restart: unless-stopped`, volume `vida_pgdata`, app só em `127.0.0.1:8097`.
+- `docs/OPERACAO.md`: retenção de 14 dias, restauração testada em banco temporário (`check-pronto.sh` item 8), `/api/health/ready` interno, logs com a rota (S5).
+- E2E "S2: uma pessoa não vê os dados de outra" em `tests/e2e/fluxo-principal.spec.ts`; `DeleteData.tsx` ("Apagar meus dados"); gitleaks no CI; Playwright com Pixel 7 e iPhone 13.
+- Plano futuro está marcado como tal ("Para pessoas reais, mudaria", "Próximo passo: Sentry e alerta de uptime", pergunta 6 toda em tom prospectivo) e consta em `ROADMAP.md` (conta pessoal e 2FA, consentimento, criptografia, backup externo, Sentry, IA/RAG, Kiwify). A conta única de avaliação com senha (D29) corresponde ao registrado.
 Nenhuma afirmação sem respaldo encontrada.
 
 ## A6. Tom (C1, C4): APROVADO
-Nenhuma promessa de diagnóstico, terapia ou cura; a pergunta 6 reforça C1 nos guardrails. Linguagem neutra ("a pessoa", "pessoas reais", "pessoa responsável", "contas de demonstração para avaliação"). Ocorrências de "usuários" estão nas citações literais do PDF; "usuário demo" e "usuário do banco" são termos técnicos; "cliente único" se refere ao cliente HTTP; "clientes" é comum de dois gêneros; "sozinho" se refere ao container.
+Sem promessa de diagnóstico, terapia ou cura; a pergunta 6 reforça C1 e "não é aconselhamento profissional". Linguagem neutra ("a pessoa", "pessoas reais", "pessoa responsável"). Os usos de "usuário" são termos técnicos ("usuário do banco") ou citação do PDF.
 
 ## A7. Transparência sobre IA: APROVADO
-Ferramenta: Claude Code (modelo Claude Opus) no VS Code. Etapas: specs, código e testes, protótipo visual, infraestrutura (Docker, Nginx, DNS, SSL via API do Cloudflare), documentação. Validação pessoal: escopo e regras de produto (C4, D15–D18), teste do protótipo com pedidos de mudança, aprovação de cada decisão e ação de infraestrutura; garantias independentes da IA (testes, CI com gitleaks, `check-pronto.sh`, revisor com rubrica fixa).
+"Claude Code (Claude Opus), no VS Code, em specs, código, testes, infraestrutura e documentação." Validação pessoal: "Eu defini escopo e regras de produto, testei no celular, pedi as mudanças de experiência e aprovei cada decisão e cada ação na infraestrutura", mais garantias independentes (testes, E2E em dois navegadores, CI com gitleaks, revisão dos documentos). Coerente com a seção de IA do `README.md`.
 
 ## Correções necessárias
 Nenhuma.
