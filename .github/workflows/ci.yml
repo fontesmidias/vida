@@ -26,6 +26,11 @@ jobs:
   verificar:
     name: Lint, tipos, testes e E2E
     runs-on: ubuntu-latest
+    timeout-minutes: 25
+    # Imagem oficial do Playwright (mesma versão do package-lock): navegadores e dependências já
+    # instalados, sem apt-get no runner (o espelho do Ubuntu chegou a 70 KB/s e travou o CI)
+    container:
+      image: mcr.microsoft.com/playwright:v1.64.1-noble
     services:
       db:
         image: pgvector/pgvector:pg16
@@ -38,7 +43,8 @@ jobs:
           --health-cmd "pg_isready -U vida -d vida"
           --health-interval 5s --health-timeout 3s --health-retries 10
     env:
-      DATABASE_URL: postgresql://vida:senha-apenas-do-ci@localhost:5432/vida?schema=public
+      # Dentro do container, o serviço do banco responde pelo nome "db"
+      DATABASE_URL: postgresql://vida:senha-apenas-do-ci@db:5432/vida?schema=public
       # Valor fictício, só para o CI (S3): o segredo real vive na stack do Portainer
       SESSION_SECRET: segredo-apenas-para-o-ci-com-mais-de-32-caracteres
       # Senha fictícia só do CI (D29); a da demo pública vive na stack do Portainer
@@ -59,8 +65,6 @@ jobs:
         run: npx prisma migrate deploy && npm run db:seed
       - name: Testes de unidade e integração
         run: npm test
-      - name: Navegadores do E2E
-        run: npx playwright install --with-deps chromium webkit
       - name: E2E (Chrome Android e Safari iPhone)
         run: npm run test:e2e
       - name: Capturas e traces em caso de falha
