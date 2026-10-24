@@ -113,7 +113,7 @@ footer { font-size: 14px; color: var(--muted); border-top: 1px solid var(--line)
   <p>Protótipo mobile-first de check-in emocional. A sigla é o próprio fluxo: <strong>ver</strong> como você está (check-in), <strong>inspirar</strong> (reflexão do dia), <strong>desacelerar</strong> (prática guiada curta) e <strong>avançar</strong> (planos de poucos dias e a jornada). Não substitui acompanhamento profissional; o botão Apoio, em todas as telas, leva ao CVV (188).</p>
   <div class="cta">
     <a class="btn" href="https://vida.fontesmidias.com.br">Abrir a demo</a>
-    <span class="muted">vida.fontesmidias.com.br · no celular ou em modo celular · contas <code>avaliador1</code>, <code>avaliador2</code>, <code>avaliador3</code> · senha <code>vida2026</code></span>
+    <span class="muted">vida.fontesmidias.com.br · no celular ou em modo celular · conta de avaliação · senha enviada com as instruções de entrega</span>
   </div>
 </section>
 
@@ -121,7 +121,7 @@ footer { font-size: 14px; color: var(--muted); border-top: 1px solid var(--line)
   <p class="eyebrow">Roteiro para avaliar</p>
   <h2 id="t-roteiro">O fluxo principal em 6 passos</h2>
   <ol class="steps">
-    <li><span>Escolha uma conta de demonstração, digite a senha e toque em <strong>Entrar</strong>. Cada conta tem a própria jornada, isolada das outras; se já houver registros, dá para <strong>Continuar de onde parou</strong> ou <strong>Começar do zero</strong> (que não apaga nada, só abre um novo ciclo).</span></li>
+    <li><span>Digite a senha da conta de avaliação e toque em <strong>Entrar</strong>. Se já houver registros, dá para <strong>Continuar de onde parou</strong> ou <strong>Começar do zero</strong> (que não apaga nada, só abre um novo ciclo).</span></li>
     <li><span><strong>Fazer check-in</strong> → <strong>Com ansiedade</strong>. Um toque registra; não há nada para digitar.</span></li>
     <li><span>Em <strong>Hoje</strong>, a reflexão e a prática mudam conforme o estado. <strong>Começar</strong> abre a respiração guiada 4-6.</span></li>
     <li><span><strong>Planos</strong> → <strong>Respirar com calma</strong> → dia <strong>1 · Perceber a respiração</strong> → <strong>Concluir dia</strong>.</span></li>
@@ -141,7 +141,7 @@ footer { font-size: 14px; color: var(--muted); border-top: 1px solid var(--line)
     <span><i style="background: var(--f-pesado)"></i>Peso</span>
     <span><i style="background: var(--f-sereno)"></i>Serenidade</span>
   </div>
-  <p>Zero digitação depois de entrar (a senha da conta de demonstração é a única exceção, D28), botões de 58 px, "Voltar" sempre visível, verbo em toda ação, área segura para a barra do navegador. As práticas são guiadas, um passo por vez, para levar a pessoa para fora da tela. O progresso só soma: não há sequência que zera.</p>
+  <p>Zero digitação depois de entrar (a senha da conta de avaliação é a única exceção, D28), botões de 48 a 52 px, cada tela do fluxo cabe em 360×640 sem rolar e termina com um "Próximo passo" (D30), "Voltar" sempre visível, verbo em toda ação, área segura para a barra do navegador. As práticas são guiadas, um passo por vez, para levar a pessoa para fora da tela. O progresso só soma: não há sequência que zera.</p>
 </section>
 
 <section aria-labelledby="t-arq">
@@ -202,7 +202,7 @@ footer { font-size: 14px; color: var(--muted); border-top: 1px solid var(--line)
     <table>
       <thead><tr><th>Tabela</th><th>Guarda</th><th>Regra</th></tr></thead>
       <tbody>
-        <tr><td><code>users</code></td><td>Conta de demonstração, senha em hash, ciclo atual</td><td>userId só da sessão (S2, S8)</td></tr>
+        <tr><td><code>users</code></td><td>Conta de avaliação, senha em hash, ciclo atual</td><td>userId só da sessão (S2, S8)</td></tr>
         <tr><td><code>moods</code></td><td>Catálogo de estados</td><td>Novo estado sem migration (D6)</td></tr>
         <tr><td><code>checkins</code></td><td>Instante do servidor, fuso do dispositivo, data local</td><td>Append-only (R1, R7)</td></tr>
         <tr><td><code>daily_contents</code></td><td>Reflexão e prática por família, mais a neutra</td><td>R3, D17</td></tr>

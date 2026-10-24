@@ -1,23 +1,23 @@
 # Roteiro do vídeo (até 5 minutos)
 
-Gravação: tela do celular (ou DevTools em modo Pixel 7) + editor/terminal. Ritmo calmo; cada bloco tem o que **dizer** e o que **mostrar**.
+Gravação: tela do celular (ou DevTools em modo Pixel 7) + editor. Ritmo calmo; cada bloco diz o que **mostrar** e o que **dizer**. Antes de gravar: `bash scripts/reset-demo.sh` (conta limpa) e a senha à mão; o campo de senha é mascarado, então ela não aparece no vídeo.
 
 | Tempo | Bloco | Mostrar na tela | Dizer (resumo) |
 |---|---|---|---|
-| 0:00–0:25 | Abertura | Entrada de https://vida.fontesmidias.com.br, com a sigla V·I·D·A | "O VIDA é um protótipo de check-in emocional. A sigla é o próprio fluxo: Ver como você está, Inspirar, Desacelerar e Avançar. É demonstração: sem cadastro, com dados guardados de verdade num Postgres." |
-| 0:25–1:15 | Ver e Inspirar | Escolha **Avaliação 1**, digite a senha `vida2026` → **Entrar** → **Fazer check-in** → **Com ansiedade** → tela **Hoje** | "Um toque registra: não há nada para digitar, o que evita erro e não coleta texto sensível. O Hoje muda conforme o estado: para ansiedade, uma reflexão curta e uma respiração 4-6." |
-| 1:15–1:50 | Desacelerar | **Começar** → círculo de respiração por 2 ou 3 ciclos → **Encerrar** | "A prática é guiada: o círculo cresce em 4 segundos e diminui em 6. A ideia é levar a pessoa para fora da tela, para o próprio corpo." |
-| 1:50–2:30 | Avançar | **Planos** → **Respirar com calma** → **Dia 1** → **Concluir dia** → **Jornada** | "Qualquer dia pode ser feito em qualquer ordem; o primeiro em aberto aparece como próximo. O progresso só soma, sem sequência que zera. Na Jornada estão o check-in e a conclusão." |
-| 2:30–2:45 | Persistência | Recarregar a página na Jornada | "Recarreguei e nada sumiu: está no banco, não no navegador." |
-| 2:45–4:15 | **Decisão técnica: de quem é o "dia"?** | `src/services/checkins.ts` (`resolveTimezone`, `localDateFor`) e `tests/unit/today.test.ts` (caso São Paulo × Tóquio) | Ver o texto abaixo. |
-| 4:15–4:45 | Qualidade e segurança | Terminal com `bash scripts/check-pronto.sh` e o CI verde no GitHub | "Cada item da entrega é provado por comando: testes, E2E em Chrome e Safari contra a demo pública, rate limit, backup restaurado. O Nginx só aceita o Cloudflare, e o botão Apoio leva ao CVV." |
-| 4:45–5:00 | Fechamento | Jornada com **Começar do zero** e **Apagar meus dados** | "Dá para recomeçar a jornada sem apagar nada, e a pessoa pode apagar tudo o que é dela. As respostas às perguntas do desafio estão no DECISOES.md." |
+| 0:00–0:20 | Abertura | Entrada de https://vida.fontesmidias.com.br | "O VIDA é um protótipo de check-in emocional. A sigla é o próprio fluxo: Ver como você está, Inspirar, Desacelerar e Avançar. O conteúdo é de demonstração; os dados ficam salvos de verdade num Postgres." |
+| 0:20–0:50 | 1 · Entrar e 2 · Check-in | Digitar a senha → **Entrar** → **Fazer check-in** → **Com ansiedade** | "Uma conta de avaliação, com senha guardada como hash. No check-in, um toque registra: nada para digitar, e nenhum texto sensível coletado." |
+| 0:50–1:30 | 3 · Hoje | Tela **Hoje** (selo "Demonstração") → **Começar** → 2 ciclos de respiração → **Encerrar** | "O Hoje muda conforme o estado: para ansiedade, uma reflexão curta e uma respiração 4-6, guiada pelo círculo." |
+| 1:30–2:05 | 4 · Plano | **Próximo passo: Ver planos** → **Respirar com calma** → **Dia 1** → **Concluir dia** | "O app conduz cada etapa com um botão de próximo passo. Os dias podem ser feitos em qualquer ordem; concluir de novo não duplica." |
+| 2:05–2:30 | 5 · Jornada e 6 · Recarregar | **Ver minha jornada** → mostrar check-in e "1 de 5" → recarregar a página | "Aqui estão o check-in e a conclusão. Recarreguei e nada sumiu: está no banco, não no navegador." |
+| 2:30–4:10 | **Decisão técnica: de quem é o "dia"?** | `src/services/checkins.ts` (`resolveTimezone`, `localDateFor`) e `tests/unit/today.test.ts` (São Paulo × Tóquio) | Texto abaixo. |
+| 4:10–4:45 | Qualidade | CI verde no GitHub; `tests/e2e/fluxo-principal.spec.ts` | "Esse mesmo fluxo roda como teste automático em Chrome e Safari a cada push. O userId vem só da sessão, e um teste prova que uma conta não vê os dados de outra." |
+| 4:45–5:00 | Fechamento | Jornada: **Começar do zero** e **Apagar meus dados** | "Dá para recomeçar sem apagar nada, e apagar tudo o que é seu. As 7 respostas técnicas estão no DECISOES.md." |
 
-## Texto do bloco de decisão (2:45–4:15)
-**O problema:** "hoje" depende de onde a pessoa está. Se eu guardasse só a data do servidor, um check-in às 22h em São Paulo cairia no dia seguinte, porque o servidor usa UTC.
+## Texto do bloco de decisão (2:30–4:10)
+**O problema:** "hoje" depende de onde a pessoa está. O servidor trabalha em UTC: um check-in às 22h em São Paulo já é dia seguinte para ele.
 
-**O que fiz (R1, D5):** o **instante** vem sempre do relógio do servidor, e o **fuso** vem do dispositivo, pelo `Intl` do navegador, sem pedir localização. O servidor valida o fuso (só nomes IANA; inválido cai em São Paulo) e calcula a data local do check-in. A tela Hoje usa o fuso **atual** do dispositivo, então viagem funciona: o mesmo instante, 02:30 UTC de 22/10, é dia 21 em São Paulo e dia 22 em Tóquio. É exatamente o teste que mostro aqui.
+**O que fiz (R1, D5):** o **instante** vem do relógio do servidor; o **fuso** vem do aparelho, pelo `Intl` do navegador, sem pedir localização. O servidor valida o fuso (só nomes IANA; inválido vira São Paulo) e calcula a data local. O Hoje usa o fuso **atual** do aparelho, então viagem funciona: 02:30 UTC de 22/10 é dia 21 em São Paulo e dia 22 em Tóquio. É o teste que mostro aqui.
 
-**A alternativa descartada:** usar a hora do próprio celular. Ela pode estar errada ou ser ajustada à mão, criando check-ins em dias que não aconteceram. O fuso, por outro lado, o aparelho corrige sozinho quando a pessoa viaja. E pedir geolocalização seria coletar um dado sensível sem necessidade.
+**Alternativa descartada:** usar a hora do celular. Ela pode estar errada ou ser mudada à mão, criando check-ins em dias que não existiram. O fuso o aparelho corrige sozinho; e geolocalização seria coletar dado sensível sem necessidade.
 
-**Por que importa:** o conteúdo do dia e o histórico ficam coerentes com a vida da pessoa, e cada check-in guarda o fuso em que foi feito, então a Jornada mostra a hora que ela viveu ("08:15 · horário de Lisboa").
+**Por que importa:** o conteúdo do dia e o histórico ficam coerentes com a vida da pessoa.

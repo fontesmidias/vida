@@ -2,6 +2,14 @@
 
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/); versões seguem [SemVer](https://semver.org/lang/pt-BR/).
 
+## [1.2.0] - 2026-10-23
+### Alterado
+- Uma única conta de avaliação (`avaliador`, D29). A senha saiu da Entrada, do README e do código: vem de `DEMO_PASSWORD` (ambiente, stack e CI) e é enviada com as instruções de entrega. As contas `avaliador1`–`avaliador3` ficam sem senha, com os registros preservados (R7).
+- Fluxo guiado (D30): "Próximo passo" ao fim de cada etapa (Hoje → Planos → Dia concluído → Jornada); concluir um dia não volta mais para o plano.
+- Telas compactas: Entrada, Check-in, Hoje, Planos, Plano, Dia e Jornada cabem em 360×640 sem rolar (U2).
+- Conteúdo fictício marcado com o selo "Demonstração" no Hoje e no plano (C2); aviso de sucesso no topo.
+- README no formato pedido pelo desafio; `DECISOES.md` e roteiro do vídeo mais curtos.
+
 ## [1.1.1] - 2026-10-23
 ### Corrigido
 - Teste E2E da R8 abria a Entrada enquanto o "Sair" ainda navegava, e as navegações colidiam no CI. O CI da v1.1.0 falhou por isso e a v1.1.0 **não foi publicada em produção** (o deploy recusa commit sem CI verde); a v1.1.1 tem o mesmo app, com o teste corrigido.
