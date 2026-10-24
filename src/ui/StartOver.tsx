@@ -36,7 +36,7 @@ export function StartOverButton() {
 
   return (
     <>
-      <button className="btn ghost" onClick={() => setOpen(true)} aria-haspopup="dialog">
+      <button className="link-btn" onClick={() => setOpen(true)} aria-haspopup="dialog">
         Começar do zero
       </button>
       {open && (

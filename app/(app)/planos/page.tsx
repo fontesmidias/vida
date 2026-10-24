@@ -17,11 +17,13 @@ export default function PlanosPage() {
 
   return (
     <section className="screen" aria-labelledby="t-planos">
-      <Kicker letter="A" word="Avançar" />
-      <h1 id="t-planos" className="h1">
-        Planos
-      </h1>
-      <p className="muted">Escolha um plano para seguir no seu ritmo.</p>
+      <div className="row-between">
+        <h1 id="t-planos" className="h1">
+          Planos
+        </h1>
+        <Kicker letter="A" word="Avançar" />
+      </div>
+      <p className="muted">Escolha um plano de demonstração para seguir no seu ritmo.</p>
       {data?.plans.map((p) => (
         <Link key={p.slug} href={`/planos/${p.slug}`} className="card plan">
           <span className="row">

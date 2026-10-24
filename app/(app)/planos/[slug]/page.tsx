@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useApi } from "@/src/ui/api";
-import { ErrorView, Loading, ProgressDots } from "@/src/ui/feedback";
+import { DemoTag, ErrorView, Loading, ProgressDots } from "@/src/ui/feedback";
 import { CheckIcon } from "@/src/ui/icons";
 import type { PlanDetail } from "@/src/ui/types";
 
@@ -23,9 +23,10 @@ export default function PlanoPage() {
       </h1>
       <div className="row">
         <ProgressDots done={data.days.map((d) => d.completed)} />
-        <span className="small">
+        <span className="small grow">
           {data.completedDays} de {data.totalDays} dias concluídos
         </span>
+        <DemoTag />
       </div>
       {data.completed && (
         <p className="card soft body">Você percorreu todos os dias deste plano. Que caminho bonito.</p>

@@ -53,7 +53,7 @@ export default function CheckinPage() {
       {loading && !data ? (
         <div className="moods" aria-busy="true" aria-label="Carregando">
           {Array.from({ length: 8 }, (_, i) => (
-            <div key={i} className="skeleton" style={{ minHeight: 118 }} />
+            <div key={i} className="skeleton" style={{ minHeight: 86 }} />
           ))}
         </div>
       ) : (
@@ -67,7 +67,7 @@ export default function CheckinPage() {
               data-state={sending === m.slug ? "sending" : sending ? "dim" : undefined}
               aria-label={sending === m.slug ? `${m.label}, registrando` : m.label}
             >
-              <MoodIcon slug={m.slug} family={m.family} size={52} />
+              <MoodIcon slug={m.slug} family={m.family} size={36} />
               <span>{m.label}</span>
             </button>
           ))}

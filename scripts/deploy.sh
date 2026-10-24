@@ -38,9 +38,13 @@ git archive --format=tar HEAD | "${SSH[@]}" "docker build -q -t vida-app:$TAG -"
 echo "imagem vida-app:$TAG construída na VPS"
 
 # 4. Stack: cria na primeira vez (segredos gerados aqui e guardados só no Portainer) ou atualiza a versão
-python - "$PU" "$PT" "$PE" "$STACK" "$TAG" "${STACK_ID:-}" <<'PY'
-import json, secrets, sys, urllib.request
+# D29: a senha da conta de avaliação vem do .env.deploy e vai só para as variáveis da stack
+DEMO_PW=$(envd DEMO_PASSWORD)
+[ ${#DEMO_PW} -ge 8 ] || { echo "Defina DEMO_PASSWORD (mínimo 8 caracteres) no .env.deploy."; exit 1; }
+DEMO_PASSWORD="$DEMO_PW" python - "$PU" "$PT" "$PE" "$STACK" "$TAG" "${STACK_ID:-}" <<'PY'
+import json, os, secrets, sys, urllib.request
 pu, pt, pe, name, tag, sid = sys.argv[1:7]
+demo_pw = os.environ["DEMO_PASSWORD"]
 content = open("deploy/stack.yml", encoding="utf-8").read()
 
 def call(method, path, body=None):
@@ -50,8 +54,8 @@ def call(method, path, body=None):
         return json.loads(r.read() or b"{}")
 
 if sid:
-    env = [e for e in call("GET", f"/api/stacks/{sid}")["Env"] if e["name"] != "IMAGE_TAG"]
-    env.append({"name": "IMAGE_TAG", "value": tag})
+    env = [e for e in call("GET", f"/api/stacks/{sid}")["Env"] if e["name"] not in ("IMAGE_TAG", "DEMO_PASSWORD")]
+    env += [{"name": "IMAGE_TAG", "value": tag}, {"name": "DEMO_PASSWORD", "value": demo_pw}]
     call("PUT", f"/api/stacks/{sid}?endpointId={pe}", {"stackFileContent": content, "env": env, "prune": True, "pullImage": False})
     print(f"stack {name} atualizada para {tag}")
 else:
@@ -59,6 +63,7 @@ else:
         {"name": "POSTGRES_PASSWORD", "value": secrets.token_hex(24)},
         {"name": "SESSION_SECRET", "value": secrets.token_urlsafe(48)},
         {"name": "IMAGE_TAG", "value": tag},
+        {"name": "DEMO_PASSWORD", "value": demo_pw},
     ]
     call("POST", f"/api/stacks/create/standalone/string?endpointId={pe}", {"name": name, "stackFileContent": content, "env": env})
     print(f"stack {name} criada com {tag} (segredos gerados e guardados só no Portainer)")

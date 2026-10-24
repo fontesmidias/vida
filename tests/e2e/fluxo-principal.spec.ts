@@ -11,13 +11,16 @@ async function expectNothingUnderNav(page: Page) {
   expect(last!.y + last!.height).toBeLessThanOrEqual(nav!.y);
 }
 
+// D29: a senha vem do ambiente, nunca do código nem da tela
+const SENHA = process.env.DEMO_PASSWORD ?? "";
+
 // D26: cada navegador de teste usa a própria conta de teste (nunca as de avaliação)
 const conta = () => (test.info().project.name === "iphone-safari" ? "e2e2" : "e2e1");
 
 // Entra pela Entrada real e começa sempre de um ciclo limpo (R8), para o teste não depender de execuções anteriores
 async function entrar(page: Page, username = conta()) {
   await page.goto(`/?conta=${username}`);
-  await page.getByPlaceholder("Digite a senha").fill("vida2026");
+  await page.getByPlaceholder("Digite a senha").fill(SENHA);
   await page.getByRole("button", { name: "Entrar", exact: true }).click();
   const continuar = page.getByRole("button", { name: "Continuar de onde parou" });
   // O primeiro carregamento depois do login (Hoje + dados) é o mais pesado: espera maior só aqui
@@ -33,8 +36,9 @@ test("fluxo principal do desafio", async ({ page }) => {
   await expect(page.getByText("Não substitui o acompanhamento profissional")).toBeVisible(); // C3
   await page.screenshot({ path: shots("1-entrada"), fullPage: true });
 
-  // 1. Entrar com uma conta de demonstração (D26)
-  await expect(page.getByRole("radiogroup", { name: "Escolha uma conta" })).toBeVisible();
+  // 1. Entrar com a conta de avaliação (D29): a senha não aparece na tela
+  expect(SENHA.length).toBeGreaterThanOrEqual(8);
+  await expect(page.getByText(SENHA)).toHaveCount(0);
   await entrar(page);
   await expect(page.getByText("Um momento para você.")).toBeVisible(); // R3: conteúdo neutro
 
@@ -51,6 +55,8 @@ test("fluxo principal do desafio", async ({ page }) => {
   await page.screenshot({ path: shots("3-hoje"), fullPage: true });
   await expectNothingUnderNav(page);
 
+  await expect(page.getByText("Demonstração")).toBeVisible(); // C2
+
   // Passo 3 do roteiro: "Começar" abre a respiração guiada (D17)
   await page.getByRole("link", { name: "Começar" }).click();
   await expect(page).toHaveURL(/\/pratica$/);
@@ -58,8 +64,9 @@ test("fluxo principal do desafio", async ({ page }) => {
   await page.getByRole("button", { name: "Encerrar" }).click();
   await expect(page).toHaveURL(/\/hoje$/);
 
-  // 4. Abrir um plano e concluir o Dia 1
-  await page.getByRole("navigation", { name: "Navegação principal" }).getByRole("link", { name: "Planos" }).click();
+  // 4. Fluxo guiado: o próximo passo leva aos planos; abrir um plano e concluir o Dia 1
+  await expect(page.getByRole("link", { name: "Ver planos" })).toBeInViewport(); // U2: sem rolar
+  await page.getByRole("link", { name: "Ver planos" }).click();
   await page.getByRole("link", { name: /Respirar com calma/ }).click();
   await expect(page.getByRole("link", { name: /Dia 1: .*próximo sugerido/ })).toBeVisible(); // R5
   await page.screenshot({ path: shots("4-plano"), fullPage: true });
@@ -67,11 +74,11 @@ test("fluxo principal do desafio", async ({ page }) => {
   await page.getByRole("link", { name: /Dia 1:/ }).click();
   await expect(page.getByRole("link", { name: "Voltar" })).toBeVisible(); // U9
   await page.getByRole("button", { name: "Concluir dia" }).click();
-  await expect(page.getByRole("link", { name: /Dia 1: .*concluído/ })).toBeVisible();
-  await expect(page.getByText("1 de 5 dias concluídos")).toBeVisible(); // R6
+  await expect(page.getByRole("button", { name: "Concluído" })).toBeVisible();
 
-  // 5. Minha Jornada mostra check-in e conclusão
-  await page.getByRole("navigation", { name: "Navegação principal" }).getByRole("link", { name: "Jornada" }).click();
+  // 5. Fluxo guiado: o próximo passo leva à Jornada, que mostra check-in e conclusão (R6)
+  await page.getByRole("link", { name: "Ver minha jornada" }).click();
+  await expect(page).toHaveURL(/\/jornada$/);
   await expect(page.getByText("Com ansiedade")).toBeVisible();
   await expect(page.getByText(/^Hoje, \d{2}:\d{2}$/)).toBeVisible();
   await expect(page.getByText("1 de 5")).toBeVisible();
@@ -143,7 +150,7 @@ test("celebração cobre a tela inteira ao concluir o último dia do plano", asy
   for (let dia = 1; dia <= 5; dia++) {
     await page.goto(`/planos/respirar-com-calma/dia/${dia}`);
     await page.getByRole("button", { name: "Concluir dia" }).click();
-    if (dia < 5) await expect(page).toHaveURL(/\/planos\/respirar-com-calma$/);
+    if (dia < 5) await expect(page.getByRole("button", { name: "Concluído" })).toBeVisible();
   }
   const cel = page.getByRole("dialog", { name: "Plano concluído" });
   await expect(cel).toBeVisible();
@@ -198,7 +205,7 @@ test("R8: começar do zero esvazia a jornada sem apagar a conta", async ({ page 
   await page.getByRole("button", { name: "Sair" }).click();
   await expect(page).toHaveURL(/\/$/); // espera o Sair terminar de navegar antes de abrir a Entrada de novo
   await page.goto(`/?conta=${conta()}`);
-  await page.getByPlaceholder("Digite a senha").fill("vida2026");
+  await page.getByPlaceholder("Digite a senha").fill(SENHA);
   await page.getByRole("button", { name: "Entrar", exact: true }).click();
   await expect(page).toHaveURL(/\/hoje$/);
 });

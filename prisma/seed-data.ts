@@ -106,15 +106,24 @@ export const plans = [
   },
 ];
 
-// D26/S8: contas de demonstração. A senha é pública de propósito (dados fictícios, C2) e aparece na Entrada.
-// Os nomes de usuário são identificadores; o nome exibido é neutro (C4).
-export const DEMO_PASSWORD = "vida2026";
+// D29/S8: uma única conta de avaliação. A senha não fica no código nem na tela: vem de DEMO_PASSWORD
+// (ambiente) e é enviada a quem avalia junto com as instruções de entrega.
+// O nome de usuário é identificador; o nome exibido é neutro (C4).
+export const demoAccount = { username: "avaliador", displayName: "Avaliação" };
 
-export const demoAccounts = [
-  { username: "avaliador1", displayName: "Avaliação 1" },
-  { username: "avaliador2", displayName: "Avaliação 2" },
-  { username: "avaliador3", displayName: "Avaliação 3" },
-];
+// Contas de D26, aposentadas por D29: o seed tira a senha (ninguém mais entra), sem apagar registros (R7)
+export const retiredAccounts = ["avaliador1", "avaliador2", "avaliador3"];
+
+export const MIN_DEMO_PASSWORD = 8;
+
+// Falha cedo e com mensagem clara: sem senha definida, nenhuma conta seria criada com segurança
+export function readDemoPassword(value: string | undefined): string {
+  const password = value?.trim() ?? "";
+  if (password.length < MIN_DEMO_PASSWORD) {
+    throw new Error(`DEMO_PASSWORD ausente ou curta (mínimo ${MIN_DEMO_PASSWORD} caracteres). Veja .env.example.`);
+  }
+  return password;
+}
 
 // Reservadas aos testes automáticos (E2E local, CI e contra a demo pública): nunca mexem nas contas acima
 export const testAccounts = [

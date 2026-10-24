@@ -7,7 +7,7 @@ const HASH = hashPassword("vida2026");
 function fakeRepo(over: Partial<AccountRepository> = {}): AccountRepository {
   return {
     findByUsername: vi.fn(async (u: string) =>
-      u === "avaliador1" ? { id: "u1", displayName: "Avaliador 1", passwordHash: HASH, currentCycle: 2 } : null,
+      u === "avaliador" ? { id: "u1", displayName: "Avaliação", passwordHash: HASH, currentCycle: 2 } : null,
     ),
     countInCycle: vi.fn(async () => 0),
     newCycle: vi.fn(async (_id: string, from: number) => from + 1),
@@ -18,18 +18,18 @@ function fakeRepo(over: Partial<AccountRepository> = {}): AccountRepository {
 describe("login nas contas de demonstração (S8, D26)", () => {
   it("senha certa entra e informa se o ciclo atual já tem registros", async () => {
     const repo = fakeRepo({ countInCycle: vi.fn(async () => 3) });
-    const r = await login(repo, { username: "avaliador1", password: "vida2026" });
-    expect(r).toEqual({ id: "u1", displayName: "Avaliador 1", hasProgress: true });
+    const r = await login(repo, { username: "avaliador", password: "vida2026" });
+    expect(r).toEqual({ id: "u1", displayName: "Avaliação", hasProgress: true });
     expect(repo.countInCycle).toHaveBeenCalledWith("u1", 2);
   });
 
   it("ciclo vazio → hasProgress falso (botão Iniciar)", async () => {
-    const r = await login(fakeRepo(), { username: "avaliador1", password: "vida2026" });
+    const r = await login(fakeRepo(), { username: "avaliador", password: "vida2026" });
     expect(r.hasProgress).toBe(false);
   });
 
   it.each([
-    ["avaliador1", "errada"],
+    ["avaliador", "errada"],
     ["ninguem", "vida2026"],
   ])("usuário %s com senha %s → o mesmo erro genérico", async (username, password) => {
     await expect(login(fakeRepo(), { username, password })).rejects.toBeInstanceOf(InvalidCredentialsError);

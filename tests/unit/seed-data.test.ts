@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { dailyContents, DEMO_PASSWORD, demoAccounts, moods, NEUTRAL_FAMILY, plans, PRACTICE_KINDS, testAccounts } from "@/prisma/seed-data";
+import { dailyContents, demoAccount, moods, NEUTRAL_FAMILY, plans, PRACTICE_KINDS, readDemoPassword, retiredAccounts, testAccounts } from "@/prisma/seed-data";
 
 describe("catálogo de estados (D11)", () => {
   it("tem 8 estados em 4 famílias, 2 por família", () => {
@@ -102,21 +102,26 @@ describe("gênero neutro (C4)", () => {
   });
 });
 
-describe("contas de demonstração (D26, S8)", () => {
-  const todas = [...demoAccounts, ...testAccounts];
+describe("conta de avaliação (D29, S8)", () => {
+  const todas = [demoAccount, ...testAccounts];
 
-  it("3 contas para avaliação e 3 só para testes, sem repetir usuário", () => {
-    expect(demoAccounts.map((a) => a.username)).toEqual(["avaliador1", "avaliador2", "avaliador3"]);
+  it("uma conta para avaliação e 3 só para testes, sem repetir usuário", () => {
+    expect(demoAccount.username).toBe("avaliador");
     expect(testAccounts).toHaveLength(3);
-    expect(new Set(todas.map((a) => a.username)).size).toBe(6);
+    expect(new Set(todas.map((a) => a.username)).size).toBe(4);
+  });
+
+  it("contas antigas (D26) ficam aposentadas, nunca reaproveitadas", () => {
+    for (const a of todas) expect(retiredAccounts).not.toContain(a.username);
   });
 
   it("nome exibido neutro em gênero (C4)", () => {
     for (const a of todas) expect(a.displayName).not.toMatch(/avaliador|avaliadora/i);
   });
 
-  it("senha curta o bastante para digitar no celular (D28)", () => {
-    expect(DEMO_PASSWORD.length).toBeGreaterThanOrEqual(6);
-    expect(DEMO_PASSWORD.length).toBeLessThanOrEqual(10);
+  it("senha vem do ambiente e é recusada se ausente ou curta (S3, S8)", () => {
+    expect(() => readDemoPassword(undefined)).toThrow(/DEMO_PASSWORD/);
+    expect(() => readDemoPassword("  curta ")).toThrow(/DEMO_PASSWORD/);
+    expect(readDemoPassword(" senha-longa ")).toBe("senha-longa");
   });
 });
