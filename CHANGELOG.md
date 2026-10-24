@@ -2,6 +2,11 @@
 
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/); versões seguem [SemVer](https://semver.org/lang/pt-BR/).
 
+## [1.2.1] - 2026-10-23
+### Alterado
+- Repositório público, com o histórico como está (D31, substitui D25).
+- CI roda na imagem oficial do Playwright: sem `apt-get` no runner, que travou a instalação dos navegadores por mais de 10 minutos. Limite de 25 minutos no job.
+
 ## [1.2.0] - 2026-10-23
 ### Alterado
 - Uma única conta de avaliação (`avaliador`, D29). A senha saiu da Entrada, do README e do código: vem de `DEMO_PASSWORD` (ambiente, stack e CI) e é enviada com as instruções de entrega. As contas `avaliador1`–`avaliador3` ficam sem senha, com os registros preservados (R7).
